@@ -1,0 +1,1172 @@
+{
+"0x40197a": {
+"name": "v860InitSelfSlotMinus70",
+"purpose": "Client-state mirror-slot initializer. Reads the resolved creature-array/self base from [0x45ff0c], subtracts 0x70, and stores the derived pointer into the ReadClientState cache global [0x86c341c]. One of a back-to-back family that precomputes fixed-offset field pointers into client.exe memory for the RPM reader to batch-read; the -0x70 offset selects a specific self/creature sub-field.",
+"conf": "high"
+},
+"0x401996": {
+"name": "v860InitSelfSlotMinus64",
+"purpose": "Mirror-slot initializer: base [0x45ff0c] - 0x64 -> stored at [0x86c3418]. Precomputes a fixed-offset field pointer into the client creature/self record for the ReadClientState RPM batch. Sibling of the 0x40197a family.",
+"conf": "high"
+},
+"0x4019b2": {
+"name": "v860InitSelfSlotMinus78",
+"purpose": "Mirror-slot initializer: base [0x45ff0c] - 0x78 -> stored at [0x86c3414]. Derives a client-state field pointer (offset -0x78 into the self/creature record) for the RPM reader cache. Sibling of the 0x40197a family.",
+"conf": "high"
+},
+"0x4019ce": {
+"name": "v860InitClientSlotPlus1EB0",
+"purpose": "Mirror-slot initializer: reads a second client base from [0x45ff10], adds 0x1eb0, stores derived pointer at [0x86c3410]. Large +0x1eb0 offset indicates a far client-state structure (map/status block) whose pointer is precomputed for the ReadClientState batch reader.",
+"conf": "high"
+},
+"0x4019ec": {
+"name": "v860InitClientSlotPlus18",
+"purpose": "Mirror-slot initializer: base [0x45ff14] + 0x18 -> stored at [0x86c340c]. Precomputes a client-state field pointer for the RPM reader cache. Sibling initializer.",
+"conf": "high"
+},
+"0x401a08": {
+"name": "v860InitClientSlotPlus4E",
+"purpose": "Mirror-slot initializer: base [0x45ff1c] + 0x4e -> stored at [0x86c3408]. Derives a client-state field pointer for the ReadClientState RPM batch. Sibling initializer.",
+"conf": "high"
+},
+"0x401a24": {
+"name": "v860InitClientSlotMinus78",
+"purpose": "Mirror-slot initializer: base [0x45ff10] - 0x78 -> stored at [0x86c3404]. Precomputes a client-state field pointer for the RPM reader cache. Sibling of the [0x45ff10]-derived family.",
+"conf": "high"
+},
+"0x401a40": {
+"name": "v860InitClientSlotMinusC",
+"purpose": "Mirror-slot initializer: base [0x45ff10] - 0xc -> stored at [0x86c3400]. This slot [0x86c3400] is itself re-consumed as a base by later initializers (0x401a5c, 0x401acc, 0x401ae8), so it anchors a chained sub-field derivation for the client-state cache.",
+"conf": "high"
+},
+"0x401a5c": {
+"name": "v860InitChainedSlotPlus4",
+"purpose": "Chained mirror-slot initializer: reads the previously-derived pointer at [0x86c3400] (from 0x401a40), adds 4, stores at [0x86c33fc]. Derives an adjacent field pointer relative to an already-computed client-state slot rather than the raw base.",
+"conf": "high"
+},
+"0x401a78": {
+"name": "v860InitClientSlotMinus48",
+"purpose": "Mirror-slot initializer: base [0x45ff10] - 0x48 -> stored at [0x86c33f8]. Precomputes a client-state field pointer for the ReadClientState RPM batch. Sibling of the [0x45ff10]-derived family.",
+"conf": "high"
+},
+"0x401a94": {
+"name": "v860InitClientSlotMinus44",
+"purpose": "Mirror-slot initializer: base [0x45ff10] - 0x44 -> stored at [0x86c33f4]. Precomputes a client-state field pointer for the RPM reader cache. Sibling initializer.",
+"conf": "high"
+},
+"0x401ab0": {
+"name": "v860InitClientSlotMinus60",
+"purpose": "Mirror-slot initializer: base [0x45ff10] - 0x60 -> stored at [0x86c33f0]. Precomputes a client-state field pointer for the ReadClientState RPM batch. Sibling initializer.",
+"conf": "high"
+},
+"0x401acc": {
+"name": "v860InitChainedSlotMinus60",
+"purpose": "Chained mirror-slot initializer: reads the derived pointer at [0x86c3400] (from 0x401a40), subtracts 0x60, stores at [0x86c33ec]. Derives a field pointer relative to an already-computed client-state slot.",
+"conf": "high"
+},
+"0x401ae8": {
+"name": "v860InitChainedSlotMinusC",
+"purpose": "Chained mirror-slot initializer: reads the derived pointer at [0x86c3400] (from 0x401a40), subtracts 0xc, stores at [0x86c33e8]. Derives a field pointer relative to an already-computed client-state slot.",
+"conf": "high"
+},
+"0x401b04": {
+"name": "v860InitClientSlotMinus1D8",
+"purpose": "Mirror-slot initializer: reads a further client base from [0x45ff2c], subtracts 0x1d8, stores at [0x86c33e4]. Large -0x1d8 offset selects a distant field in the [0x45ff2c]-anchored client-state structure for the RPM reader cache.",
+"conf": "high"
+},
+"0x401b22": {
+"name": "v860InitClientSlotBase2C",
+"purpose": "Mirror-slot initializer (identity): reads base [0x45ff2c] and stores it directly at [0x86c33e0] with no offset, establishing the base pointer of the [0x45ff2c]-anchored client-state structure that 0x401b04 offsets from. Sibling initializer in the ReadClientState cache-setup family.",
+"conf": "high"
+},
+"0x401b3b": {
+"name": "v860DeriveClientField_45ff2c_minusB8",
+"purpose": "Pointer-arithmetic accessor: reads the resolved client-state base slot [0x45ff2c], subtracts 0xB8, and caches the derived address into mirror slot [0x86c33dc]. One of a back-to-back family that precomputes fixed-offset field addresses inside client.exe for the ReadClientState RPM poller to batch-read; the -0xB8 delta selects a specific field of the record anchored at 0x45ff2c.",
+"conf": "medium"
+},
+"0x401b59": {
+"name": "v860DeriveClientField_45ff2c_minus28",
+"purpose": "Reads client-state base [0x45ff2c], subtracts 0x28, stores derived field address into mirror slot [0x86c33d8]. Same accessor family as 0x401b3b; the -0x28 offset picks a different member of the same 0x45ff2c-anchored client record for the RPM reader.",
+"conf": "medium"
+},
+"0x401b75": {
+"name": "v860DeriveClientField_45ff30_minus4",
+"purpose": "Reads client-state base [0x45ff30], subtracts 4, caches result into [0x86c33d4]. Fixed-offset pointer derivation feeding the ReadClientState mirror; anchored on a different base slot (0x45ff30) than the 0x45ff2c group.",
+"conf": "medium"
+},
+"0x401b91": {
+"name": "v860DeriveClientField_45ff4c_plus8",
+"purpose": "Reads client-state base [0x45ff4c], adds 8, stores into mirror slot [0x86c33d0]. Same derived-pointer accessor family; +8 selects a field of the 0x45ff4c-anchored client record for RPM batch reads.",
+"conf": "medium"
+},
+"0x401bad": {
+"name": "v860DeriveClientField_45ff4c_plus4",
+"purpose": "Reads client-state base [0x45ff4c], adds 4, stores into mirror slot [0x86c33cc]. Sibling of 0x401b91 on the same 0x45ff4c base, +4 field offset.",
+"conf": "medium"
+},
+"0x401bc9": {
+"name": "v860DeriveClientField_45ffdc_plus4",
+"purpose": "Reads client-state base [0x45ffdc], adds 4, stores into mirror slot [0x86c33c8]. Derived-pointer accessor on the 0x45ffdc base record.",
+"conf": "medium"
+},
+"0x401be5": {
+"name": "v860DeriveClientField_45ffdc_minus78",
+"purpose": "Reads client-state base [0x45ffdc], subtracts 0x78, stores into mirror slot [0x86c33c4]. This computed address (0x86c33c4) is itself consumed as a base by the next three helpers (0x401c01/0x401c1d/0x401c6b), so -0x78 anchors a sub-record whose neighboring fields are derived downstream.",
+"conf": "medium"
+},
+"0x401c01": {
+"name": "v860DeriveMirror_86c33c4_plus4",
+"purpose": "Second-level derivation: reads the previously-cached mirror address [0x86c33c4] (the 0x45ffdc-0x78 field), adds 4, stores into [0x86c33c0]. Chains off 0x401be5 to compute an adjacent field of the same client sub-record.",
+"conf": "medium"
+},
+"0x401c1d": {
+"name": "v860DeriveMirror_86c33c4_plus8",
+"purpose": "Second-level derivation: reads cached mirror [0x86c33c4], adds 8, stores into [0x86c33bc]. Sibling of 0x401c01; +8 field of the 0x45ffdc-0x78 sub-record. Its output [0x86c33bc] is then copied by 0x401c39.",
+"conf": "medium"
+},
+"0x401c39": {
+"name": "v860CopyMirror_86c33bc_to_86c33b8",
+"purpose": "Plain copy: moves cached mirror address [0x86c33bc] into [0x86c33b8], no arithmetic. Republishes the +8 derived field (from 0x401c1d) under a second mirror slot, likely a stable alias the reader/consumer indexes by.",
+"conf": "medium"
+},
+"0x401c52": {
+"name": "v860CopyMirror_86c33c0_to_86c33b4",
+"purpose": "Plain copy: moves cached mirror [0x86c33c0] (the +4 field from 0x401c01) into [0x86c33b4]. Alias-republish sibling of 0x401c39.",
+"conf": "medium"
+},
+"0x401c6b": {
+"name": "v860CopyMirror_86c33c4_to_86c33b0",
+"purpose": "Plain copy: moves cached mirror [0x86c33c4] (the 0x45ffdc-0x78 base itself) into [0x86c33b0]. Alias-republish sibling of 0x401c39/0x401c52, exposing the sub-record base under a stable slot.",
+"conf": "medium"
+},
+"0x401c84": {
+"name": "v860DeriveClientField_45ff4c_minus38",
+"purpose": "Reads client-state base [0x45ff4c], subtracts 0x38, stores into mirror slot [0x86c33ac]. Third field-accessor on the 0x45ff4c base (cf. 0x401b91 +8, 0x401bad +4); -0x38 selects another member.",
+"conf": "medium"
+},
+"0x401ca0": {
+"name": "v860CopyClientBase_45ff20_to_86c33a8",
+"purpose": "Plain copy (no offset): moves client-state base slot [0x45ff20] directly into mirror slot [0x86c33a8]. Publishes a whole base pointer into the mirror table for the RPM reader.",
+"conf": "medium"
+},
+"0x401caf": {
+"name": "v860ResolveClientPidByExe",
+"purpose": "Dynamically loads psapi.dll (LoadLibraryA) and resolves EnumProcesses/EnumProcessModules/GetModuleBaseNameA/GetModuleInformation via GetProcAddress, then enumerates system PIDs, and for each queries the base module name, strstr-matches it against \".exe\", and on hit calls GetModuleInformation into a MODULEINFO (0xC bytes) and returns its first dword (lpBaseOfDll). This is the client-process/base locator that finds the Tibia client.exe module base the RPM reader and WriteProcessMemory injector target. Note the strstr(\".exe\") is a weak match (any process ending .exe), suggesting the real filter is applied by the caller; returns 0 if psapi load fails, -1 if any proc fails. Calls sub_4412B0 (stack-frame/CRT setup) and sub_441230 (strstr).",
+"conf": "high"
+},
+"0x401e0d": {
+"name": "v860AttackAlarmBeep",
+"purpose": "Two-tone audible alarm: takes (freq, duration) args and calls kernel32 Beep, then plays 'Current.wav' via PlaySoundA with flags 0x20001 (SND_FILENAME|SND_ASYNC). This is the 'beep if attacked'/alert-sound path referenced in the lineage doc (PlaySoundA alarms); invoked when the bot needs to audibly notify the operator (e.g. under attack / target event).",
+"conf": "high"
+},
+"0x409dff": {
+"name": "v860TraceBlockingTilesQuadrantA",
+"purpose": "Bresenham-style line walk from a source tile toward a destination tile, checking each stepped cell against the blocking-tile grid. Takes (x,y) source and (x,y) dest params (ebp+8/0xc source, ebp+0x10/0x14 dest, ebp+0x18/0x1c origin offset), uses sub_441A58 (integer abs) to compute dx/dy magnitudes, picks the major axis, and for every interpolated cell computes a linear cell index via sub_401320 (coord->tile-index) then dereferences the tile record with sub_401136 (RPM/array read helper, count*4). For each candidate it scans the blocking-tile-id table at 0x8645dac (word-indexed, count in [0x460018]) and on a match logs \"blkingtile %x\" via sprintf sub_44135B into buffer 0x85f90d8 + emit sub_4012EE, returning 0 (path blocked). The two mirrored halves (octant with |dx|>=|dy| vs |dy|>|dx|) both trace and both emit the debug \"[%i,%i]\" cell coordinates. Returns 1 if the whole line is clear. This is the v860 cavebot/pathfinder line-of-walk validator consuming the blktiles.bin-derived id table (mirrors the v10x pathfinder blocking check).",
+"conf": "high"
+},
+"0x40a188": {
+"name": "v860TraceBlockingTilesQuadrantB",
+"purpose": "Near-duplicate of v860TraceBlockingTilesQuadrantA (same 0x58 frame, same sub_441A58 abs / sub_401320 index / sub_401136 read / sub_44135B sprintf pipeline, same blocking-id table 0x8645dac with count [0x460018], same \"[%i,%i]\"/\"blkingtile %x\" traces) but this variant passes the interpolated cell coordinates to sub_401320 in raw (x,y) order without the origin-offset subtraction that the A variant applies (compare the two callsites: A subtracts [ebp+0x18]/[ebp+0x1c] before sub_401320, B does not). It is the second slope-octant / alternate-origin line-walk of the same blocking-tile validator, returning 0 on a blocked cell and 1 when the traced line is clear. Same v860 pathfinder subsystem as 0x409dff.",
+"conf": "high"
+},
+"0x40a4f9": {
+"name": "v860IsCreatureReachableTarget",
+"purpose": "Per-creature reachability/eligibility predicate over the client creature array. Reads self position from client-state scalars: x=word@0x8400680, y=word@0x8400682, z=byte@0x8400684 (via sub_4416C0, a bounded 1/2-byte load), plus three self ids from RPM globals 0x86c3418/0x86c33d0/0x86c33cc (sub_401136 4-byte reads into locals -0x14/-4/-8). It then iterates the creature array from base [0x45ff0c] with stride 0xA8 up to end [0x86c3440], reading each record's id at (rec-4); skips the null id, the self id, and the id passed in ebp+8 (the excluded/current target). For a candidate it reads visible flag (rec+0x28) which must equal self-z, hp (rec+0x84) which must be >=1, and (x,y) at rec+0x20/0x24 which must be within 7 tiles X and 5 tiles Y of self (the standard 15x11 screen box, sub_441A58 abs). Surviving candidates are passed to sub_4010FA (a line-of-sight / walkability test taking self and creature coords + the two ids) and the function returns 1 only if that succeeds, else 0. This is the v860 targeting reachability filter (mirrors v10x's on-screen + LoS target validation).",
+"conf": "high"
+},
+"0x40a6aa": {
+"name": "v860ComputeSafeStepAwayFromTarget",
+"purpose": "Kite/dodge step planner: given a direction/mode code in ebp+8 (-3 = X-axis retreat, -4 = Y-axis retreat) it computes a safe tile to step to away from a threat cluster, gated by GetTickCount sub_4413AD vs last-run stamp [0x86c3714] against interval [0x460008], and an early-out sub_401339 (busy/blocked check). It loads self ids and self x/y from 0x86c3418/0x86c33d0/0x86c33cc and self-z-ish state 0x45ff4c, then resolves a threat/target id from a mode switch on [0x86c3630] (cases 2->0x45ff40, 0xe->0x46008c, 0x13->[0x86c36a0], 0x65->fixed 0xc5d, 0x68->[0x86c370c]) plus a recent-attack override reading 0x86c3424/0x45ff3c. It scans the creature array (base [0x45ff0c] stride 0xA8 end [0x86c3440]) counting nearby threats matching the danger-id list at 0x8616f64 (with a mode table 0x860d194, 0x64 entries), tallying into -0x84 and flagging the primary target hit (-0x6c). Using self base coords (words @0x86c3594 x / 0x86c3596 y) it derives a spread offset, zeroes a 0x48-byte candidate-step scratch (-0x68) via sub_441A00 (memset), and builds up to 8 candidate step deltas biased away from the threat along the requested axis, clamping each to the +/-7 X / +/-5 Y screen box. It re-reads self x/y (0x86c33d0/0x86c33cc) each pass. Falls through into the mover at 0x40a... (chunk cuts off mid-loop). This is the v860 Dodge / Cave_Run / Open_Run \"run away\" step generator behind the Creaturelist behaviour combo.",
+"conf": "medium"
+},
+"0x40c4cc": {
+"name": "v860FriendHealAndSpellDispatch",
+"purpose": "Main friend/VIP heal + area-action tick, GetTickCount-throttled (sub_4413AD vs last stamp [0x86c3734] against interval [0x460008]) and stamping [0x86c3734] on success. Reads self id 0x86c3418, self-z 0x45ff4c, self x/y 0x86c33d0/0x86c33cc. It is enabled only if one of the heal/action mode flags is set (0x86c3730 / 0x86c372c / 0x86c3728 attack-ish, 0x86c371c / 0x86c3720 / 0x86c3724 heal-ish). In the 0x86c371c branch it walks a party/VIP table starting at [0x45ff34] in strides [0x45ff38] up to +0x1100, and for each VIP entry with flag(+0x28)==1 it scans the creature array ([0x45ff0c] stride 0xA8 end [0x86c3440]) to resolve the on-screen creature whose name (sub_401294 name-ptr, sub_441430 copy, sub_441B20 substring/compare) matches the VIP name; it validates same-floor (+0x28==self-z), hp>0 and <threshold (+0x84 vs [0x46009c]), within the 7x5 box, then formats the targeted heal word `exura sio \"%s\"` (sprintf sub_44135B into 0x85f90d8) and, gated by a cooldown check on 0x86c3424 vs 0x46, speaks it via sub_4012B7. Other branches build a directed spell/rune packet via sub_401267 (opcode built from 0x86c36cc / a rune id defaulting 0xc50 or [0x45ff7c]) after a walkability check sub_4012E9, then Sleep(10) and read the client status line (0x45ff30, sub_401294) checking for `You cannot throw there.` / `This action is not permitted in a protection zone.` / `Destination is out of range.` to detect failure and log via sub_40109B. The 0x86c3724 branch (chunk cut off) repeats the array scan for another heal/attack mode. This is the v860 VIP-heart heal (exura sio) + targeted-spell dispatcher (mirrors v10x healer + rune-shooter).",
+"conf": "high"
+},
+"0x40622b": {
+"name": "v860WalkClickToTarget",
+"purpose": "Gated by run-flag [0x460048]==1. RPM-reads (via sub_401136, the 4-byte ReadClientState helper) the self screen-position scalars ([0x86c3418],[0x86c33d0],[0x86c33cc],[0x86c3448],[0x86c3444]) to derive the player's world-tile origin, then walks the client creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) comparing each record's id field at +0x4 against the passed target id in [ebp-0x34]. On match it reads the creature's x/y (+0x2c/+0x30), computes on-screen pixel coords via the 32px game-tile mapping (imul/idiv 0x1e,0x16 and viewport rect at [0x86c33ac]+0x30), bounds-checks against the game panel, and if the client window has foreground focus (sub_401014) issues WM_MOUSEMOVE(0x100)/WM_LBUTTONDOWN via SendMessageA to [0x863213c] plus sub_401271 to move the cursor, click-walking toward the target tile. Otherwise it falls through to build an 0x82 client->server walk/map-click frame in a 16-byte stack buffer (bytes 0xa,0,0x82 header + x/y/z args from ebp+0xc/0x10/0x14) and injects it via sub_401307 (the SendAction frame injector). Mirrors the v10x walk-to-target packet builder.",
+"conf": "medium"
+},
+"0x406575": {
+"name": "v860StepDirFrame",
+"purpose": "Run-flag [0x460048]==1 gated single-step mover. Normalizes the direction arg (ebp+8) via sub_40138E, and if the client window is focused it reads the game window rect via GetWindowRect on HWND [0x863213c], computes a keyboard-target coordinate (sub_4010AF + [ebp-0x1c] from rect width minus 0x11), and dispatches a synthetic move through sub_4011D6. When not focused it builds a 2-byte-header 0x87 client->server directional-move frame (bytes 2,0,0x87,dir) in an 8-byte stack buffer and injects it with sub_401307. Implements one manual walk step (the .move / arrow-key path); mirrors v10x directional walk packet.",
+"conf": "medium"
+},
+"0x406625": {
+"name": "v860TurnDirFrame",
+"purpose": "Builds and injects a 4-byte client->server TURN frame: 8-byte stack buffer header 2,0,0x88,dir (opcode 0x88 = turn/face in the given direction, dir from ebp+8 masked to a byte) submitted through sub_401307 (SendAction injector). No RPM or focus gating. Implements the Turn/Face creaturelist behaviour; mirrors v10x turn packet builder.",
+"conf": "high"
+},
+"0x406665": {
+"name": "v860WalkDiagClickFrame",
+"purpose": "Run-flag [0x460048]==1 gated diagonal/multi-tile walk helper. Normalizes direction (sub_40138E), and for step counts >3 (ebp+0x10) validates the target against window bounds using sub_4010AF/sub_4011FE and a 0x23-per-4-tiles scaling (imul 0x23). Reads GetWindowRect on [0x863213c] and GetForegroundWindow; if focused it drives a WM_MOUSEMOVE(0x100)/sub_401271 cursor click sequence to walk toward a computed on-screen point. Unfocused path builds an 0x82 walk/map-click frame (16-byte buffer, header 0xa,0,0x82, coords ff ff + dir-derived bytes from ebp+8/0xc/0x10) and injects via sub_401307. Companion to v860WalkClickToTarget for longer/diagonal moves; mirrors v10x walk packet.",
+"conf": "medium"
+},
+"0x4068c0": {
+"name": "v860SendKeyDownUp",
+"purpose": "Low-level synthetic keystroke to the client window: posts WM_KEYDOWN(0x100) then WM_KEYUP(0x101) via SendMessageA to HWND [0x863213c] with the virtual-key code in ebp+8, then Sleep(0xa). A single key press/release primitive used by the arrow-walk and hotkey paths.",
+"conf": "high"
+},
+"0x406a91": {
+"name": "v860SendKeyComboDownUp",
+"purpose": "Two-key synthetic combo to the client window: posts WM_KEYDOWN(0x100) for the modifier (ebp+0xc), WM_KEYDOWN(0x100) then WM_KEYUP(0x101) for the main key (ebp+8), then WM_KEYUP(0x101) for the modifier, all via SendMessageA to HWND [0x863213c], followed by Sleep(0x5a). Sends modifier+key hotkey chords (e.g. ctrl/shift+key) to the game window.",
+"conf": "high"
+},
+"0x406afd": {
+"name": "v860ArrowWalkStep",
+"purpose": "Core arrow-key cavebot stepper. Takes a VK arrow code (ebp+8: 0x25 left,0x26 up,0x27 right,0x28 down), logs \"sendkey %x\" via sprintf sub_44135B into buffer [0x85f90d8] + print sub_4012EE, and reads the pending-walk queue depth [0x86c33d4] (sub_401136) resetting it to 0x28 if over 0x28 (sub_40112C). For each direction it adjusts the running self-position pointer [ebp-8] by tile deltas (0xac row / 0xc18 map-row / 0xa950 floor strides), logs the direction word (\"right\"/\"left\"/\"up\"/\"down\"), and cross-checks client movement-block flags [0x86320f0]/[0x86320ec]. Consults walkability gates: stoptiles flag [0x86c3640] + sub_401028 tile-classify (bails if blocked), block flags [0x86c3638]/[0x86c34d0]/[0x86c363c], and a keypad-mode branch [0x86c351c] that maps arrows to numpad codes 0x65-0x68 via sub_401172. Otherwise sends the real arrow via sub_4010FF, Sleep(0x32), re-reads self-tile char [0x45ff30] (sub_401294) aborting if state byte=='S' with queue>0x2d. Returns success/fail bool. This is the .otfollow/cavebot arrow-key walk primitive; mirrors v10x cavebot stepper.",
+"conf": "medium"
+},
+"0x406dcd": {
+"name": "v860MouseClickAt",
+"purpose": "Synthetic left-click at a screen point: packs x (ebp+8) and y (ebp+0xc) into the lParam (low/high word), posts WM_LBUTTONDOWN(0x201) then WM_LBUTTONUP(0x202) via SendMessageA to HWND [0x863213c], then Sleep(0xa). Guards on y>=0. Primitive used by the looter and UI-automation paths to click a tile/slot.",
+"conf": "high"
+},
+"0x406e38": {
+"name": "v860MouseRightClickAt",
+"purpose": "Synthetic right-click at a screen point: when debug flag [0x86c3574]==1 logs \".=%d %d\" (coords) via sprintf sub_44135B + print sub_4012EE, then packs x/y into lParam and posts WM_RBUTTONDOWN(0x204) then WM_RBUTTONUP(0x205) via SendMessageA to HWND [0x863213c], Sleep(0xa). Right-click primitive for the corpse-open/use-item looter path (context menu / use-with).",
+"conf": "high"
+},
+"0x406ed6": {
+"name": "v860MouseDragBetween",
+"purpose": "Synthetic drag-and-drop between two screen points, the looter's item-move primitive. When debug [0x86c3574]==1 logs \"dragging %d,%d:%d,%d\" (src x,y : dst x,y) via sprintf sub_44135B + print sub_4012EE. Verifies the client window has foreground focus (GetForegroundWindow == [0x863213c]) and only then: saves the current cursor (GetCursorPos), SetCursorPos to the source (ebp+8/0xc), posts WM_LBUTTONDOWN(0x201), SetCursorPos to the destination (ebp+0x10/0x14), posts WM_LBUTTONUP(0x202), and restores the original cursor position. Drags a looted item id from a corpse into the loot pile.",
+"conf": "high"
+},
+"0x407178": {
+"name": "sub_407178",
+"purpose": "Empty stub: standard prologue/epilogue (push ebp; mov ebp,esp; pop ebp; ret) with no body. Placeholder/no-op or a compiler-emitted empty function.",
+"conf": "medium"
+},
+"0x40717d": {
+"name": "sub_40717d",
+"purpose": "Empty stub: prologue/epilogue only, no operations. Placeholder/no-op function (20-byte slot, no side effects).",
+"conf": "medium"
+},
+"0x407191": {
+"name": "v860IsSelfStableForAction",
+"purpose": "Pre-action readiness/anti-flood check. Bails false unless enable flag [0x86c3648] set. Reads a self-state scalar [0x86c3408] (sub_401136) and the self creature record field [0x45ff1c] via RPM; requires the record field ==7 and the scalar == 0xc6c (a fixed 'ready/idle' sentinel). On match it stamps GetTickCount ([0x86c364c] via sub_4413AD) and returns true only while less than 0x1f4 (500 ms) has elapsed since the stamp, otherwise false. Guards spell/action dispatch on the player being in a stable client state; mirrors v10x action-gate.",
+"conf": "medium"
+},
+"0x407209": {
+"name": "v860GetCreatureFieldByIdAt48",
+"purpose": "Creature-array lookup by id: walks the client creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]), RPM-reading each record's id at +0x4 (sub_401136) and comparing against the passed id (ebp+8). On match returns the field at +0x48 of that record (RPM-read), else 0. The +0x48 offset is a per-creature status/property scalar; one of the creature-attribute accessors mirroring v10x GetCreature* getters.",
+"conf": "medium"
+},
+"0x40726d": {
+"name": "v860GetCreatureFieldByIdAt4c",
+"purpose": "Creature-array lookup by id returning the field at +0x4c: same walk of the creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) matching record id at +0x4 against ebp+8, returning the RPM-read +0x4c field on hit, else default 1. Sibling accessor to v860GetCreatureFieldByIdAt48 for a different creature attribute; mirrors v10x GetCreature* getter.",
+"conf": "medium"
+},
+"0x4072d4": {
+"name": "v860GetCreatureHealthByIdAt84",
+"purpose": "Creature-array lookup by id returning the field at +0x84 (health-percent range field): walks the creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) matching id at +0x4 against ebp+8, returns RPM-read +0x84 on hit, else default 0x64 (100). The 0x64 default and 100-scale strongly suggest this reads a creature HP-percent field; mirrors v10x GetCreatureHealth getter.",
+"conf": "medium"
+},
+"0x40733e": {
+"name": "v860TrackSelfPositionRing",
+"purpose": "Self-position change tracker feeding a 2000-slot (0x7d0) ring buffer. RPM-reads the player's live X/Y (client globals [0x86c33d0], [0x86c33cc]) and Z ([0x45ff4c]) via sub_401136(size=4), caching them into [0x860cf9c]/[0x860cf98]/[0x860cf94]. Compares against the last recorded position ([0x83fa420]/[0x83fa41c]/[0x83fa418]); if unchanged returns 0. On a real move it increments a monotonic step counter [0x84001e4], then writes into three parallel ring arrays indexed by (counter % 0x7d0): a validity/x flag array at 0x83fe2a4, an array at 0x83fc364, and a z array at 0x83fa424. A z-only change with flag [0x86c3554]==0 stores a sentinel (1 and value from [0x86c3604]) marking a floor-change step; otherwise it stores the full new x/y/z. Updates the last-position triple and returns 1. Backing store for the .sav waypoint recorder's 'recording %i %i %i %i' (x,y,z,waypt) path.",
+"conf": "medium"
+},
+"0x40747e": {
+"name": "v860MapSelfXToScreenColumn",
+"purpose": "Screen-mapping helper: converts the player's live world X into a game-window pixel column. RPM-reads self X ([0x86c33d0]) and Y ([0x86c33cc]) plus a viewport-width scalar ([0x86c345c]), then dereferences a client viewport/render struct via a pointer chain ([0x86c33ac]->+0x30->base), reading its fields at offsets +0x00/+0x04/+0x08/+0x0c/+0x3c/+0x34/+0x38 through sub_401136. Computes (width * 0xf) / (span from field+0x34 to field+0x34+field+0x38), i.e. maps a tile delta to pixels using a 15px cell, then returns selfX + result - 7 (the on-screen column of the player, 7-tile game map center offset). Companion to the Y mapper below; used by the looter/attack code to derive click coordinates.",
+"conf": "medium"
+},
+"0x407597": {
+"name": "v860MapSelfYToScreenRow",
+"purpose": "Y-axis twin of v860MapSelfXToScreenColumn: computes the game-window pixel row for the player. RPM-reads self X/Y ([0x86c33d0]/[0x86c33cc]) and a viewport-height scalar ([0x86c3458]), dereferences the same client render struct ([0x86c33ac]->+0x30) reading fields +0x00..+0x3c. Here it computes (heightField * 0xb) / field(+0x3c) for the vertical cell scale, then returns selfY + result - 5 (5-tile vertical center offset). Together with the X mapper it converts world tiles to screen pixels for synthetic mouse targeting.",
+"conf": "medium"
+},
+"0x4076a8": {
+"name": "v860WalkToCreatureClick",
+"purpose": "Walk/step-toward-target driver that issues a real left-click on a creature's on-screen tile via SendMessageA. Takes a creature id arg [ebp+8]. Debounces repeated calls on the same target using [0x86c3450]/[0x86c3650]/[0x86c3654] with a modulo-6 retry gate. Reads self world pos and two center-offset scalars ([0x86c3448]/[0x86c3444]) then scans the client creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) matching the id at slot-4; also does a first pass detecting a blocking creature (id 0x63 sentinel at rec+0/+4) to bail if a monster (value!=8 gate). For the matched creature it reads its world X/Y (rec+0x20/+0x24), computes a screen-pixel target using the viewport render struct ([0x86c33ac]->+0x30, fields +0x00..+0x3c) with the 1e/0x16 divisors and 32px (shl 5) cell math, bounds-checks the pixel against the viewport rect, calls sub_401014 to fetch the game HWND slot, posts WM_LBUTTONDOWN(0x100)/WM_LBUTTONUP(0x101) to window handle [0x863213c] at the packed coordinate via sub_401271, Sleeps 10ms, stamps [0x86c3650]=id, returns 1. Mouse-driven movement toward an attack/follow target.",
+"conf": "medium"
+},
+"0x407b47": {
+"name": "v860SampleTickCounter",
+"purpose": "One-line wrapper: calls GetTickCount (sub_4413AD) and stores the result in global [0x83fa394]. Timestamp latch used as a reference tick for a downstream timing/throttle comparison.",
+"conf": "medium"
+},
+"0x407b56": {
+"name": "v860MainSafetyAndAntiPushTick",
+"purpose": "Large per-frame safety/anti-push/anti-attack supervisor (the healer-adjacent guard tick). RPM-reads self X/Y ([0x86c33d0]/[0x86c33cc]) and Z ([0x45ff4c]); bumps a loop counter [0x86c36d0]; toggles a heartbeat flag [0x86c3658] and re-stamps [0x86c365c] every 1000ms (GetTickCount vs 0x3e8). Reads a per-player status byte ([0x86c3430]); when the PZ bit (0x80) clears and [0x86c3660]==1 it announces 'PZ Gone' (sub_40109B) and triggers a beep/action (sub_401041) then Sleeps [0x83fa284]. Reads HP/maxHP scalars ([0x86c3428]/[0x86c342c]) and a combat/skull timer, clamps a threat counter [0x86c343c] to 0xffff, computes HP% = hp*100/maxhp. Scans the on-screen message/battle log (client list base [0x45ff10], stride 0x1ec, end [0x86c3410]) looking for combat text: builds 'due to an attack by' name via sub_401294, strstr-checks (sub_441230) it, and when an attacker is found and conditions hold formats '*%s*%s' (sub_44135B) and sends it to the Team Server (sub_40124E), then optionally casts 'utamo vita' (sub_4012B7). Also drives an ssa/anti-attack path scanning the effects list ([0x45ff70]) that logs 'ssaa loaded' (sub_4012EE) and writes reaction frames (sub_4011B3). Contains an anti-detection self-check comparing a computed value against [0x86c3674]. This is the v860 mirror of the v10x self-defense/anti-attack subsystem.",
+"conf": "medium"
+},
+"0x409744": {
+"name": "v860PotionOnFriendTick",
+"purpose": "Auto-potion/heal-on-friend routine keyed by a target id [ebp+8] (debug strings 'testing potioning:%x', 'used !potion! on:%x'). Reads self X/Y/Z. First creature-array pass (base [0x45ff0c], stride 0xA8, end [0x86c3440]) checks a nearby-creature condition (slot rec-4 vs [ebp-0x18]) and a rec+0x48 monster flag gated by [0x46006c], bailing if a hostile is adjacent. Second pass finds the target creature (rec-4 == id, not self [ebp-0x18]) reading its type via sub_401032, name-hash (rec+0x28), rec+0x84 flag, skull (rec-1) and rec+0x48; validates same-floor (rec+0x28 vs self Z) and range via sub_441A58 (abs) < 2 tiles on both axes; computes packed coord (sub_401320) and injects the potion-use frame on the target through sub_401267 with slot [0x86c36b8], Sleeps 5ms and logs 'used !potion! on:%x'. Mirrors the v10x targeted-heal/potion path (exura sio / potion on VIP).",
+"conf": "medium"
+},
+"0x4099ec": {
+"name": "v860AttackTargetTick",
+"purpose": "Core attack-target arm/fire tick (the .attack command's execution body). Gated by enable flags [0x86c359c]/[0x86c36e8] and a global pause check sub_401339. Handles the arg[ebp+8]==1 'clear/reset attack' case: sends stop-attack frame sub_40118B(0,0xa1), clears the current-target slot [0x86c3450] via sub_40113B, sets [0x86c36f0]=1. Otherwise stores the new target id into [0x86c36f0], reads self X/Y/Z, and scans the creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) for the matching creature (rec-4==id, not self [ebp-0x14]). For the match it reads type (sub_401032), name-hash (rec+0x28), skull (rec-1), flag (rec+0x84 must be >=1), same-floor check, and world X/Y (rec+0x20/+0x24); range-checks via sub_441A58 (dx<=7, dy<=5). Computes a nearby-monster-count metric ([0x86c3424]*100 / ([0x86c343c]+1)) and if crowded past 0x28 with the second arg set, raises danger flag [0x86c3688]. When in range and armed it issues the attack: WriteClientState the target into [0x86c3450] (sub_40113B), builds the red-square/attack frame via sub_401267 when [0x86c359c]==1, Sleeps 50ms, stamps GetTickCount into [0x86c36f4], returns 1. Direct v860 counterpart of the v10x AttackTarget/red-square arming.",
+"conf": "medium"
+},
+"0x409d32": {
+"name": "v860IsTileBlockedByObject",
+"purpose": "Tile-object predicate used by movement/looter: given a target world (x,y) and a reference (x,y) in [ebp+8..+0x14], computes the client tile-stack pointer for the delta via sub_401320, then RPM-reads the object count at that tile (sub_401136). Walks the tile's item stack (records of stride 0xc starting at base+4, count entries) reading each item id (sub_401136 at rec+0). For every id it linearly scans a small in-memory blocker id table (word array at 0x8632144, length [0x46001c]) and if the tile item id matches a known blocking-object id returns 0 (blocked/present). Returns 1 when no blocking object is found. Feeds the pathfinder's blkingtile/goodtile classification (the .bin blocking-tile grid runtime check).",
+"conf": "medium"
+},
+"0x401e32": {
+"name": "v860SetGameWindowTitle",
+"purpose": "Thin wrapper over user32!SetWindowTextA. Gated on the mode flag [0x460048]: only proceeds when [0x460048]==0 (attach-mode active), then calls SetWindowTextA(hwnd=arg1, text=arg2) via IAT thunk [0xa0d86b8] and returns 1. Sets the title of a target window; the [0x460048] flag is the same read/write-mode selector used across the RPM/WPM engine in this chunk (0=direct/foreground path, 1=alternate path).",
+"conf": "medium"
+},
+"0x401e53": {
+"name": "v860WriteClientBytes",
+"purpose": "Injects a string into client.exe memory byte-by-byte via WriteProcessMemory. Loops i from 0 to sub_4412E0(src) (a strlen/length helper), and for each index does WriteProcessMemory(hProcess=[0x863210c], remoteAddr=dst+i, localAddr=src+i, size=1, NULL); then writes a final NUL terminator byte (local stack byte [ebp-0xc]=0) at dst+len. [0x863210c] is the cached client process handle. This is the WPM-side mirror of the ReadClientState reader \u2014 used to poke chat/command text or names into the client process's input buffers.",
+"conf": "high"
+},
+"0x401ed1": {
+"name": "v860WriteClientBytesModeGated",
+"purpose": "Same per-byte WriteProcessMemory string-injection loop as v860WriteClientBytes (writes src into remote dst one byte at a time via handle [0x863210c], then a trailing NUL), but guarded by the engine mode flag: if [0x460048]==1 it returns immediately without writing (the alternate/no-op mode); only the [0x460048]!=1 path performs the byte-wise remote write. Mode-aware variant of the client string-poke primitive.",
+"conf": "high"
+},
+"0x401f5a": {
+"name": "v860WriteClientDword",
+"purpose": "Single WriteProcessMemory of a caller-supplied scalar into client.exe: WriteProcessMemory(hProcess=[0x863210c], remoteAddr=arg1, localAddr=&arg2 ([ebp+0xc]), size=arg3 ([ebp+0x10]), NULL). Writes a variable-width value (arg3 bytes taken from the stacked arg2) into remote memory. Core WPM scalar-write helper used to set client-side fields.",
+"conf": "high"
+},
+"0x401f79": {
+"name": "v860WriteClientDwordModeGated",
+"purpose": "Mode-gated variant of v860WriteClientDword: if [0x460048]==1 it skips the write and returns; otherwise WriteProcessMemory(hProcess=[0x863210c], remoteAddr=arg1, localAddr=&arg2, size=arg3, NULL) pokes the scalar into client memory. The stacked-arg2 form (localAddr=&[ebp+0xc]) matches v860WriteClientDword; distinguished from the sibling at 0x401fa1 only by where the local source pointer comes from.",
+"conf": "high"
+},
+"0x401fa1": {
+"name": "v860WriteClientPtrModeGated",
+"purpose": "Mode-gated WriteProcessMemory scalar write that takes the local source as a pointer argument rather than an inline value: if [0x460048]==1 return; else WriteProcessMemory(hProcess=[0x863210c], remoteAddr=arg1, localAddr=arg2 ([ebp+0xc] used directly as the buffer pointer), size=arg3, NULL). Companion to 0x401f79 \u2014 same guard and handle, but arg2 is a caller-provided buffer pointer instead of an immediate.",
+"conf": "high"
+},
+"0x401fc9": {
+"name": "v860ReadClientState",
+"purpose": "The ReadClientState RPM-polling reader core (v860 analogue of the backbone ReadClientState @0x4024a2 in v10x). Takes (remoteAddr arg1, width arg2) and resolves the read against several throttled batch caches, refilling a cache with one ReadProcessMemory only when its per-region cooldown (GetTickCount thunk sub_4413AD vs timestamps [0x46004c]/[0x460050]/[0x460054]/[0x460058]) elapses, then returns the requested 1/2/4-byte scalar sign-extended from the local cache. Four regions: (1) creature array \u2014 base [0x45ff0c], guarded window [base-0x1f4 .. count [0x86c3440]], batch-read into local cache 0x852cf0c/0x852d100 on a 0x32ms (50ms) throttle, incrementing counter [0x86c35bc]; (2) a second array at base [0x45ff10]+0xfa0 span, cache 0x8516f7c/0x8517170, throttle [0x460050]; (3) region at base [0x45ff34] span 0x1100, cache 0x8500fec, 0x3e8ms (1000ms) throttle, counter [0x86c35c8], emitting debug trace \"vppartread %x %i %i\" via sub_44135B/sub_4012EE every 100th tick when addr==0x88; (4) region [0x86c355c..0x86c3560], cache 0x842544c, 5ms throttle, counter [0x86c35c0], trace \"mppartread %x %i\". Falls through to a direct one-off ReadProcessMemory(handle [0x863210c], remoteAddr, &local, width) for any address outside all cached windows. Also accumulates read-cost timing into [0x8579f00]/[0x8579f10]. This is THE memory-mirror engine every subsystem (targeting/healer/looter/cavebot) reads through.",
+"conf": "high"
+},
+"0x40248d": {
+"name": "v860ReadClientBlockTo531c",
+"purpose": "Direct (uncached) ReadProcessMemory of arg2 bytes from remote address arg1 into the fixed local buffer 0x842531c, using client handle [0x863210c], and returns the buffer pointer 0x842531c. A one-shot block-copy variant of the reader for a specific dedicated staging buffer (distinct from the throttled caches in v860ReadClientState).",
+"conf": "high"
+},
+"0x4024d5": {
+"name": "v860ReadForegroundOrClient",
+"purpose": "Dual-path scalar reader that decides between the attached client and an arbitrary foreground Tibia window. Calls GetForegroundWindow; if it equals the cached bot/client window [0x863213c], it delegates to sub_401136 (the direct-mode read helper) with (arg1,arg2) and returns. Otherwise it validates the foreground window is a Tibia client by GetWindowTextA and checking the first title char == 0x54 ('T'); on mismatch returns 0. On match it OpenProcess(0x1f0fff, FALSE, pid-from-GetWindowThreadProcessId), ReadProcessMemory(remoteAddr=arg1, &local, size=arg2) from that ad-hoc handle, CloseHandle, and returns the value. Lets the bot read from whichever client window currently has focus (multi-client control).",
+"conf": "high"
+},
+"0x402569": {
+"name": "v860ReadClientBlock0x400To4f1c",
+"purpose": "Uncached ReadProcessMemory of 0x400 (1024) bytes from remote addr arg1 into fixed local buffer 0x8424f1c via handle [0x863210c]; returns 0x8424f1c. Dedicated 1KB block staging read (one of a family of fixed-buffer readers, cf. 0x402590 and 0x4025b7) \u2014 likely a client text/list buffer snapshot.",
+"conf": "high"
+},
+"0x402590": {
+"name": "v860ReadClientBlock0x400To4b1c",
+"purpose": "Uncached ReadProcessMemory of 0x400 (1024) bytes from remote addr arg1 into fixed local buffer 0x8424b1c via handle [0x863210c]; returns 0x8424b1c. Sibling of 0x402569 targeting a different 1KB staging buffer (0x8424b1c) \u2014 a second snapshot slot for a client string/list region.",
+"conf": "high"
+},
+"0x4025b7": {
+"name": "v860ReadClientBlock0x80To4a9c",
+"purpose": "Uncached ReadProcessMemory of 0x80 (128) bytes from remote addr arg1 into fixed local buffer 0x8424a9c via handle [0x863210c]; stores the RPM return into [ebp-4] and returns the buffer pointer 0x8424a9c. Smaller 128-byte fixed-buffer snapshot read, same family as 0x402569/0x402590.",
+"conf": "high"
+},
+"0x4025e4": {
+"name": "v860WalkContainerChainSum",
+"purpose": "Walks a client-side linked structure via the direct read helper sub_401136 to sum a field across a chain, returning -0xc8 (0xffffff38) if the target node is not found. Reads a root pointer at [0x86c33ac], then dereferences a fixed field ladder (+0x38 -> node, +0x24 -> list head, +4, +0x14, +0x18 accumulator) all through sub_401136(ptr,4). Iterates the list at [ebp-0x10]: for each node reads +0x2c and compares to (arg1+0x40); on match returns the accumulator [ebp-8]; otherwise adds node+0x20 to the accumulator and follows node+0x10 to the next link. This is a client object/container-tree traversal (matches the looter/container-walk pattern of resolving a container by an id/handle and computing an offset or slot count).",
+"conf": "medium"
+},
+"0x4026bf": {
+"name": "v860WalkContainerChainSumV2",
+"purpose": "Near-identical linked-structure walk to 0x4025e4 (same [0x86c33ac] root, same +0x38/+0x24/+4/+0x14/+0x18 field ladder, same list iteration via sub_401136 comparing node+0x2c to arg1+0x40), differing only in the match/accumulate arithmetic: on the matching node it adds node+0x20 to the accumulator before returning, and the non-match branch also adds node+0x20 then follows node+0x10. Returns -0xc8 on not-found. A second variant of the container/object-tree summation, likely returning an inclusive vs exclusive slot/offset total.",
+"conf": "medium"
+},
+"0x4027b3": {
+"name": "v860ResolveContainerNodeAndStore",
+"purpose": "Resolves a nested client object node and records a derived value into a bot table. Via sub_401136(4) it dereferences the [0x86c33ac] root through a deeper ladder (+0x40 -> +0x40 -> +0x2c -> +0x2c) to reach a leaf node [ebp-0x18], calls sub_4011B8(node) twice (an accessor that likely extracts an id/coordinate from the node), then stores the second result into the array at 0x868d37c via sub_441430(0x868d37c, value) \u2014 an indexed table-insert helper. Returns 1. Populates a bot-side cache entry (e.g. a resolved container/creature slot) from the walked client structure.",
+"conf": "medium"
+},
+"0x4028d0": {
+"name": "v860QueueClientActionAndStamp",
+"purpose": "Fires a client-side action when a pending-handler slot is armed, then timestamps it. Loads [0x86c35d0]; if non-zero it calls sub_4012C6(handler=[0x86c35d0], arg1) \u2014 a dispatch/invoke helper \u2014 and stamps GetTickCount (sub_4413AD) into [0x86c35cc]. Unconditionally then calls sub_4012C6(0x86c3ad4, [0x45ff30]) (issue a second action bound to client field [0x45ff30], a self/state pointer) and finally sub_40113B([0x86c33d4], 0x14, 1) \u2014 a fixed 20-byte write/emit against root [0x86c33d4]. Part of the action-dispatch / command-injection path that pushes a queued bot action into the client and records when it last fired.",
+"conf": "medium"
+},
+"0x404d9f": {
+"name": "buildLookFrame",
+"purpose": "Packet-builder frame (v10x SendAction mirror). Clears the send-state flag [0x86c3528]=0, then stack-assembles a 16-byte client->server frame: opcode byte 0x0d, followed by the hardcoded coordinate literal 0x40ffff84 (a stack/inventory sentinel position x=0xff84,y=0xffff,z=0x40), a stackpos byte from arg[+0x10], the itemId/objectId low+high bytes from arg[+8], and a trailing byte from arg[+0x10]; hands the buffer to sub_401307 (local send serializer). This is the 'look at / use item at fixed slot' 0x0d-opcode builder.",
+"conf": "medium"
+},
+"0x404e17": {
+"name": "buildLookFrameGlobal",
+"purpose": "Sibling of buildLookFrame that writes the frame into the global scratch buffer at 0x84001e8 instead of a stack local, using coordinate literal x=0xff84,y=0xffff,z=0 plus a z/stackpos byte from arg[+0x10] and objectId from arg[+8], then calls sub_4013B6 (the targeted/Team-Server send serializer, taking two extra args arg[+0x14],arg[+0x18]). Same 0x0d look/use opcode as 0x404d9f but routed through the broadcast/targeted send path.",
+"conf": "medium"
+},
+"0x404eba": {
+"name": "buildUseOnCreatureFrame",
+"purpose": "Large dual-mode action builder. If arg[+8] equals the local self-id mirror [0x45ffd8] it walks a client structure array (base [0x45ff10], stride 0x1ec, bound [0x86c3410]) via RPM reads (sub_401136), matching an entry whose field at +0x3b/+0xc*n resolves back to self, then emits a multi-frame move/step sequence through sub_40121C with 0x8c ms Sleeps between hops. Otherwise, when UI-active flag [0x460048]==1, it drives an inventory/hotkey action: pokes client action slots via sub_40112C (writes 0/2 into [0x86c33d8/e0/dc/e4]+offsets), reads the creature array (base [0x45ff0c] stride 0xA8 bound [0x86c3440]) to find the target by id ([-4] field) against [0x86c3418], reads the player world position (from [0x86c33cc/d0/48/44] sums) and target tile fields (+0x2c,+0x30,+0x38..+0x3c), computes screen tile coords via the *32/\u00f70x1e (x) and *32/\u00f70x16 (y) viewport transforms, and calls sub_4011D6 with the resulting (sx,sy). Tail branch stack-builds an 0x11-opcode use-with-target frame (target position 0x83ffff.., itemId arg[+8], target coords arg[+0xc]/[+0x10], target stackpos arg[+0x18], and object arg[+0x1c]/[+0x20]) and sends via sub_401307. This is the 'use item on creature/tile' path, mirroring v10x UseOnTarget.",
+"conf": "medium"
+},
+"0x4053a4": {
+"name": "buildUseOnTileFrameGlobal",
+"purpose": "Builds an 0x11-opcode 'use item with' client->server frame targeting a fixed sentinel position (x=0xff83,y=0xffff,z=0): source itemId from arg[+8], from-coords arg[+0xc]/[+0x10] as words, from-stackpos arg[+0x14], to-coord word arg[+0x18], then routes the 0x18-byte frame through sub_4013B6 with two trailing args arg[+0x1c]/[+0x20] (targeted/Team-Server send). Global/broadcast variant of the 0x11 use-with builder.",
+"conf": "medium"
+},
+"0x405467": {
+"name": "buildUseWithCreatureLookupFrame",
+"purpose": "0x11 use-with-creature builder that resolves the target by creature-array scan. Walks the creature array (base [0x45ff0c] stride 0xA8 bound [0x86c3440]) reading each id at +... and passing the name pointer (sub_401294) with arg[+0x14] to strcmp helper sub_441B20; on match it reads the creature tile deltas (+0x20,+0x24 added to arg[+0xc]/[+0x10], target field +0x28) and the player world position (from [0x86c33cc]/[0x86c33d0] via sub_401320), computes a relative tile, then stack-assembles the 0x11 frame (fixed target 0x83ffff.., from-coords, stackpos, resolved object word at [-0x1c]+4) and sends via sub_4013B6 with arg[+0x18]/[+0x1c]. Mirrors v10x 'use-with' on a named creature.",
+"conf": "medium"
+},
+"0x40563f": {
+"name": "buildUseWithFrameParam",
+"purpose": "Straight 0x11 use-with frame serializer: writes opcode 0x11, fixed target-position prefix x=0xff83,y=0xffff, a slot/container byte = arg[+0x1c]+0x40 (inventory-slot bias), a stackpos byte arg[+0x20], the from-item word arg[+8], from-coords arg[+0xc]/[+0x10] as words, to-coord byte arg[+0x14], to-position word arg[+0x18], trailing byte arg[+0x24]; emits the 0x18-byte buffer via sub_401307 (local send). Parameterized use-with builder (all fields caller-supplied, no memory scan).",
+"conf": "medium"
+},
+"0x4056e8": {
+"name": "buildTurnOrArrowFrame",
+"purpose": "Movement/turn frame builder gated on UI-active flag [0x460048]==1. When the direction arg[+0xc]==0xa1 it takes an arrow-key/step path: probes state via sub_40137F and, if clear, calls sub_40136B (arrow-key movement helper) and returns. Otherwise stack-builds an 8-byte frame with opcode 0x05 + direction byte arg[+0xc] + the 4 bytes of arg[+8] (a 32-bit id/coord split into 4 bytes) and sends via sub_401307. Implements the .move-style directional step / turn command builder.",
+"conf": "medium"
+},
+"0x40578e": {
+"name": "buildTurnFrameGlobal",
+"purpose": "Global/broadcast twin of buildTurnOrArrowFrame minus the arrow-key branch: assembles the 8-byte 0x05-opcode frame (direction byte arg[+0xc], 4 bytes of arg[+8]) and routes it through sub_4013B6 with trailing args arg[+0x10]/[+0x14] (targeted/Team-Server send). The .move/turn builder for the broadcast send path.",
+"conf": "medium"
+},
+"0x4057fe": {
+"name": "buildStopWalkFrame",
+"purpose": "Emits a fixed 3-byte control frame (opcode 0x01, 0x00, 0x14) via sub_401307. Opcode 0x14 after the 0x01 header is the Tibia client stop-autowalk / cancel-move request; this is the .stopfollow/.stop movement-cancel packet builder.",
+"conf": "medium"
+},
+"0x405827": {
+"name": "buildAttackTargetFrame",
+"purpose": "Attack/target-arm frame builder. Reads the currently-selected id [0x86c3418] (via sub_401136), walks the creature array (base [0x45ff0c] stride 0xA8 bound [0x86c3440]) matching the id at +... against it and skipping the entry equal to arg[+8] (self); reads target fields +0x5c (a flag) and +0x70, then stack-builds an 0x10-byte frame with header 0x08,0x00,0xd3 (0xd3 = the attack/target-mode opcode), the +0x5c flag byte, and the target id arg[+8] repeated across the id field, tail byte from +0x70; sends via sub_401307. This is the .attack targeting packet builder (v10x AttackTarget mirror).",
+"conf": "medium"
+},
+"0x405943": {
+"name": "buildMouseWalkSequenceA",
+"purpose": "Screen-space mouse-walk / drag frame driver gated on [0x460048]==1. Reads the game window rect via GetWindowRect(hwnd [0x863213c]) and aborts if the window is off-screen; for direction codes 0xa (down) and 5 it converts a tile id (sub_40138E) to a client column via sub_4010AF, applies the *0x23/*0x26 per-step pixel scaling with the &0x80000003 signed-quadrant fixup, and issues a screen action through sub_4011EF followed by a WM (0x290) SendMessageA click and 0xa ms Sleeps; bounds-checks columns with sub_4011FE and randomizes via sub_441BAE. Tail stack-builds a 0x0f-opcode frame (item/slot arg[+8]+0x40, coords arg[+0x10] as words, arg[+0xc], arg[+0x1c], arg[+0x18]) and sends via sub_401307. Mirrors the v10x mouse-driven walk/move-item screen path.",
+"conf": "low"
+},
+"0x405cdd": {
+"name": "buildMouseWalkSequenceB",
+"purpose": "Fuller variant of buildMouseWalkSequenceA: after GetWindowRect(hwnd [0x863213c]) it reads the selected id [0x86c3418] and the player world position (sums of [0x86c33d0]+[0x86c3448] and [0x86c33cc]+[0x86c3444]) then scans the creature array (base [0x45ff0c] stride 0xA8 bound [0x86c3440]) for the target, reads its tile fields (+0x2c,+0x30 and the +0x64 sub-struct +0x30 chain giving +0/+4/+8/+0xc/+0x34/+0x38/+0x3c), runs the viewport *32/\u00f70x1e (x) and *32/\u00f70x16 (y) tile-to-screen transforms, moves the cursor via sub_4010AF/sub_4011EF and fires a WM 0x290 SendMessageA click with checks against self-id [0x45ff50] and sentinel 0xda4. Tail builds a 0x0f-opcode frame (slot arg[+8]+0x40, coords arg[+0x18]/[+0xc]/[+0x10] as words, arg[+0x14], arg[+0x20]) via sub_401307. This is the creature-resolving mouse-click-to-attack/loot screen driver.",
+"conf": "low"
+},
+"0x406095": {
+"name": "buildMoveItemFrame",
+"purpose": "0x0f-opcode move/drag-item frame builder, returns early if count arg[+0x18]==0. Fills: opcode 0x0f, from-position 0x78ffff (0xff78 sentinel prefix), from-coords arg[+0xc]/[+0x10] as words, from-stackpos arg[+0x14], object word arg[+0x18], to-slot marker byte 0x02, to-container arg[+8]+0x40, plus tail bytes arg[+0x1c]/[+0x20]; emits 0x18-byte buffer via sub_401307. The container-to-inventory move-object builder used by the looter drag path.",
+"conf": "medium"
+},
+"0x40614d": {
+"name": "buildMoveItemFrameVariant",
+"purpose": "Near-identical 0x0f move-item builder to 0x406095 with a different field layout: opcode 0x0f, from-coords arg[+8]/[+0xc] as words, from-stackpos arg[+0x10], count word arg[+0x20], a 0x01 move-marker byte, then to-coords arg[+0x14]/[+0x18], to-stackpos arg[+0x1c], trailing byte arg[+0x24]; sends via sub_401307, returning early if count arg[+0x20]==0. The tile-to-tile move-object frame builder (looter/deposit drag between map positions).",
+"conf": "medium"
+},
+"0x4108ed": {
+"name": "v860FindCreatureBySlotRankByDist",
+"purpose": "Walks the client creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) via the 4-byte RPM reader sub_401136, matching records whose +0x28 field equals the caller's target id (arg [ebp+0x10]) and whose id at slot-4 differs from self-id [0x86c3418]. For each candidate it reads +0x20/+0x24 (x/y), the +0x84 visibility/hp flag (>=1), calls sub_401032 (per-creature validity/type predicate) and the type byte at slot-1 (==0x40 = player). It then scores distance from the caller's reference point ([ebp+8]/[ebp+0xc]) against threshold [ebp-8]=3 using abs() sub_441A58, accumulating a rank counter [ebp-4] (+1 for within-3, +2 for within-2). Final value clamped: >10 is compressed via (n-10)/3+10. A targeting-support scorer that ranks nearby creatures around a point, mirroring the v10x targeting distance/priority logic.",
+"conf": "medium"
+},
+"0x410a96": {
+"name": "v860SumCreatureCloseRangeScore",
+"purpose": "Second creature-array scan (base [0x45ff0c] stride 0xA8, self-id [0x86c3418]) using RPM reader sub_401136. For each record it reads x=+0x20, y=+0x24, and skips any creature more than 9 tiles from the reference point ([ebp+8]/[ebp+0xc]) using abs() sub_441A58, requires +0x84 flag>=1, requires +0x28==target id [ebp+0x10], passes sub_401032 predicate, and requires type slot-1 ==0x40 (player). Matching records accumulate combined |dx|+|dy| Manhattan distance into a running max [ebp-4] (seeded 0x24, capped/returned at 0x24). A targeting/threat-spread metric over players near a point; companion to sub_4108ed in the targeting subsystem.",
+"conf": "medium"
+},
+"0x410c32": {
+"name": "v860IsCreatureNearSelfAndValid",
+"purpose": "Boolean creature-array probe (base [0x45ff0c] stride 0xA8, self-id [0x86c3418]) via sub_401136. Requires the record's x=+0x20 within 7 tiles of self-x (read from RPM ptr [0x86c33d0]) and y=+0x24 within 6 tiles of self-y (RPM ptr [0x86c33cc]) using abs() sub_441A58, the +0x84 flag>=1, +0x28 field == the resolved local player/target id at [0x45ff4c], sub_401032 predicate true, and type slot-1 ==0x40 (player). Returns 1 on the first such creature adjacent to the self position, else 0. A 'is a matching player standing right next to me' predicate used by follow/attack proximity gating.",
+"conf": "medium"
+},
+"0x410e96": {
+"name": "v860LookupNameInSpellTable",
+"purpose": "Takes a string arg [ebp+8], copies it into a 0x100 local buffer via sub_441430 (strncpy/copy) and normalizes it with sub_40100F (lowercase/trim). Iterates i=0..[0x86c356c] over a 0x80-stride (128-byte) record table at 0x8599f50, comparing each entry to the buffer with sub_441B20 (case-insensitive strcmp); on match returns the paired int from parallel array 0x83f1518[i]. Default return 4. Resolves a typed spell/command word (from chat or config) into its numeric spell/opcode id \u2014 the name-to-id table the .sd/spell menu uses.",
+"conf": "medium"
+},
+"0x410f37": {
+"name": "v860AttackTargetScanAndReport",
+"purpose": "Large targeting/attack driver (sets busy flag [0x86c3640]=1 on entry, clears it before the 'no' exit). Reads self x/y from RPM ptrs [0x86c33d0]/[0x86c33cc], local player id [0x45ff4c], self-id [0x86c3418], and walks the creature array (base [0x45ff0c] stride 0xA8, count [0x86c3440]) via sub_401136. Per record it caches the +0x80 field into a change-detection array 0x83e9818[slotIndex] (index = (rec-base)/0xA8), reads id (slot-4), name ptr (via sub_401294), hp field +0x88 vs threshold [0x4600bc], and +0x28 owner/target id vs [0x45ff4c] gated by mode [0x86c34d0]. It maintains a skull/ignore list 0x862d084, a rolling seen-list 0x83e94f8 (mod 0xC8, counter [0x86c3830]) under flag [0x86c37c0], resolves the creature name (sub_401294) and matches it against a 0x96-stride name-list table at 0x85f4a40 using strlen sub_4412E0 + strcmp sub_441B20, and against the per-word id table via sub_410e96's shl-7 table. On a hit it applies the alert/beep cooldown ([0x4600d0], GetTickCount [0x86c381c]/[0x86c3820], '*' prefix check on 0x8631fb8) and formats one of the '*%s*%s %i west and %i south and %i below..' / '...on the same level!..' broadcast alerts via sprintf sub_44135B into buffer 0x85f90d8, computing relative offsets from self x/y. Also tests the trailing token against literals at 0x460b48/0x460b4c to toggle stop. This is the v860 attack/targeting core that resolves a named or targeting.txt creature and emits the Team-Server directional alert.",
+"conf": "medium"
+},
+"0x4138fa": {
+"name": "v860IsBlockingItemId",
+"purpose": "Pure predicate over an item/tile id in [ebp+8]: returns 1 for id 0xE06, the range 0xE00..0xE0A (0xDFF<id<0xE0B), 0xE8D, or 0xE05; returns 1 also for the set {0xDFE,0xDF9,0xE8B,0xDFF,0xDFA,0xE17,0xE93,0xE05}; else 0. A hardcoded lookup classifying specific client item ids (walls/fields/blocking objects) \u2014 the movement/pathfinder's 'is this tile id impassable/special' test.",
+"conf": "medium"
+},
+"0x413989": {
+"name": "v860CavebotTargetStepTick",
+"purpose": "Very large cavebot/targeting movement tick. Early-outs on mode flags [0x86c34d0]/[0x86c384c]/[0x86c3850]. Sleeps 0x28ms, then scans the client container/tile-status array (base [0x45ff10], stride 0x1ec, end [0x86c3410]) marking up to 20 slots into flag array 0x83e6f30. Reads self x/y/id from RPM ptrs [0x86c33d0]/[0x86c33cc]/[0x45ff4c] and self-id [0x86c3418]. Walks the creature array (base [0x45ff0c] stride 0xA8 count [0x86c3440]) via sub_401136: filters by sub_401113 (a mode gate returning 1), skips ids present in ignore array 0x83e9368[0..0x63], reads type slot-1, name (sub_401294), +0x84 flag, +0x28 owner id vs [0x45ff4c]. Under flag [0x86c3848] it matches the resolved name against the 0x96-stride name table at 0x85f4a40 (strcmp sub_441B20); when found returns 1 (al=1). Computes Chebyshev/Manhattan distance to each creature with abs() sub_441A58 selecting the max axis, tracks the nearest within range [ebp-0x74] (seeded from [0x4600d8]+1), consults the seen/skull list 0x83e6c10 (mod 0xC8), and under flag [0x4600dc] builds a target record: clears +0x14, scans a 0x32-stride table at 0x83e7160 (20 entries) with sub_441B20, sprintf's the name (sub_44135B fmt 0x460bf0) and bumps per-entry counters 0x83e7110, sets [0x4600dc]=0 and [0x86c3844]=1, and latches the chosen target's coords/id/dx/dy into [ebp-] locals. The main per-tick targeting+approach loop that selects the current attack/follow target and walks toward it, mirroring v10x cavebot+targeting.",
+"conf": "medium"
+},
+"0x415725": {
+"name": "v860ScanContainersForItemIds",
+"purpose": "Throttled (500ms via GetTickCount sub_4413AD vs [0x86c3860]) scan over a 2x2 grid of nearby tiles/containers relative to self position (self x [0x86c33d0], y [0x86c33cc], z [0x45ff4c]). For each of 4 cells it dereferences a per-cell container pointer via sub_401320, reads its item count (slot-0) and iterates its 0xC-stride entries starting at +4, reading each item id at +0 via sub_401136. When an id matches the loot whitelist {0x1074,0xFAB,0xFCF,0xFD4,0xFD9,0xFB9,0x10BE,0xFDE,0x1010,0x10E1,0x10E4,0x10E7} it invokes the action helper sub_401212 with (item id [0x4600e0], self x+dx, self y+dy, z, 0, itemId, slotIndex) and Sleep(0x64). A ground/container item-pickup scanner for the looter \u2014 the hardcoded id set is the auto-loot list (mirrors v10x looter over itenids.txt).",
+"conf": "medium"
+},
+"0x4158ef": {
+"name": "v860RecordPlayerWaypoint",
+"purpose": "Reads current self position (x [0x86c33d0], y [0x86c33cc], z [0x45ff4c]) plus three extra RPM scalars ([0x86c33bc]/[0x86c33c0]/[0x86c33c4]). If x/y/z all equal the last-recorded position [0x86c3498]/[0x86c349c]/[0x86c34a0] it returns false (no movement). Otherwise it appends the new (x,y,z) tuple into the waypoint recorder ring at 0x86b39a0 (16-byte stride, index [0x86c3478]), sets the z-change marker word +0xC when z differs by 1 (mod 0xFA0), increments the index, sprintf's the recording line (fmt 0x460d44) into buffer 0x85f90d8 and logs it via sub_4012ee, then latches the new position as last-recorded and returns true. This is the cavebot .sav recorder's per-step waypoint capture \u2014 the 'recording %i %i %i %i' tuple writer.",
+"conf": "medium"
+},
+"0x415a50": {
+"name": "v860LootPileScanSecondBackpack",
+"purpose": "Logs 'pile loot2' via sub_4012ee (the 2nd-lootpile trace) then scans the container-status array (base [0x45ff10], stride 0x1ec, end [0x86c3410]) via sub_401136 for open containers. For each open container it reads the item-count at +0x38, then walks its 0xC-stride entries (base offset built from [0x86c3460]+0x3b) reading item id at entry+... and a count/threshold field, requiring the id to equal the loot-pile container id [0x45ff50] and count>=0x64. On a match it fires the drag/move action sub_40121C with the pile coordinates ([0x83e6c04]/[0x83e6c08]/[0x83e6c0c]), item id, entry index and count, then Sleep([0x45ff00]). Implements the second loot backpack ('This makes a 2nd lootpile') \u2014 the tosser/overflow leg of the v860 looter.",
+"conf": "low"
+},
+"0x402982": {
+"name": "v860RpmReadByteAtHandleBase",
+"purpose": "One-line RPM read wrapper: pushes count=1 and the pointer stored at global [0x45ffe0] (a resolved client.exe handle/base slot), calls the core ReadProcessMemory helper sub_401136, and returns the single byte read. Reads one scalar out of client memory through the shared RPM primitive used across the reader/command paths.",
+"conf": "medium"
+},
+"0x4029a0": {
+"name": "v860ScanClientRecordArrayForFlag",
+"purpose": "Walks a client-side structure array starting at base [0x45ff10] with stride 0x1ec, bounded by count [0x86c3410]. For each record it RPM-reads 4 bytes (sub_401136) at the record base; on a non-zero read it decrements a caller-supplied countdown (arg [ebp+8]) and, when a match index budget is reached, returns the running index in [ebp-4] (else -1). A find-Nth-matching-record-in-client scan over a 0x1ec-stride client array via the RPM primitive.",
+"conf": "low"
+},
+"0x402a08": {
+"name": "v860PipeSendXteaEncrypted",
+"purpose": "Named-pipe frame sender to the injected client with XTEA encryption. Guards on a one-shot flag [0x86c35d8] plus a GetTickCount-based 0x4b0(1200ms) throttle ([0x86c35dc]/sub_4413AD) and an enabled gate [0x460048]. Logs \"Sending pipe:\" via sub_4012EE, opens/gets the pipe handle by name \"\\\\...\\pipe\\...\" (arg 0x460604) through sub_4416A0, and encrypts the payload in-place in 8-byte (two-dword) blocks using the XTEA round loop keyed by delta 0x61c88647 over 32 iterations with the 128-bit key at [ebp-0x34]. Small payloads take a 2-byte length-prefixed WriteFile path (sub_441576) and larger ones compute an Adler-32-style checksum (mod 0xfff1, seed 1) prefixed before the 6-byte header + body write. Mirrors the v10x packet.dll pipe-injection sender.",
+"conf": "medium"
+},
+"0x402d72": {
+"name": "v860PipeSendSpEncryptedThenSocket",
+"purpose": "Second pipe/socket sender variant (\"Sending pipeSP:\"). Spins on a busy flag [0x8424a98]==0x63 with Sleep(1) until clear, then sets it, hex-dumps the outgoing buffer byte-by-byte via sub_44135B(\" %X \")+sub_4012EE for logging, XTEA-encrypts the payload in 8-byte blocks (delta 0x61c88647, 32 rounds) using the caller-passed key table [ebp+0x10], writes a 2-byte length header + encrypted body (sub_4416C0 memcpy), and finally pushes the framed buffer straight to the client socket [ebp+0x14] via WSOCK32 send(). This is the direct-socket injection path (client->server frame) rather than the named-pipe WriteFile path.",
+"conf": "medium"
+},
+"0x402fd2": {
+"name": "v860CavebotRecordActionCapture",
+"purpose": "Cavebot recorder / action-capture handler, decrypting an incoming client action frame and appending it to the .sav recording. Gated by a set of recorder-active flags ([0x86c35e0],[0x86c3588],[0x86c3574],[0x86c35e4],[0x86c35e8]). Copies a 0x32-byte scratch, compares against buffer [0x84005e8] (sub_441A70 memcmp) to dedupe repeat frames, then XTEA-DECRYPTS the frame in 8-byte blocks running the round loop in reverse (sum starts at 0xc6ef3720, subtracts delta 0x61c88647) using the key at [ebp-0xb8]. On a recordable opcode it logs \"Action Recorded\" (sub_40109B) and stores the decoded bytes into the record table indexed by [0x86c35f4] (slot = index<<8 + 0x8414a98), bumping the counter. Also implements the two-point map-bound capture (\"Set 2nd Bound\") writing corner coords into [0x8404a8c..], computing dx/dy via abs helper sub_441A58, and building an autowalk step list against the blocking-tile grid ([0x86c33d0]/[0x86c33cc] pathfinder globals via sub_401091). This is the v860 .sav/.savd waypoint+action recorder core.",
+"conf": "medium"
+},
+"0x404280": {
+"name": "v860BuildTurnFrame",
+"purpose": "Tiny client->server frame builder: sets pipe-send flag [0x86c35d4]=1, lays a 3-byte body {0x01,0x00,dir} where dir is arg[ebp+8]&0xff, and enqueues an 8-byte frame via sub_401307 (SendAction enqueue). Opcode 0x01 with a direction byte = a turn/step-direction command frame.",
+"conf": "medium"
+},
+"0x4042ba": {
+"name": "v860BuildTurnFrameRouted",
+"purpose": "Same 3-byte {0x01,0x00,dir} turn/step frame as v860BuildTurnFrame but enqueued through the extended sender sub_4013B6 with two extra routing args ([ebp+0xc],[ebp+0x10]) \u2014 the target/socket-routed variant of the direction-01 command used when the frame must go to a specific client/channel rather than the default pipe.",
+"conf": "medium"
+},
+"0x4042f2": {
+"name": "v860AutoWalkOrGotoTileFrame",
+"purpose": "Path-step/goto builder gated by enabled flag [0x460048]. First scans the pathfinder tile tables ([0x86c33e0] grid rows, stride 0x100, up to 0xb00; sub_441B20 lookup, blocking flags [0x86c33d8], cost table [0x86c33dc]) to test whether the requested tile is reachable, marking a result via sub_4010FF. If no direct path it clears a state cell (sub_40112C) and emits a fallback. Otherwise it computes a walk length (strlen sub_4412E0 +4, clamped 4..0x80), builds a frame header {len,len>>8,0x96,0x01,...} \u2014 opcode 0x96/0x01 being the multi-step walk/goto packet \u2014 copies the step bytes (sub_441430 memcpy) and enqueues it padded to an 8-byte boundary via sub_401307. The v860 autowalk/goto-tile frame builder tied to the blocking-tile grid.",
+"conf": "low"
+},
+"0x404513": {
+"name": "v860BuildWalkFrame96Routed",
+"purpose": "Builds the same 0x96/0x01 variable-length walk/goto frame as v860AutoWalkOrGotoTileFrame (len clamped 4..0x80, header {len,len>>8,0x96,0x01,len-4,...}, body memcpy'd by sub_441430) but without the pathfinder pre-check, and enqueues it through the routed sender sub_4013B6 with the two extra args [ebp+0xc]/[ebp+0x10]. The target-routed emit of the multi-step walk packet.",
+"conf": "medium"
+},
+"0x40460b": {
+"name": "v860BuildAutoWalkFrame64",
+"purpose": "Variable-length frame builder with opcode 0x64: strlen(arg)+2 clamped 4..0x80, header {len,len>>8,0x64,len-2}, body copied via sub_441430, enqueued 8-byte-aligned through sub_401307. Opcode 0x64 = the autowalk/map-click path packet distinct from the 0x96 step frame.",
+"conf": "low"
+},
+"0x4046d3": {
+"name": "v860BuildWalkFrame96Sub4",
+"purpose": "Another 0x96/0x01 variable-length walk frame builder: len=strlen+4 clamped 4..0x80, header {len,len>>8,0x96,0x04,len-4,...} (sub-opcode 0x04 vs the 0x01 used at 0x4042f2), body memcpy sub_441430, enqueued via sub_401307. A distinct sub-variant of the multi-step 0x96 walk/goto packet.",
+"conf": "low"
+},
+"0x4047c3": {
+"name": "v860BuildLookFrame7a",
+"purpose": "Fixed 8-byte frame builder for opcode 0x7a: body {0x05,0x00,0x7a, x_lo,x_hi,0x00, tile}, packing a 16-bit coordinate from arg[ebp+8] and a byte from arg[ebp+0xc], enqueued via sub_401307. Opcode 0x7a = the look-at/use-on-tile packet (mirrors v10x look frame).",
+"conf": "low"
+},
+"0x404816": {
+"name": "v860BuildUseFrame7b",
+"purpose": "Fixed 8-byte frame builder for opcode 0x7b: body {0x05,0x00,0x7b, arg_lo,arg_hi,0x00, arg2}, structurally identical to the 0x7a look builder but with opcode 0x7b (use-item/use-with adjacent to look). Enqueued via sub_401307.",
+"conf": "low"
+},
+"0x404972": {
+"name": "v860BuildAttackFrame98",
+"purpose": "Attack-target frame builder: 6-byte body {0x03,0x00,0x98, id_lo,id_hi} where the 16-bit creature id comes from arg[ebp+8], enqueued 8-byte via sub_401307. Opcode 0x98 = the Tibia 'attack creature' packet \u2014 the frame the .attack chat command ultimately sends. Returns 0. Mirrors the v10x AttackTarget packet-builder.",
+"conf": "medium"
+},
+"0x4049d8": {
+"name": "v860BuildSayPrivateFrame96",
+"purpose": "Say/private-message frame builder with opcode 0x96 sub 0x06. Scans the text arg for a '*' separator (0x2a) to split a target/channel name from the message body, NUL-terminates at the split, then builds header {len,len>>8,0x96,0x06,...} with a length-prefixed recipient name (sub_441430 memcpy) followed by the length-prefixed message, enqueued 8-byte-aligned via sub_401307. This is the packet behind the .say handler where a leading '*' picks a private channel/recipient.",
+"conf": "medium"
+},
+"0x404b79": {
+"name": "v860ResolveContainerAndBuildUseFrame",
+"purpose": "Container/loot use-frame builder gated by [0x460048]. RPM-reads client container-id globals ([0x86c3418], [0x86c33dc] table stride 4 over 0x30, state [0x86c33e4], [0x86c33d8]) via sub_401136 to resolve which open container/slot matches the requested id (arg[ebp+8]/[ebp+0xc]), marking results with sub_4010FF / clearing via sub_40112C. On success it clears [0x86c3528] and builds a 16-byte frame {0x0d,0x00,0x84,0xff,0xff,0,0,0, x_lo,x_hi, stackpos, then a 4-byte pointer/id at [ebp-5]} \u2014 opcode 0x0d with the 0xffff/0x84 container-position marker \u2014 enqueued via sub_401307. The looter's open-container / move-item-from-container packet path.",
+"conf": "low"
+},
+"0x40d0ac": {
+"name": "v860CavebotWalkStep",
+"purpose": "Cavebot/pathfinder step-executor. Reads self tile x/y via RPM helper sub_401136 from client globals [0x86c33d0]/[0x86c33cc], resolves a manual-move request from [0x86c3418]/[0x86c3450], and manages the walk state at [0x86c3524] (0=idle,1=stepping,2=path-following). On a target step it accumulates a goal into [0x86c3754]/[0x86c3758], then compares self-vs-goal deltas and fires directional key presses via sub_4011A9 (arg 0x25/0x26/0x27/0x28 = left/right/up/down VK arrows) to walk one tile. It walks the client creature array (base [0x45ff0c], stride 0xA8, count [0x86c3440]) reading each record's fields (name via sub_401294, skull/visible via sub_401032, x/y at +0x20/+0x24, id at -4) to detect blockers, then calls the tile-resolver sub_401320 to fetch tiles along the route and classifies their tile-id (0x79c/0x7b0/0x1b3/0x182/0x845 ranges = stairs/holes/blocking/special) to pick a walkable adjacent square. Sets the 'blocked/no-path' flag [0x86c3638] and matches the client status text 'There is no way.' (via strcmp sub_441B20) to detect a rejected step and re-route. Mirrors the v10x cavebot waypoint walker driven here by the .sav recorder rather than Lua.",
+"conf": "medium"
+},
+"0x40e275": {
+"name": "v860CacheSelfContainerBase",
+"purpose": "Tiny accessor: reads a client global at [0x45ff34] and stores it into bot mirror [0x83fa234]. Refreshes one cached client-state scalar (an open-container / self pointer used by the looter-pathfinder pair) into the bot's RPM mirror BSS so later ticks read it locally without a fresh ReadProcessMemory.",
+"conf": "medium"
+},
+"0x40e284": {
+"name": "v860BuildBlockGridForTarget",
+"purpose": "Pathfinder blocking-grid builder for a given creature id (arg [ebp+8]; returns 0 if id==0). Reads self x/y from client [0x86c33d0]/[0x86c33cc] and a reference field [0x45ff4c] via RPM sub_401136, then scans the creature array (base [0x45ff0c], stride 0xA8, count [0x86c3440]) for the matching id (field at -4), skipping records whose type byte at -1 == 0x40 and whose +0x28 field mismatches the reference. For the matched creature it resolves its tile through sub_401320 and reads that tile's cost/flag at +0xA4, then double-loops an 18x14 (0x12 x 0xE) viewport window calling the tile-resolver per cell and reading each cell's +0xA4 walk-cost, emitting the 'mpsq %x' debug trace via sprintf sub_44135B + log sub_4012EE. Produces the mpsq (map-square) walkability snapshot the cavebot/dodge logic consumes. Mirrors v10x pathfinding grid prep.",
+"conf": "medium"
+},
+"0x40e48a": {
+"name": "v860FriendEnemyColorTagTick",
+"purpose": "Team-list creature recolor/tag tick, throttled to 300 ms via GetTickCount thunk sub_4413AD against stamp [0x86c3788]. Iterates the creature array (base [0x45ff0c], stride 0xA8, count [0x86c3440]), skipping records with id==0, type-byte(-1)==0x40, health(+0x84)<1, or whose +0x28 field != self-ref [0x45ff4c], and whose visible flag (sub_401032)!=1. For each live visible creature it reads the name (sub_401294) and matches it against two name tables: the VIP/friend list (base 0x85d8908, stride 0x64, count [0x460014], enabled by [0x86c3514]) and the enemy list (base 0x85c0268, stride 0x64, count [0x86c3570], guarded by [0x86c3784]). On a friend hit it WRITEs (sub_40113B) a friend color (0x84/0xFB/0x80 depending on per-entry mode table [0x85ba4a4]) into the creature's marker fields at +0x5c/+0x60/+0x64/+0x68/+0x6c/+0x70 inside client memory; on an enemy hit it writes the enemy color [0x86c3784] into the same +0x60..+0x6c fields. Implements the friends.txt/enemies.txt on-screen skull/heart recolor overlay.",
+"conf": "medium"
+},
+"0x40e838": {
+"name": "v860StrLwrInPlace",
+"purpose": "CRT-style in-place ASCII lowercaser. Walks the NUL-terminated string in [ebp+8]; for each byte in ('@',0x5b) exclusive (i.e. 'A'..'Z') and != 0x20 it adds 0x20 to fold to lowercase, then returns the original pointer. Case-normalization primitive used before name/command strcmp comparisons.",
+"conf": "high"
+},
+"0x40e882": {
+"name": "v860IsCreatureIdVisible",
+"purpose": "Predicate: given a creature id (arg [ebp+8]) scans the creature array (base [0x45ff0c], stride 0xA8, count [0x86c3440]) for a record whose id field (-4) matches, then reads its visibility/skull flag via sub_401032 and returns TRUE when that flag is 0 (SETE), FALSE (1) otherwise. A helper the targeting/attack code uses to test whether a resolved creature is currently in a given visibility state before acting on it.",
+"conf": "medium"
+},
+"0x40e8f0": {
+"name": "v860GetCreatureField8c",
+"purpose": "Field accessor: RPM-reads (sub_401136, 4 bytes) the dword at creature-record offset +0x8c (arg [ebp+8] = record base) from client memory and returns it. Wraps a single creature-struct field read (an outfit/skull/extra attribute at +0x8c) used by callers that already hold a creature pointer.",
+"conf": "medium"
+},
+"0x40e911": {
+"name": "v860DodgeCaveRunTick",
+"purpose": "Dodge / Cave_Run kite-and-flee movement tick, throttled 650 ms (0x28a) via sub_4413AD vs [0x86c37a0]; gated on enable flag [0x86c35b4]. Reads self x/y ([0x86c33d0]/[0x86c33cc]) and self-ref [0x45ff4c], and a mode selector [0x45ffdc] (==0x63 swaps to alt source [0x86c33c8]). Loops the creature list (base [0x45ff0c] stride 0xA8) with an outer index (-2..-1..N over [0x460014]) selecting self vs each threat, filtering by +0x28 ref-match, health(+0x84)>=1, visible(sub_401032)==1, and name-not-in a safelist (base 0x85d8908 stride 0x64) via strcmp sub_441B20, using abs() sub_441A58 on the dx/dy to keep only in-range creatures. It resolves candidate escape tiles with sub_401320, reads the tile item-id (+field), and validates each square against stop-tile/blocking tables (word arrays at 0x863ffec / 0x864369c / 0x8632144 counts [0x460018]/[0x46001c]) plus a viewport step (0x4600b4 grid pitch), rejecting id 0x845..0x850 (blocking) and accepting 0x79d as walkable, to compute the direction that maximizes distance from the threat. Implements the Creaturelist Dodge/Cave_Run/Open_Run behavior modes.",
+"conf": "low"
+},
+"0x40effe": {
+"name": "v860TargetingCombatFsm",
+"purpose": "Main targeting/autoattack combat state machine (EXORIMAX autofire). Gated by [0x86c3658] and [0x86c3630]/[0x86c359c] enable flags and a sub_401339 pause predicate; reads self x/y/z ([0x86c33d0]/[0x86c33cc]/[0x45ff4c]). The mode dword [0x86c3630] selects behavior: value 0xf melee/rune-attack path builds a client->server attack frame via SendAction-style helpers sub_401212 (args = target id [0x86c377c], x, y, z, tile item-id from sub_401320+RPM, flags) and sub_401267 (attack/stop opcode) throttled 1000 ms via [0x86c3780]; value 0x34 is the area-spell autofire branch that (throttled by [0x460008]) walks the creature array (base [0x45ff0c] stride 0xA8 count [0x86c3440]), for each visible attackable creature (health +0x88, visible sub_401032, name sub_401294) lowercases the name (sub_441430+sub_40100F) and matches it against the targeting.txt name table (base 0x8599f50 stride 0x80, count [0x86c356c]); on a hit it speaks the paired AoE spell string from table 0x8579f50 via say-helper sub_4012B7, or falls back to speaking the literal 'exori frigo' (0x460a4c), Sleep-pacing each cast. Later branches (0x86c3780/0x86c379c timers, dist checks via sub_441A58 with thresholds 8/6) select the closest valid target and re-arm. This is the v860 equivalent of the v10x targeting subsystem driving attacks off targeting.txt + chat-armed target [0x86c377c].",
+"conf": "low"
+},
+"0x4179e7": {
+"name": "v860AutoExplorerQuicktest",
+"purpose": "AutoExplorer tick / 'quicktest' path. Reads the local self-position mirror via the RPM helper sub_401136(addr,4): X from [0x86c33d0], Y from [0x86c33cc], Z from [0x45ff4c] \u2014 the same self-scalar slots used elsewhere \u2014 and compares them against the last recorded explore anchor at [0x46d6aac]/[0x46d6aa8]/[0x46d6aa4]. On a fresh tile it Beep()s (attacked/idle alarm), stores the origin into [0x46d6aa0..0x46d6a98], seeds a 500/500/7 search window ([0x4600e4]=0x1f4,[0x4600e8]=0x1f4,[0x4600ec]=7) and calls sub_441A00 (memset of the explore-frontier buffer 0x46d91c4). It bounds the window to [0x14..0x3d4] x/y and z [1..0xb], stamps a 300 ms/GetTickCount(sub_4413AD) throttle into [0x4600fc]/[0x86c3900], and on a 0x2328 (9000 ms) tick uses sub_441BAE (rand) to jitter the next scan. Builds candidate step tiles into a ebp-local (x,y,z) stride-0xC array from the direction tables at 0x83e522c/0x83e428c/0x83e32ec, scoring them with sub_441A58 (abs) distances, and formats trace lines 'Doing quicktest:%d' and 'New explore %d %d %d:%d' via sub_44135B(sprintf)+sub_4012EE(log). Mirrors the v10x cavebot/pathfinder auto-navigation (nav1st.txt AutoExplorer) but recorder-driven. sub_4012DF pushes a scored step; sub_4011D1/sub_401276 are the step-commit/reset helpers.",
+"conf": "medium"
+},
+"0x418ba7": {
+"name": "v860WaypointReplayer",
+"purpose": "Cavebot .sav waypoint replayer / walker tick. Reads self X/Y/Z via sub_401136 ([0x86c33d0],[0x86c33cc],[0x45ff4c]) and step deltas ([0x86c3448],[0x86c3444]); the active route is the 0x10-stride waypoint array at 0x86b39a0 (fields +0/+4 = x/y, +8 = z, +0xC = flags), indexed by the current-waypoint cursor [0x86c34b0]. Compares the player tile to each waypoint's (x,y,z); when within a floor it scans up to 12 forward waypoints (0x86b39a0[idx+i]) to snap the cursor forward, advances [0x86c34b0], and stamps GetTickCount(sub_4413AD) into the per-waypoint timer [0x86c3920]. Builds a direction byte-array in a ebp-local (values 1/5/3/7 = N/S/E/W) from waypoint-to-player x/y sign comparisons, passes it to sub_4412E0(strlen) and sub_401343 (the walk/step-emit helper) to issue arrow-key movement. Handles floor-change waypoints (flag+0=1): logs 'Near z change waypoint', sets the z-wait latch [0x86c38ec]=1 and Sleep()s to wait for the z-transition. Sets recorder state flags [0x86c38f4]/[0x86c390c]/[0x86c3910]. Directly implements the .sav/.savd (x,y,z,waypt) recording playback and the 'Near z change waypoint' logic documented for the v860 cavebot recorder.",
+"conf": "medium"
+},
+"0x41a9f2": {
+"name": "v860ScanCreaturesForAttackTarget",
+"purpose": "Creature-array scan used by the auto-targeting / spell-target path. Guarded by an obfuscation gate: [0x86c3928] xor 0x251, times [0x86c3924], times 0xC7, mod 100 == 0x1b writes the sentinel 0x659340 into [0x460104] (anti-tamper checksum, mirror of the VirtualProtectEx self-patch guard). Gated on the enable flag [0x86c3930]. Reads a level/count window ([0x86c33fc] in 3..9, [0x86c3400]), then walks the client creature array starting at base [0x45ff10] with the documented stride 0x1ec (v860 creature-record pitch): sub_401136(slot,4) fetches the creature id (skips id==0), sub_401136(slot+0x38,4) fetches its visible-tile / sub-record count, and iterates that many 0xC-stride sub-records at slot+base[0x86c3460]+0x3b reading a screen-position field (+1) and a match key (+0). When the sub-record key equals the target id ([ebp-0xc]) it calls sub_4011B3(dir=10, ...) to fire/act on that creature and Sleep()s [0x45ff00] (action delay). Reads client memory via the ReadClientState-style RPM helper exactly as the v10x targeting subsystem does.",
+"conf": "medium"
+},
+"0x41ab6b": {
+"name": "v860CreatureTripleClickAction",
+"purpose": "Creature-scan variant that performs a triple synthetic-click action on a matched creature. Level/enable gate on [0x86c3924]>=0x4f writing 0 to [0x460108] (checksum/anti-tamper sentinel) and enable flag [0x86c392c]. Enforces a 100000 ms (0x186a0) cooldown via GetTickCount(sub_4413AD) minus [0x86c34cc]. Walks the same creature array (base [0x45ff10], stride 0x1ec, id via sub_401136, sub-count at +0x38, 0xC-stride sub-records at +base[0x86c3460]+0x3b) and for the matching record calls sub_40114F (a boolean predicate on the record) then, three times with 100 ms Sleep between, calls sub_4010D2(index, record, subIndex) \u2014 the mouse/use-on-tile action helper. Re-stamps the cooldown [0x86c34cc] and logs via sub_4012EE (string @ 0x460ff4). Same RPM-read creature walk as v860ScanCreaturesForAttackTarget; this is the on-screen click/use path (looter or use-on-corpse style).",
+"conf": "medium"
+},
+"0x41aced": {
+"name": "v860FindCreatureSlotById",
+"purpose": "Helper: given a creature id (arg [ebp+8]), walk the client creature array (base [0x45ff10], stride 0x1ec) and return a packed handle identifying the matching creature and its sub-record. For each creature it reads the id via sub_401136(slot,4) (skips 0), the sub-record count at slot+0x38, and iterates 0xC-stride sub-records at slot+base[0x86c3460]+0x3b comparing the key (+0 field) against the requested id. On match it packs the creature-loop index (shifted left 0x10) OR'd with the sub-record index into eax and returns it; returns 0 if not found. Pure RPM-read lookup with no side effects \u2014 the resolver the attack/heal/click handlers use to turn a typed name/id into an array slot, mirroring v10x's creature-index resolution.",
+"conf": "medium"
+},
+"0x41b228": {
+"name": "v860RunemakerSpearReloader",
+"purpose": "Rune-making / spear-reload + mana-floor healer-pause loop. Reads HP% and mana%: current HP [0x86c3424] vs max, mana = [0x86c342c]*100 / [0x86c3428], and a light-heal threshold from [0x86c343c]. Walks the client container/inventory records (base [0x45ff10], stride 0x1ec, count field at +0x38, 0xC-stride items at +base[0x86c3460]+0x3b) reading item ids via sub_401136. On item id 0xc4b it Sleep()s and restarts the scan; on id 0xccd (spear) it verifies the spell word 'exeta con' is not already queued via sub_441B20(strcmp-ish on 0x85b9f54), then, when HP is full enough, injects the reload frame with sub_4011B3(dir=5, id=0xccd, subIndex, 1, 0) and logs 'spear loaded' \u2014 this is the SendAction-style client->server use/move builder. Enforces a 2000 ms throttle [0x86c3940] and a 100000 ms cooldown [0x86c34cc]. The mana-floor branch: if HP% is below the configured light-healing threshold (< [0x83fa28c]-1) it calls sub_40109B with 'HP is below your light healing %, Pausing' and bails, exactly the healer mana-conservation pause documented for v860. sub_4012B7/sub_4012C6 manage the pending-spell string buffers (0x85b9f54 / 0x86320b8).",
+"conf": "medium"
+},
+"0x41bc35": {
+"name": "v860InstallClientSendHook",
+"purpose": "Injection installer \u2014 patches the target client.exe to divert its network send path, the v860 equivalent of the packet.dll send/key hook. Temporarily clears the guard [0x460048], then for ten 0x70-spaced hook-descriptor slots based at [0x45fec4] (offsets 0,0x70,0x1c0,0xe0,0x150,0x230,0x2a0,0x310,0x380,0x3f0) calls sub_4012C6 to seed each descriptor with the trampoline/original-bytes buffer 0x46d6954. It then, for the corresponding +0x64-spaced code slots (0x64,0xd4,0x224,...,0x454), computes a relative branch displacement with sub_441C57(target 0x46d6920, 2) and writes the patch bytes into the remote image via sub_40113B (the WriteProcessMemory wrapper). Finally it calls VirtualProtectEx (handle [0x863210c], addr [0x45fed4], size 0x40, computed protect flags via sub_4412E0 over 0x46010c) to restore page protection, re-applies the original bytes with sub_4012C6, sets the 'hook installed' flag [0x86c35a8]=1, restores [0x460048], and returns 1. Establishes the client->server frame-injection hook that SendAction/buildAttackFrame ride on.",
+"conf": "medium"
+},
+"0x41bf09": {
+"name": "v860IsClientSendHookInstalled",
+"purpose": "Predicate: returns 1 if the client send-hook is installed, else 0. Short-circuits true when the install flag [0x86c35a8]==1; otherwise verifies the patch is live by reading two bytes at the client hook site [0x45fed4] via sub_401136(addr,1) \u2014 checks byte[0]==0x31 and byte[1]==0x30 (the injected patch signature). Returns 1 only if both match, 0 otherwise. Companion validator to v860InstallClientSendHook, used to gate re-injection and to confirm the send path is diverted before building/injecting frames.",
+"conf": "medium"
+},
+"0x41bf4e": {
+"name": "v860ScanBattleTextForHpAlert",
+"purpose": "Scans the client's on-screen creature/text array at [0x45ff10] (stride 0x1ec, bounded by count [0x86c3410]) using the 4-byte RPM reader sub_401136. For each live slot it reads a sub-record count at +0x38 and walks its 0xc-byte tuples starting at +0x3c (offset by [0x86c3464]); each tuple's +4 field is range-checked to 0..100 (cmp <0x65, >-1). Prefetches self scalars (self-name/id from [0x86c33d0]/[0x86c33cc]/[0x45ff4c]/[0x45ffdc], flags [0x86c33c8/c0/c4]) then, on a valid 0..100 percent, calls the 7-arg opcode-0x13 Team-Server broadcast builder sub_401046 and Sleeps [0x45ff00] ms between hits. GetAsyncKeyState(VK_ESCAPE=0x1b) aborts the loop; a 0x44c/0x24-iteration watchdog bounds runtime. Reacts to a matched creature's HP percent by broadcasting an alert to the team (mirrors v10x alert/reaction path).",
+"conf": "medium"
+},
+"0x41c1d9": {
+"name": "v860BroadcastMatchedTargetToTeam",
+"purpose": "Walks the same on-screen text/creature array at [0x45ff10] (stride 0x1ec, count [0x86c3410]) via RPM reader sub_401136, reading each slot's sub-record count at +0x38 and iterating its 0xc-byte tuples from +0x3b+[0x86c3460]. When a tuple's id ([ebp-0x10]) equals the tracked self/target id [0x45ff50], it packs the tuple index, id, self flags ([0x86c33c4/c0/bc]) and a running counter into the 7-slot builder sub_40121C, Sleeps 8ms, and continues; GetAsyncKeyState(VK_ESCAPE) aborts. Emits per-matched-entry Team-Server frames for the currently followed/attacked id.",
+"conf": "medium"
+},
+"0x41c607": {
+"name": "v860ScanScreenEffectsAndBroadcast",
+"purpose": "Takes (arg0=ebp+8, arg1=ebp+0xc). Walks the on-screen array [0x45ff10] (stride 0x1ec, count [0x86c3410]) with RPM reader sub_401136; per slot reads count at +0x38 and iterates 0xc-tuples at +0x3b+[0x86c3460], extracting an id [ebp-0x1c]. Skips a large fixed blacklist of sprite/effect ids (0x1cae, [0x45ffc8], [0x45ff74], [0x45ff78], 0xb37, 0xdb0, 0xb26, 0xb31, 0, and the 0xb30..0xb40 field/wall range). Surviving ids are deduplicated through a 20-slot table (ids at 0x868d32c, hit-counts at 0x868d2dc): first-seen ids are recorded, repeats increment the counter (threshold 0x14). Depending on arg1 (==0xa branch) it packs the record via sub_40121C or sub_4011B3, formats ':%x %x' with sub_44135B into log buffer 0x85f90d8, flushes with sub_4012EE, and Sleeps [0x45ff00] ms; arg1!=0 slots go through sub_4010D2 then re-check via sub_4011CC. GetAsyncKeyState(VK_ESCAPE) aborts. This is the on-screen effect/field detector that filters magic-wall/field/rune sprite ids and rate-limits duplicate sightings before reacting.",
+"conf": "medium"
+},
+"0x41cace": {
+"name": "v860CavebotTileWalk",
+"purpose": "Cavebot/pathfinder tile-walk over the client tile grid. Guards re-entry with [0x86c3958] and idles when the frame counter (imul [0x86c3924]*[0x86c3928] mod 0x12) is mid-refresh. Prefetches self position ([0x45ff24], [0x86c33d0]=x, [0x86c33cc]=y, [0x45ff4c]=z via sub_401136) and compares against the cached last-position [0x46d6914/18/1c]; when position is unchanged it indexes the local tile map at base [0x46d6910] using grid origins [0x86320f0] (x mod 0x12, cell stride 0xa8) and [0x86320ec] (y mod 0xe, row stride 0xbd0) to resolve the target tile. On a real move (delta<5 via abs helper sub_441A58) it recomputes and re-anchors the grid origin, logging 'moving...'/'verified self%x %x'/'ntiles ahead:'/':%x %x' through sub_44135B+sub_4012EE. It scans each tile's 0xc-byte stack entries for special item ids (0x19f/0x1a6 ladder-up, 0x198/0x199, 0x3d6, id%100==0x2d, 0x39b, 0xe7, 0x68..0x6e range) and issues the corresponding movement/interaction via sub_40132A with a direction/action code (0x3c,0x4e,0,1,0x2b,3,0x79...). Throttled by [0x86c350c]/[0x86c395c] (0xc8/200ms). Mirrors the v10x cavebot walk driven off RPM-read tile memory.",
+"conf": "medium"
+},
+"0x41d760": {
+"name": "v860ReturnFalseStub",
+"purpose": "Five-instruction stub: standard ebp frame, 'xor al,al', ret \u2014 returns a boolean false (AL=0). A trampoline/placeholder predicate (likely a disabled or always-false feature gate); no globals, no calls.",
+"conf": "low"
+},
+"0x41d767": {
+"name": "v860TargetingTick",
+"purpose": "Autotargeting tick. When frame counter [0x86c3924]*[0x86c3928]==0x4e15 it pokes debug marker [0x46036c]. Prefetches self z [0x45ff4c], self name/handle at [0x45ff18]+0x320/+0x32a, self x/y [0x86c33d0]/[0x86c33cc], self id [0x86c3450], and a distance budget [0x460004]+1. Iterates the client creature array from base [0x45ff0c] in stride 0xA8 up to [0x86c3440] (the documented v860 creature array). Per record it reads visible/type flags (-4, +0x84), the creature id (-1 via sub_401032), a mode field +0x5c (with a targeting-touch write of 0x119 when [0x86c396c] set), an owner/target id +0x28 compared against self id [ebp-0x20], and x/y at +0x20/+0x24; distance is computed with abs helper sub_441A58 and Chebyshev/priority via sub_401320/sub_401294/sub_401190, keeping the nearest eligible creature ([ebp-0x30]=chosen id). Gated by targeting-enabled [0x86c3550] and [0x86c34d0]. On selection (throttled 0x64ms via [0x86c397c], 0xbb8ms retarget hysteresis via [0x86c3974]) it arms the target through sub_40136B / sub_40118B(opcode 0xa1) / sub_40113B, stashes the chosen id in [0x86c3978] and the client target slot [0x86c3450], and stamps cooldowns [0x86c3970/74/7c]. Recovers a corrupted array base by resetting [0x45ff0c]=0x624501. Direct v860 mirror of the v10x targeting subsystem.",
+"conf": "medium"
+},
+"0x41dc2f": {
+"name": "v860ChatCommandDispatch",
+"purpose": "Head of the in-client chat-command dispatcher. Enforces the shared 0x1f4/0x3e8-ms cooldown against [0x86c3980] (GetTickCount thunk sub_4413AD), then reads the client chat line via the 4-byte RPM reader and the length/tokenizer helpers (sub_4412E0=strlen, sub_401230=strchr/skip, sub_441230=strstr). It first strips a leading team-broadcast marker at [0x764434]/self-name buffer 0x8631f20 (matches this client against the addressee, format '*%s* %s %s' 0x461214 emitted through sub_44135B+sub_40124E when [0x460368]/[0x86c351c] gate) so only frames addressed to this char are locally executed. It then runs the strstr chain over chat buffer 0x46d3d84: autofire spell aliases 'exevo gran mas vis/tera/frigo/flam','exori gran','exevo mas san' (sets fire flag [0x86c3960], say-buffer 0x46d68ac via sub_4012B7); '.say' (skip 5, '*'-prefixed picks private channel via sub_40124E else say via sub_4012B7); '.move' (skip 6, sets manual-step [0x86c3524]=1, parses two ints via sub_441C57 into [0x86c3754/58]); '.stopfire' (broadcasts '*%s* stopping fire', zeroes fire/follow state [0x86c3630/36ec/3774/3770/3964]); '.stopfollow' (broadcasts '*%s* stopping follow', clears [0x86c3524]); '.channel' (skip 9, parses channel N via sub_441C57 into [0x46000c], opens via sub_401005); '.mana' (calls report helper sub_401177); 'utamo vita' and 'utani gran hur' (say the buff spell via sub_4012B7). Every accepted handler stamps [0x86c3980]. This is the v860 control surface replacing v10x Lua.",
+"conf": "high"
+},
+"0x441576": {
+"name": "crtFwrite",
+"purpose": "MSVC CRT fwrite implementation. Computes total = size*count (imul [ebp+0xc]*[ebp+0x10]), then drains the FILE* buffer: checks stream flags at [esi+0xc] (mask 0x10c = _IOMYBUF|_IONBF-style), copies bytes into the internal buffer via sub_4416C0 (memcpy), flushes full buffers through sub_44340E (_write low-level write), and for tiny remainders calls sub_44282E (_flsbuf) byte-by-byte. Returns count fully written. Not a bot function - C runtime stdio.",
+"conf": "high"
+},
+"0x441680": {
+"name": "crtHeapInitCheck",
+"purpose": "Tiny CRT heap guard: calls sub_44372B (heap-init/validate helper) and returns if eax nonzero, otherwise falls through to 0x44168a. MSVC _heap_init-style precheck wrapper, not bot logic.",
+"conf": "medium"
+},
+"0x4416a0": {
+"name": "crtMallocFlag40",
+"purpose": "Thin allocation shim: pushes 0x40 plus two forwarded stack args and tail-calls sub_441680 (heap alloc/init core), cleaning 0xc bytes. MSVC internal allocator wrapper (flag 0x40 selects a heap mode). Not bot logic.",
+"conf": "medium"
+},
+"0x4416c0": {
+"name": "crtMemcpy",
+"purpose": "MSVC CRT memcpy/memmove core. Standard optimized copy: handles forward/backward overlap (compares dst vs src+len), 4-byte alignment fixup, rep movsd for the dword-aligned bulk with a jump table at 0x441808/0x441818/0x44179c for the 0-3 byte tail, and an unrolled reverse copy for overlapping regions. Pure runtime primitive.",
+"conf": "high"
+},
+"0x441a00": {
+"name": "crtMemset",
+"purpose": "MSVC CRT memset. Broadcasts the fill byte to all 4 bytes of eax (shl/add chain), aligns the destination, then rep stosd for the bulk and byte stores for the head/tail remainder. Returns the original dst pointer. Pure runtime primitive.",
+"conf": "high"
+},
+"0x441a58": {
+"name": "crtAbsInt",
+"purpose": "CRT abs(): loads the int arg, if negative negates it, returns absolute value. Trivial runtime primitive.",
+"conf": "high"
+},
+"0x441a70": {
+"name": "crtMemcmp",
+"purpose": "MSVC CRT memcmp. Byte-compares two buffers for [esp+0xc] bytes; uses an alignment-aware fast path (2-bytes-at-a-time when both pointers share alignment) falling to a byte loop, returning the signed difference of the first mismatching byte pair. Pure runtime primitive.",
+"conf": "high"
+},
+"0x441b20": {
+"name": "crtStrcmp",
+"purpose": "MSVC CRT strcmp. Dword-at-a-time compare when the first pointer is aligned: loads 4 bytes, compares each byte against the second string, short-circuits on a NUL or mismatch, advancing 4 bytes per iteration; returns 0 on equality. Pure runtime primitive. Note: this is the strcmp family the .attack/.follow chat-command handlers use for name-lookup against the creature array, but this instance is the generic CRT routine.",
+"conf": "high"
+},
+"0x441ba4": {
+"name": "crtSrand",
+"purpose": "CRT srand(): stores the seed argument into the LCG state global [0x466a10]. Paired with the rand() at 0x441bae. Pure runtime primitive.",
+"conf": "high"
+},
+"0x441bae": {
+"name": "crtRand",
+"purpose": "CRT rand(): the classic MSVC linear-congruential generator - state[0x466a10] = state*0x343fd + 0x269ec3, returns (state>>16)&0x7fff. Same seed global written by srand at 0x441ba4. Pure runtime primitive.",
+"conf": "high"
+},
+"0x441c57": {
+"name": "crtSprintfThunk",
+"purpose": "Thin forwarder: pushes its single stack arg and tail-calls sub_441BCC (a vararg format/output core), cleaning one arg. MSVC CRT output-formatting entry wrapper (sprintf/printf family). Not bot logic.",
+"conf": "medium"
+},
+"0x441d1c": {
+"name": "crtVfprintfThunk",
+"purpose": "Forwarder pushing 0 plus three forwarded args and tail-calling sub_441D33 (the printf/_output formatting core), cleaning 0x10 bytes. MSVC CRT formatted-output entry (fprintf/vfprintf family). Not bot logic.",
+"conf": "medium"
+},
+"0x441f52": {
+"name": "crtFread",
+"purpose": "MSVC CRT fread implementation. Computes total = size*count, then fills the caller buffer: drains any bytes already in the FILE* buffer via sub_4416C0 (memcpy), reads large aligned chunks directly through sub_443AE5 (_read low-level read), and tops up single bytes via sub_443A0C (_filbuf). Mirror of the fwrite at 0x441576. Pure runtime stdio.",
+"conf": "high"
+},
+"0x442050": {
+"name": "crtStrchr",
+"purpose": "MSVC CRT strchr. Broadcasts the search char across a dword, then scans the string 4 bytes at a time using the 0x7efefeff zero-byte-detection trick to find either the target char or the terminating NUL; returns pointer to first match or 0. Pure runtime primitive.",
+"conf": "high"
+},
+"0x44210c": {
+"name": "crtFgets",
+"purpose": "MSVC CRT fgets. Reads up to [ebp+0xc]-1 chars from the FILE* (fast path pulls from the buffer at [esi], slow path calls sub_443A0C _filbuf), stopping at newline (0xa) or EOF (-1), NUL-terminates, and returns the buffer pointer or 0 on immediate EOF. Pure runtime stdio - this is the routine that reads the flat .txt config files (targeting.txt, itenids.txt, SETTINGS.txt) line by line.",
+"conf": "high"
+},
+"0x442163": {
+"name": "crtFcloseInner",
+"purpose": "MSVC CRT stream-close inner: takes a FILE*, flushes/frees the buffer via sub_44333C (buffer flush), clears the buffer flag bits at [esi+0xc] (&0xffffffcf), maps the fd through the _iob-style table at 0xa0d7ac0 (fd>>5 / fd&0x1f indexing 8-byte osfile entries), clears its in-use bits, and calls sub_443CDB (_close) to release the OS handle. References sentinel 0x466c68. Pure runtime stdio.",
+"conf": "high"
+},
+"0x42fd90": {
+"name": "captureWindowToBmp",
+"purpose": "Screen-scrape helper that snapshots a client rect into a 24/32-bit .bmp file on disk. Args: (filename, srcHDC, width, height). Builds an offscreen GDI surface \u2014 CreateCompatibleBitmap(srcHDC,w,h), CreateCompatibleDC, SelectObject, BitBlt(SRCCOPY 0xCC0020) from the source DC \u2014 then GetDIBits twice (first pass fills a heap-allocated BITMAPINFOHEADER via sub_4424C9 malloc + sub_441A00 memset, sizing biSize=0x28; second pass copies pixel bits into a second malloc'd buffer). Writes a BITMAPFILEHEADER ('BM'=0x4d42 magic), the BITMAPINFOHEADER, the palette (biClrUsed or 1<<biBitCount entries for <=8bpp), and the pixel array via WriteFile to a CreateFileA(GENERIC_WRITE, CREATE_ALWAYS) handle, patching the header bfOffBits/bfSize with SetFilePointer. sub_401208 is the file-length/tell helper. This is the BitBlt/GetDIBits tile-read-off-the-game-window primitive noted in the v860 import profile; returns AL=1 on success, 0 on any GDI/IO failure.",
+"conf": "high"
+},
+"0x430183": {
+"name": "v860LicenseAuthorize",
+"purpose": "tibiadb.com license/authorization check over raw WSOCK32. Builds host 'tibiadb.com' and path '/authorize.php?id=%s...' (sprintf sub_44135B from globals [0x86c3928],[0x86c3a18]), WSAStartup(0x101), gethostbyname, socket(AF_INET,SOCK_STREAM,IPPROTO_TCP), htons(port 0x50=80), connect, ioctlsocket(FIONBIO non-blocking), send, then a recv loop (bounded ~500 bytes, 10ms Sleep, timeout via GetTickCount thunk sub_4413AD 0x1d4c ms). Parses the HTTP response with strstr (sub_441230): checks 'locked'/'unlocked'/'ckv5' markers, extracts 32-bit tokens via sub_441C57 (atoi-like) into license globals [0x86c398c] and [0x86c3924]; a checksum-of-first-bytes guard compares an accumulated byte-sum against 0x6c9. On lock it returns 0xa, on socket errors 9/0xb, on success sets [0x86c3a1c]=1 and returns 7. Also adjusts the creature-array base slot [0x45ff24] by (0x43c - byteSum) \u2014 a licensing-tied fixup of a relocatable client-state pointer. tibiadb.com licensing path per project memory.",
+"conf": "high"
+},
+"0x4306ad": {
+"name": "v860HttpGetCharacterPage",
+"purpose": "Generic HTTP GET fetcher used to pull a Tibia community character page. Args: (host, url, outBuffer). Strips a leading 'http:' and '//' prefix (strstr sub_441230, +7), templates the request with '/community/?subtopic=characters&name=' and 'GET %s HTTP/... Host: %s' (sprintf sub_44135B), then the same WSOCK32 sequence as the authorizer: gethostbyname, socket, htons(80), connect, ioctlsocket(FIONBIO), send, and a recv loop (Sleep 0x46 ms, 0x1000-byte chunks appended into caller's outBuffer at [ebp+0x10], advancing the pointer). Returns 1 on completion, 9 on DNS/connect failure, 0 on socket() failure. Feeds the scraped HTML to a caller that parses level/vocation/online status. Mirrors the license authorizer's socket boilerplate but for arbitrary web pages.",
+"conf": "high"
+},
+"0x430937": {
+"name": "urlEncodeSpacesToPlus",
+"purpose": "In-place URL-parameter sanitizer for the character-name query string: walks the caller-supplied C string byte by byte and replaces every space (0x20) with '+' (0x2b), advancing until the NUL terminator. Returns the original string pointer (saved at [ebp-4]). Small pre-pass applied to a name before it is spliced into the '?name=' URL built by v860HttpGetCharacterPage.",
+"conf": "high"
+},
+"0x4316fd": {
+"name": "v860RebaseClientStatePointers",
+"purpose": "Relocation/rebase fixup that adds a caller-supplied delta ([ebp+8]) to a large fixed table of client-state pointer globals, so the RPM mirror follows the live client module base. Adds the same delta to ~70 slots spanning the creature-array base [0x45ff0c] (stride 0xA8 array documented for v860), its neighbors [0x45ff08/10/14/18/1c/20/24 \u2026], the self/player scalar block [0x45fec4..0x45fee0], and the parallel [0x86c33xx]/[0x86c34xx] cache slots plus [0x46cb244/248]. Every entry is a read-add-store of the delta; returns 0. This is the address-relocation step that keeps ReadClientState's cached client.exe pointers valid after the target's base shifts (e.g. the [0x45ff24] fixup the licensing path also touches). n_insn is understated (only the prologue block decoded); the body is the repeated add-delta stanza.",
+"conf": "high"
+},
+"0x441030": {
+"name": "seekFileEnd",
+"purpose": "One-line WinAPI wrapper: SetFilePointer(hFile, 0, NULL, FILE_END=1) \u2014 seeks the given file handle to end-of-file. Used by the .bmp writer (captureWindowToBmp) and file-size logic; thin thunk, no CRT.",
+"conf": "high"
+},
+"0x44108c": {
+"name": "apiImportThunkTable",
+"purpose": "Not a function \u2014 the contiguous block of `jmp dword ptr [IAT]` import thunks (incremental-linker /INCREMENTAL jump stubs) for the bot's WinAPI surface: WSACleanup, GetProcAddress/LoadLibraryA, the injection quartet WriteProcessMemory/ReadProcessMemory/OpenProcess/VirtualProtectEx/VirtualAllocEx/CreateRemoteThread, threading (CreateThread/WaitForSingleObject), timing (Sleep/GetTickCount), synthetic input (SetCursorPos/GetCursorPos/mouse_event/SendMessageA/PostMessageA/GetAsyncKeyState), dialog/window controls, and the GDI capture set (BitBlt/SelectObject/CreateCompatibleBitmap/CreateCompatibleDC/GetDIBits/GetStockObject/TextOutA/SetBkMode/DeleteObject). Each entry is the target the rest of the code `call`s to reach an imported API.",
+"conf": "high"
+},
+"0x441212": {
+"name": "apiImportThunkTableComdlg",
+"purpose": "Not a function \u2014 a short trailing run of incremental-link `jmp [IAT]` import thunks for GetSaveFileNameA (comdlg32 save-dialog for .sav/.savd recordings), ShellExecuteA, and PlaySoundA (the 'beep if attacked' alarm), padded with int3. Continuation of the import-thunk table at 0x44108c.",
+"conf": "high"
+},
+"0x441230": {
+"name": "strstrImpl",
+"purpose": "MSVC CRT `strstr` implementation \u2014 substring search. Args: (haystack, needle). Loads needle[0] into DL, needle[1] into DH; if needle is empty returns haystack, if single-char scans for that byte. Otherwise the classic two-byte-anchored inner scan advancing esi through the haystack. Returns pointer to first match or NULL. This is the exact helper the v860 chat-command dispatcher at 0x41df85+ calls to match '.attack'/'.follow'/etc. against the chat buffer 0x46d3d84, and the license/HTTP parsers use it for 'locked'/'unlocked'/'ckv5'.",
+"conf": "high"
+},
+"0x4412b0": {
+"name": "chkstk",
+"purpose": "MSVC CRT `__chkstk` / `_alloca_probe` \u2014 stack-probe routine that touches guard pages in 0x1000 (4 KB) decrements before allocating EAX bytes of stack, then relocates ESP and returns via the saved return address pushed on the new frame. Compiler-inserted for large local frames (e.g. the ~0x44c/0x390 recv buffers in the socket functions above).",
+"conf": "high"
+},
+"0x4412e0": {
+"name": "strlenImpl",
+"purpose": "MSVC CRT `strlen` \u2014 DWORD-at-a-time length scan using the 0x7efefeff / 0x81010100 zero-byte-detection bitmask trick after aligning to a 4-byte boundary. Returns (ptr_to_NUL - start). Used pervasively by the sprintf/send paths (e.g. passed as the send() length in the license and HTTP functions).",
+"conf": "high"
+},
+"0x44135b": {
+"name": "sprintfImpl",
+"purpose": "MSVC CRT `sprintf` \u2014 variadic formatter. Sets up the output-buffer descriptor (count 0x7fffffff, flag 0x42), calls the core formatting engine sub_442943 (_output) with the format string ([ebp+0xc]) and the vararg list (lea [ebp+0x10]), NUL-terminates the buffer, and cleans up via sub_44282E. Returns the character count. This is the builder every command/URL/log string goes through \u2014 e.g. the '/authorize.php?id=%s', 'GET %s ... Host: %s', and the '*%s* Attack set on :%s: id:%i' chat confirmations.",
+"conf": "high"
+},
+"0x4413ad": {
+"name": "getTickCountMs",
+"purpose": "Millisecond monotonic clock the bot uses as its GetTickCount thunk. Calls GetSystemTimeAsFileTime, converts the FILETIME via sub_4431C0 (100ns\u2192 epoch), subtracts the process/CRT epoch base [0xa0d5d28/2c], and scales by 10000 (sub_443150 = 64-bit divide by 0x2710) to yield milliseconds. This is the 0x4413ad timer called before/after every chat-command handler for the ~1000ms cooldown gate [0x86c3980] and the recv-loop timeouts in the socket functions.",
+"conf": "high"
+},
+"0x441430": {
+"name": "strcpyImplEntry",
+"purpose": "MSVC CRT `strcpy` fast entry \u2014 loads dest into EDI and jumps into the shared copy loop at 0x4414a1 (the tail of the strcat/strcpy DWORD-at-a-time routine at 0x441440). Thin alternate entry point sharing the same word-at-a-time copy body.",
+"conf": "medium"
+},
+"0x441440": {
+"name": "strcatImpl",
+"purpose": "MSVC CRT `strcat` \u2014 DWORD-at-a-time implementation. First scans dest to its NUL using the 0x7efefeff/0x81010100 zero-detect mask (the strlen-style loop), then copies src word-at-a-time onto that tail with the same mask trick, byte-fixing the final partial word. Returns the original dest pointer. The 0x4414a1 label inside is the shared copy loop reused by strcpy at 0x441430.",
+"conf": "high"
+},
+"0x441520": {
+"name": "fcloseImpl",
+"purpose": "MSVC CRT `fclose` \u2014 takes a FILE* ([esp+8]). Checks the stream flags at +0xc: bit 0x40 (=_IOSTRG string stream) returns -1; if any of 0x83 (read/write/mybuf) is set it flushes via sub_44333C (_flush), frees the stream buffer via sub_4432D6 (_freebuf), and closes the OS handle via sub_443223 (_close on +0x10), accumulating the result in EDI. Frees the temp-name buffer at +0x1c via sub_4431F4 (free) and clears the flag word +0xc. Returns 0 on success, -1 on error. CRT stdio teardown for the config/recording/log files.",
+"conf": "high"
+},
+"0x443223": {
+"name": "crtClose",
+"purpose": "MSVC CRT _close(fd): validates fd in [ebp+0x14] against _nhandle [0xa0d7bfc] and the FOPEN(0x01) bit of the per-fd _ioinfo entry (fd-table base 0xa0d7ac0, index >>5 into 4-byte block ptr array, low 5 bits *8 = 0x8-byte stride). Resolves the OS handle via sub_446397 (_osfhnd/_get_osfhandle); for fd 1/2 (stdout/stderr aliasing) compares handles to avoid double-closing a shared osfhandle, then CloseHandle(). Clears the FOPEN flag via sub_44631D (_free_osfhnd/_freefile), releases the fd lock via sub_444535, and on error sets errno=EBADF(9) at [0xa0d5d5c]/[0xa0d5d60]. Returns 0 or -1. CRT internals, unrelated to bot logic.",
+"conf": "high"
+},
+"0x4432d6": {
+"name": "crtFreeFileBuffer",
+"purpose": "MSVC CRT _freebuf(FILE*): given a FILE* in [esp+8], checks flags at +0xc for (_IOMYBUF|_IOYOURBUF|... test al,0x83) and the _IOMYBUF(0x08) bit; if the stream owns an internally allocated buffer it frees FILE->_base (+8) via sub_4431F4 (free), clears the buffer-ownership flags (and word ptr [+0xc] &= 0xfbf7), and zeroes _ptr(+0), _base(+8) and _cnt(+4). Standard stdio buffer teardown, not bot logic.",
+"conf": "high"
+},
+"0x44333c": {
+"name": "crtFlushStream",
+"purpose": "MSVC CRT _flush(FILE*): for a stream whose flags (+0xc) have (_IOWRT set, mode==_IOWRT via &3==2) and the _IOWRT|_IODIRTY bits (test ax,0x108), computes pending bytes = _ptr(+0) - _base(+8) and calls _write(FILE->_file at +0x10, _base, len) via sub_44340E. On short write sets the _IOERR(0x20) flag and returns -1; on full write clears _IOWRT-dirty (al &= 0xfd) and resets _ptr=_base, _cnt=0. Stdio flush primitive, not bot logic.",
+"conf": "high"
+},
+"0x44340e": {
+"name": "crtWrite",
+"purpose": "MSVC CRT _write(fd, buf, cnt): the low-level write. Validates fd against _nhandle and the FOPEN bit in the _ioinfo fd table (0xa0d7ac0). Zero-count short-circuits to 0. If the fd is FAPPEND-flagged (test al,0x20) it calls sub_443CDB (_lseek to end, SEEK_END=2). For text-mode fds (FTEXT bit 0x80) it does LF->CRLF translation into a 0x400-byte stack scratch buffer [ebp-0x414], emitting each '\\n' as 0x0D 0x0A and flushing the translated chunks via WriteFile in 1KB batches; binary-mode fds WriteFile the buffer directly. Handles the Ctrl-Z(0x1a) EOF sentinel for pipe/console fds (bit 0x40), and on WriteFile failure or disk-full maps errno via GetLastError (ENOSPC->errno=28/0x1c, EBADF=9). Returns bytes written or -1. CRT internals, unrelated to bot logic.",
+"conf": "high"
+},
+"0x4435bb": {
+"name": "crtOpenFileT",
+"purpose": "MSVC CRT _openfile(mode,share,pmode,FILE*): parses the fopen mode string in [ebp+0xc] ('r'/'w'/'a' base + '+','b','t','c','n','S','R','T','D' modifiers) into an oflag word (esi) and stdio flag word (ecx), seeded from the global _fmode default [0xa0d5ed4]. 'a'->O_APPEND|O_CREAT|O_WRONLY(0x109), 'w'->O_CREAT|O_TRUNC|O_WRONLY(0x301), 'r'->O_RDONLY; '+' sets O_RDWR, 'b'/'t' select binary/text, 'c'/'n' set commit/no-commit, etc. Then calls sub_4464DF (_sopen) with pmode 0x1a4(0644) and share arg, and on success bumps the open-stream counter [0xa0d5ed0], stores the resolved fd into FILE->_file(+0x10) and the stdio flags into FILE->_flag(+0xc), zeroing _ptr/_cnt/_base/_tmpfname. Returns the FILE* or NULL. CRT stdio open, not bot logic.",
+"conf": "high"
+},
+"0x44372b": {
+"name": "crtGetStreamSlot",
+"purpose": "MSVC CRT _getstream(): scans the __piob FILE* table (count [0xa0d7aa0], base ptr [0xa0d674c]) for a free/unused stream \u2014 a slot whose FILE->_flag(+0xc) has none of (_IOREAD|_IOWRT|_IORW == 0x83) set \u2014 reusing it if found. If all in-use slots are exhausted it grows the table by malloc-ing a fresh 0x20-byte FILE via sub_4444C1 (_malloc_crt) at index*4, links it in, then initializes the acquired stream: _file(+0x10)=-1, _flag/_cnt/_ptr/_base/_tmpfname zeroed, and locks it. Returns the FILE* or NULL. The huge reported size (24981) is a disassembly artifact spanning padding/adjacent CRT code; the real routine ends at the ret after the slot init. CRT stdio internals, not bot logic.",
+"conf": "high"
+},
+"0x4421b7": {
+"name": "crtWriteMultibyteBufferToFile",
+"purpose": "MSVC CRT _write helper (write_multi_char/_flush-style internals). Given a FILE-like struct at [ebp+8], reads flags [edi+0xc] and fd/handle [edi+0x10], uses the _pioinfo table at 0xa0d7ac0 (fd>>5 outer, fd&0x1f inner, stride 8, +4 osfile byte tested for FOPEN 0x80 / FTEXT / FAPPEND 0x20) and calls sub_443CDB (lowio _write) to emit buffered bytes, expanding '\\n' (0xa) to CRLF in text mode. Sets errno global 0xa0d5d5c=0x16 (EINVAL) on a bad fd. Pure CRT stdio, not bot code.",
+"conf": "high"
+},
+"0x44230f": {
+"name": "crtFlushStreamBuffer",
+"purpose": "MSVC CRT _flush/_flushall inner routine. Operates on a FILE struct at [esp+8]: checks flag byte [esi+0xc] for dirty/write bits (0x83), clears the read/dirty bits, and depending on mode calls sub_4421B7 (buffer-writer) or sub_44333C then sub_443CDB (lowio _write) to drain the stream buffer back to the fd, resetting count [esi+0x18]=0x200. Sets errno 0xa0d5d5c=0x16 on error. CRT stdio flush, not bot code.",
+"conf": "high"
+},
+"0x44239b": {
+"name": "crtStreamGetcRefill",
+"purpose": "MSVC CRT _filbuf/_getc fast-path: decrements the FILE buffer count [edx+4], and if bytes remain returns the next char via the buffer pointer [edx] (movzx byte, post-increment pointer). Returns EOF path when count underflows. Inline getc primitive, not bot code.",
+"conf": "high"
+},
+"0x442420": {
+"name": "crtFwriteWrapper",
+"purpose": "MSVC CRT fwrite/_fwrite_nolock wrapper: locks the FILE (sub_4443F7 _lock_str/_lock_file), calls the core buffered-write worker sub_442943 with (stream, ptr, &countStruct at ebp+0x10), then unlocks via sub_444484, returning the element count in edi. CRT stdio, not bot code.",
+"conf": "high"
+},
+"0x442452": {
+"name": "crtFputcWrapper",
+"purpose": "MSVC CRT fputc/putc (_fputc_nolock wrapper): validates the stream via sub_4412E0, takes the stream lock (sub_4443F7), calls sub_441576 (the _putc/_flsbuf core with count=1) to write one byte, unlocks via sub_444484, and returns the char or EOF (sete/dec eax on ebx==esi compare). CRT stdio, not bot code.",
+"conf": "high"
+},
+"0x442495": {
+"name": "crtStreamPutcFastPath",
+"purpose": "MSVC CRT _putc/_flsbuf fast-path inline: decrements FILE buffer count [ecx+4]; if room remains stores the byte from [esp+4] into buffer ptr [ecx], post-increments the pointer, and returns the char zero-extended. Falls through to the slow flush path on underflow. CRT stdio primitive, not bot code.",
+"conf": "high"
+},
+"0x4424c9": {
+"name": "crtUngetcOne",
+"purpose": "MSVC CRT trivial forwarder: pushes constant 1 plus the stream arg and tail-calls sub_4444D3 (likely _ungetc/_read-one core), cleaning two args. CRT stdio, not bot code.",
+"conf": "medium"
+},
+"0x4424e0": {
+"name": "crtStrcpyWordAligned",
+"purpose": "MSVC CRT strcpy: word/dword-unrolled copy of a NUL-terminated string from src [esp+0x14] to dst [esp+0x10]. Handles the unaligned lead-in byte-by-byte until src is 4-aligned, then copies 4 bytes/iteration scanning for the terminating 0, returns the original dst pointer. CRT string routine, not bot code.",
+"conf": "high"
+},
+"0x4425de": {
+"name": "crtRemoveFile",
+"purpose": "MSVC CRT remove()/_unlink core: calls DeleteFileA on the path [esp+4]; on failure fetches GetLastError and maps it to errno via sub_444535 (_dosmaperr), returning 0 on success or -1 on failure. CRT filesystem wrapper, not bot code.",
+"conf": "high"
+},
+"0x442613": {
+"name": "crtGetLocalTimestamp",
+"purpose": "MSVC CRT __getsystime/time helper: calls GetLocalTime + GetSystemTime, compares the returned SYSTEMTIME fields against a cached copy at 0xa0d5d40 to reuse a cached DST/timezone verdict (0xa0d5d38); on a miss calls GetTimeZoneInformation to recompute the DST flag, then converts the SYSTEMTIME fields (year/mon/day/hour/min) via sub_44459C and stores the result to the caller's out-param [ebp+8]. CRT time, not bot code.",
+"conf": "high"
+},
+"0x4426ef": {
+"name": "crtMainCrtStartup",
+"purpose": "MSVC C runtime entry point (__tmainCRTStartup / mainCRTStartup). Installs the SEH frame (fs:[0] with handler 0x444e1c), caches GetVersion into globals 0xa0d5d68-74, runs _heap_init (sub_444C72), _ioinit, GetCommandLineA->0xa0d7c1c, _setargv/_setenvp (sub_444B40->0xa0d5d50), _cinit inits (sub_4448F3/44483A/443818), GetStartupInfoA, then GetModuleHandleA(NULL) and calls the user main via sub_40132F, passing its return to exit (sub_44465E). CRT bootstrap, not bot code.",
+"conf": "high"
+},
+"0x44282e": {
+"name": "crtFlsbufCore",
+"purpose": "MSVC CRT _flsbuf core: the flush-and-store-buffer worker for putc. On the FILE struct [ebp+0xc] it checks/clears the mode flags [esi+0xc] (IOWRT/IOREAD 0x82, 0x40), lazily allocates the stream buffer for stdout/stderr (special-cases FILE addresses 0x466f40/0x466f60 via sub_4450F5 _isatty and sub_4450B1 _getbuf), then writes the buffered bytes to the fd via sub_44340E (lowio _write), consulting the _pioinfo table at 0xa0d7ac0. Returns the char written or EOF. CRT stdio, not bot code.",
+"conf": "high"
+},
+"0x442943": {
+"name": "crtWriteFormattedCore",
+"purpose": "MSVC CRT _output/_woutput printf-engine core (~2KB, 400 insns). Parses a format string [ebp+0xc] via the state table at 0x45d01c/0x45d03c with an 8-way jump table at 0x443064: handles flags (-,+,space,#,0), width/precision (including '*' via sub_443122 va_arg int), length modifiers (h/l/w/I/I64 via the '64' literal check), and the conversion specifiers (c,C,d,i,o,u,x,X,e,E,f,g,G,n,p,s,S). Emits digits/strings through the char-output callback sub_443084 and formats floats via the indirect table at 0x466c70/74/7c ($fltused/_cfltcvt). Reads locale ctype table 0x466a50. CRT formatted output, not bot code.",
+"conf": "high"
+},
+"0x443150": {
+"name": "crtUllDiv",
+"purpose": "Compiler-emitted 64-bit unsigned division helper (_aulldiv). Divides the 64-bit dividend at [esp+0xc..] by the 64-bit divisor at [esp+0x14..]; fast 32-bit div path when the high divisor word is 0, otherwise the shift-and-refine long-division loop. Returns quotient in edx:eax, ret 0x10. Compiler intrinsic, not bot code.",
+"conf": "high"
+},
+"0x4431c0": {
+"name": "crtUllMul",
+"purpose": "Compiler-emitted 64-bit unsigned multiply helper (_allmul). If both high words are 0 it does a plain 32x32 mul; otherwise the cross-term expansion. Returns the 64-bit product, ret 0x10. Compiler intrinsic, not bot code.",
+"conf": "high"
+},
+"0x4431f4": {
+"name": "crtFreeIfNonNull",
+"purpose": "MSVC CRT small helper: if the pointer [esp+8] is non-NULL, resolves its heap block via sub_445310 and, when found, frees it through sub_44533B (free/_free_base inner). Guarded free wrapper, not bot code.",
+"conf": "medium"
+},
+"0x41f3f2": {
+"name": "v860LoadListFiles",
+"purpose": "Loads and parses the Team-Server/looter flat-file lists at startup. Zeroes several BSS arrays via memset-wrapper sub_441A00 (0x86484bc, 0x85f4a40, 0x86884bc), then for each file opens it with sub_4416A0 (fopen), reads whole file with sub_4421B7/sub_44230F (fseek/ftell size + fread), logs 'FileLoad size %i' via sub_44135B (sprintf) + sub_4012EE, and tokenizes line-by-line with sub_44210C (fgets) + sub_442050 (strchr ';') + sub_441C57 (atoi). Selects otitenids.txt vs itenids.txt by config flag sub_401113, filling the loot item-id table at 0x86884bc (+parallel 0x862d098); tradehelper.txt into id table 0x84007ec and 50-byte name records at 0x8400c9c; enemies.txt into 100-byte name records at 0x85d8908 with per-entry type flags at 0x85ba4a4 (count -> 0x460014); customhotkeys.txt into 50-byte records at 0x8639e44 with pointer table 0x8639674 (EMPTY marker check, count -> 0x86c3494); friends.txt into 100k-byte VIP/heal-friend buffer at 0x85c0268. This is the v860 equivalent of the v10x looter/Team-Server list loader.",
+"conf": "high"
+},
+"0x4205a7": {
+"name": "v860SetChatBufferPtrHi",
+"purpose": "One-line pointer fixup: reads the client base slot [0x86c346c], adds 0x77a3e4, and stores the result at global [0x46d3d80]. Computes a live absolute address inside client.exe (base + fixed field offset) and caches it for later RPM reads by the chat/creature reader. Companion to 0x4205c5.",
+"conf": "medium"
+},
+"0x4205c5": {
+"name": "v860SetChatBufferPtrLo",
+"purpose": "Pointer fixup twin of 0x4205a7: reads client base [0x86c346c], adds 0x77a3c4, stores absolute client address at global [0x46d3d7c]. The pair 0x46d3d7c/0x46d3d80 hold two adjacent client-memory field addresses (offsets 0x77a3c4/0x77a3e4) rebased whenever the client base changes.",
+"conf": "medium"
+},
+"0x4205e0": {
+"name": "v860TargetingTick",
+"purpose": "Targeting/attack maintenance tick. Iterates the on-screen tile/map region (start [0x45ff34], stride [0x45ff38], end start+0x1100) RPM-reading two dwords per cell via sub_401136 (ReadProcessMemory dword) \u2014 a tile id and an occupant flag at +0x20; on the first occupied cell it captures a creature id and confirms it is still present by scanning the creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) matching id at [rec-4]. If the current target vanished it writes state code (byte 8) and emits 'Target lost.' via sub_4012C6 to the local status sink [0x45ff30]; it also checks the PZ string 'This action is not permitted in a protection zone.' with sub_441B20 (strstr) to set state 7. Sleeps [0x45ff00]+0xFA ms, writes the resolved target back via sub_4011E0 into [tile+0x28], and aborts if GetAsyncKeyState(0x1B/ESC) is pressed. Mirrors the v10x targeting loop.",
+"conf": "high"
+},
+"0x420861": {
+"name": "v860WriteFieldAllCreatures",
+"purpose": "Walks the entire client creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]), RPM-reading each record's id at [rec-4] (sub_401136) and its visibility/valid flag via sub_401032; for every visible creature it WPMs the caller's dword argument (ebp+8) into field [rec+0x5c] using sub_40113B (WriteProcessMemory). Broadcasts one client-side creature field (offset 0x5c) to all on-screen creatures \u2014 used to bulk-set a per-creature flag such as a walk/attack marker.",
+"conf": "medium"
+},
+"0x4208d3": {
+"name": "v860WriteFieldOthersExceptSelf",
+"purpose": "Same creature-array walker as 0x420861 but skips the local player: it first reads the self creature id from [0x86c3418] (sub_401136), then iterates base [0x45ff0c]/stride 0xA8/end [0x86c3440], and for every record whose id at [rec-4] is NOT the self id and that passes the sub_401032 visibility check, WPMs the argument (ebp+8) into field [rec+0x5c] via sub_40113B. Broadcasts a per-creature flag to all creatures except yourself (e.g. clearing/setting a target-eligible marker on enemies only).",
+"conf": "medium"
+},
+"0x420963": {
+"name": "v860MarkTargetCreature",
+"purpose": "Target-flagging writer keyed on a specific creature id (arg ebp+8) and creature class (arg ebp+0xc). Reads self id [0x86c3418], scans the creature array (base [0x45ff0c], stride 0xA8, end [0x86c3440]) for the record whose id at [rec-4] equals the requested id and is not self, confirms visibility via sub_401032, then WPMs the class value (ebp+0xc) into field [rec+0x5c]. When class == 0x82 it additionally cross-references a 100-entry id table at 0x8616f64 and, on a match, stamps a fixed marker signature into the record via sub_40113B: field +0x70=3, +0x6c=0x72, +0x64=0x5e, +0x68=0x5e, +0x60=0x72 \u2014 i.e. it paints a skull/attack-mark set of fields on that creature. Implements the .attack / .sd target-arming write path.",
+"conf": "medium"
+},
+"0x420b02": {
+"name": "v860SetKeyState1B",
+"purpose": "Tiny setter (the 8919-byte 'size' is padding to the next real function, only 7 instructions execute): computes 0x1b - [0x46037c] and stores it at client-mirror global [0x46d2a10]. Writes a derived key/status scalar (ESC-relative, 0x1B) into a mirror slot consumed by the input/hotkey layer.",
+"conf": "low"
+},
+"0x422dd9": {
+"name": "v860WriteFloatFlagToSelf",
+"purpose": "Writes a boolean-selected 8-byte little-endian value into a client field of the local player. Reads self record base from [0x45fed8] (sub_401136) and offsets +0x58; depending on the arg (ebp+8): when 1 it builds the double 0x406b2000... (magnitude ~3.5), when 0 it builds 0x40400000... (~2.0) into a local pair, byte-copies 8 bytes via sub_4416C0 (memcpy), then WPMs those 8 bytes to [selfBase+0x58] via sub_4011E0 (WriteProcessMemory). Toggles a client-side floating field on the player (e.g. a walk-speed / step-delay style scalar) between two presets.",
+"conf": "low"
+},
+"0x422e57": {
+"name": "v860MirrorSelfField50",
+"purpose": "One-line mirror copy (the 20527-byte 'size' is inter-function padding; only 6 instructions run): reads local cache [0x45ff50] and stores it into client-mirror global [0x46d26d8]. Publishes a cached self-state scalar into the mirror block the UI/reader reads from.",
+"conf": "low"
+},
+"0x427e86": {
+"name": "v860LoadSettingsAndInitDialog",
+"purpose": "Loads the per-vocation settings file and populates the MageBot config dialog controls. Builds the filename with sprintf sub_44135B from '%sSETTINGS.txt' and the vocation prefix (ebp+0xc), then decides the profile by RPM-comparing two client stats \u2014 level [0x86c3428] and a second stat [0x86c343c] \u2014 against ratio thresholds (2x, 0x2bc, 0x4b0) to auto-select noob/sorcerer/knight/paladin, writing the chosen literal back and setting flag [0x86c39bc]. Opens the file (sub_4416A0), reads it (sub_4421B7/sub_44230F), logs 'FileLoad size %i', then repeatedly fgets (sub_44210C) trimming trailing bytes and pushes each value into dialog controls with SetDlgItemTextA across a long list of control ids (0x3e8..0x45f) and SetDlgItemInt; also sets the help banner ('Welcome to MageBot...') on 0x3f1 and the 'Creaturelist' label on 0x42a. This is the settings-load half of the config UI; mirrors v10x settings loading minus Lua.",
+"conf": "high"
+},
+"0x428dd3": {
+"name": "v860SaveSettingsFromDialog",
+"purpose": "Save/write-back half of the config UI (inverse of 0x427e86). Opens config.txt (sub_4416A0) and writes a batch of checkbox states via sub_442495 (write-int-line helper) gated on runtime flags [0x86c39dc], [0x86c3648], [0x460404]; then GetDlgItemTextA-reads a long series of edit controls (0x541, 0x5b9, 0x3e8, 0x3e9, 0x3ea, 0x420, 0x418, 0x419, 0x41a, ...) and appends each string to the file with sub_442452 (write-string-line) interleaved with sub_442495 newline writers. Also composes '%sSETTINGS.txt' (sub_44135B) to reload/rewrite the vocation settings file and reparse it (sub_44230F/sub_4421B7 + 'FileLoad size %i' log). Persists the dialog state to config.txt / SETTINGS.txt.",
+"conf": "high"
+},
+"0x429cf0": {
+"name": "v860StubReturnZero",
+"purpose": "Stub: standard prologue, xor eax,eax, return 0. A no-op/always-false predicate (likely a disabled feature gate or a placeholder callback).",
+"conf": "medium"
+},
+"0x429cf7": {
+"name": "v860TcpConnect",
+"purpose": "WSOCK32 TCP client connect helper for the Team Server. Creates a socket(AF_INET=2, SOCK_STREAM=1, 0), builds a sockaddr_in with family 2, host arg (ebp+8) as s_addr and port arg (ebp+0xc) as sin_port, calls connect(); on failure captures WSAGetLastError and returns -1, otherwise returns the socket. The v860 Team-Server outbound-connection primitive.",
+"conf": "high"
+},
+"0x429d6f": {
+"name": "v860OtFollowStepDir",
+"purpose": "OT-style (arrow-key) directional stepping engine for .otfollow/.follow. Reads two self coordinates from client via sub_401136 ([0x86c33d0], [0x86c33cc]) and builds a 3x3 neighbourhood grid of walkability by calling sub_401028 per cell around the player (setting/clearing flag [0x86c38c0] while sampling). It carries the direction-map constant string 'mejhhflgk' (bytes 6d 65 6a 68 68 66 6c 67 6b) laid out on the stack as the arrow-key lookup. It then dispatches on the requested direction char in ebp+8 \u2014 'e'(0x65)/'f'(0x66)/'g'(0x67)/'h'(0x68) \u2014 and when the corresponding neighbour cell is walkable (==1) presses that arrow key via sub_401172 (key-press helper) and returns 1. Implements the walkability-checked single-step used by OT-style follow and the cavebot replayer.",
+"conf": "medium"
+},
+"0x42b4c1": {
+"name": "v860HuntBotInit",
+"purpose": "HuntBot subsystem initializer. Calls sub_4010EB (setup), raises run flag [0x86c34d0]=1, calls sub_4012D5, then RPM-snapshots three client scalars via sub_401136 \u2014 [0x45ff24] -> cache [0x8632100], self-related [0x86c343c] -> local, and [0x86c3418] (self id) -> [0x8632104] \u2014 and logs 'HuntBot Loaded' through sub_40109B (status/print). Finishes by arming state: [0x86c34b4]=1, [0x86c34bc]=0, [0x86c37ec]=2 and returns -1. Boots the cavebot/hunt worker and captures the initial self-position/id baseline.",
+"conf": "high"
+},
+"0x42b550": {
+"name": "v860UnloadBot",
+"purpose": "Bot shutdown/unload routine. Calls sub_40126C (teardown helper), then logs the \"Unloaded\" status string via sub_40109B (the log/status printer used throughout the dispatcher), and clears two run-state globals: [0x86c34d0]=0 and [0x86c34b4]=0 (bot-active / worker-enabled flags). This is the counterpart to the bot-start path \u2014 it flips the master enable flags off so the RPM-polling worker loops idle.",
+"conf": "medium"
+},
+"0x42bbf7": {
+"name": "v860CavebotRecordSaveLoad",
+"purpose": "The .sav/.savd cavebot recorder persistence handler documented in 06-v860-lineage.md. Seeds the default name \"record.sav\" into a local OPENFILENAMEA struct (filter \"Sav Files\", titles \"Save File As\"/\"Open a file\"), then branches on the recording-in-progress flag [0x86c35e0]: when saving (=1) it logs \"Record done. Saving Record.\", calls GetSaveFileNameA (0x441212), normalizes the extension via strstr (0x441230) for \".sav\"/\".savd\", and on a .sav mirrors/duplicates waypoint records inside the 16-byte-stride waypoint array at base 0x86b39ac/0x86b39a0 (indexed by count [0x86c3478], writing marker opcodes 7 and 0xA into the [+0xC] field \u2014 likely z-change/end markers) before flushing the whole array (count*0x10+0x10 bytes) to disk via fopen/fwrite/fclose wrappers sub_4416A0/sub_441576/sub_441520; it also writes secondary buffers at 0x868d47c and the 0x10000-byte 0x8414a98 action/deposit blob. When loading it logs \"Loading Record\", zeroes the waypoint buffers via memset (sub_441A00), GetOpenFileNameA (0x44120c), fopen/fseek(SEEK_END)/ftell (sub_44230F/sub_4421B7) to size the file, logs the byte count, rewinds (sub_442163) and fread's the record blob back into 0x86b39a0 / 0x869edc0 / 0x8414a98 (sub_441F52), and sets replay flags [0x86c38d4]=1, [0x86c37bc]=0. Directly implements the record.sav/.sav/.savd file format loader/saver.",
+"conf": "high"
+},
+"0x42c394": {
+"name": "v860StartRecordWrapper",
+"purpose": "Trivial thunk: sets up a frame and tail-calls sub_401370, then returns. A one-line entry wrapper around another routine (likely the recorder/worker start helper); no globals or strings of its own.",
+"conf": "low"
+},
+"0x42c39e": {
+"name": "v860BeginCavebotRecording",
+"purpose": "Starts a fresh cavebot recording. Logs the \"Recording\" status string (sub_40109B), sets the recording-in-progress flag [0x86c35e0]=1, memsets the waypoint array at 0x86b39a0 (0xFA00 bytes) and the action/deposit blob at 0x8414a98 (0x10000 bytes) to zero (sub_441A00), and resets the counters [0x86c35f4]=0, waypoint index [0x86c3478]=0 and [0x86c3484]=0. This is the .sav recorder's arm/reset entry, paired with v860CavebotRecordSaveLoad which reads the same [0x86c35e0] flag and 0x86b39a0 buffer.",
+"conf": "high"
+},
+"0x42c400": {
+"name": "v860MassLoginNoobsThread",
+"purpose": "Implements the mass-login (\"lognoobs\") feature. Guards against re-entry via [0x86c39f8], memsets a local WSADATA and the per-account credential table at 0x86170f4 (0x15F90 bytes, stride 0xBB8), then WSAStartup(0x101) \u2014 on failure logs \"WSAStartup() returned error code %i\" and returns 0xFF. Opens \"lognoobs.txt\" (fopen sub_4416A0), reads it line by line (fgets sub_44210C), splitting each line on ';' (strtok-style sub_442050) into fields copied (strcpy sub_441430) into the credential table at 0x86170f4 + accountIdx*0xBB8 + fieldIdx*0x3C. For each parsed account it stores the index into the thread-handle array 0x46cb34c and spawns a worker thread via CreateThread(start=0x4013b1) with a 50 ms Sleep between spawns, finally logging \"Logging on noobs, threads %i\" ([0x86c3a4c]). Drives the bulk character auto-login over WSOCK32.",
+"conf": "high"
+},
+"0x42c638": {
+"name": "v860HotkeyKeywordDispatch",
+"purpose": "Large keyword/hotkey command dispatcher \u2014 a strstr-chain (sub_441230) over the argument passed in [ebp+8]-1 (a hotkey/config token buffer), sibling to the '.'-prefixed chat dispatcher but for UPPERCASE control keywords. Each stanza matches a literal and flips a toggle global, most gated by a GetTickCount cooldown (sub_4413AD minus a per-command last-tick global). Handlers include: \"autosay\" -> copies trailing text to 0x83f53e0, sets say-repeat interval [0x86c3630]=0x32, logs \"Autosay %s On, Click Target to Activate\"; \"PING\" -> builds a probe packet at 0x868d37c (0x40 0x21 ... + name) and sets [0x86c3a60]=1; \"NEAR\"/\"PUSHMAX\"/\"LAST\"/\"SDNEAR\" -> set push-target flag [0x86c3760] and copy target name to 0x46cb24c; \"MWALLBEHIND\" -> reads self-position scalars ([0x86c3418] dir, [0x86c33d0] x, [0x86c33cc] y, [0x45ff4c] z) via sub_401136, computes the tile one step behind the character and injects a magic-wall use frame via sub_401212 (opcode 0xC6C) then Sleep(10) \u2014 the mwall-behind combo; \"PAUSEBOT\" [0x86c35d8]=1; \"AUTORING\"/\"AUTOSSA\"/\"SDCOMBO\"/\"AUTOSSAFAST\" -> toggle auto-equip/auto-rune flags [0x86c3698]/[0x86c3694]/[0x86c3704]/[0x86c3680] (parsing a trailing item id via sub_441C57/atoi) with On/Off log lines; \"STOPMANA\" [0x86c35a4]=1; \"PUSHMAXD\"/\"PUSHMAX\" set [0x86c35b4]=1 and direction [0x4600b4]; \"LOGOUT\" toggles logout-on-danger [0x86c3660]; \"SSAFAST\" parses a delay into [0x46005c] (floored to 0x1F4). All matches jmp to the common tail 0x42ed38. Mirrors the v10x hotkey/config command surface, driven by chat/hotkey keywords instead of Lua.",
+"conf": "high"
+},
+"0x42ed46": {
+"name": "v860ComputeTileWest",
+"purpose": "Computes a tile coordinate offset from the self-position: reads the self-X scalar [0x45fec8], subtracts 4, and stores the result to [0x46cb248] (a scratch coordinate global consumed by the movement/injection helpers, e.g. sub at 0x42f141 which reads [0x46cb248]). Effectively derives a west/left-edge tile column used when framing screen-relative movement or map-square math.",
+"conf": "medium"
+},
+"0x42ed62": {
+"name": "v860ComputeTileEast",
+"purpose": "Mirror of v860ComputeTileWest: reads self-X scalar [0x45fec8], adds 4, stores to [0x46cb244] (the east/right scratch coordinate global also read by 0x42f141). Together the two functions bracket the character's X into left/right tile bounds for the walk-injection routine.",
+"conf": "medium"
+},
+"0x42ee0d": {
+"name": "v860InjectStopWalk",
+"purpose": "Client-memory walk-state patcher. Reads two 2-byte fields from client memory at [0x45fecc] and [0x45fed0] via the RPM helper sub_401136 and compares them to sentinels 0x4A75 / 0x4075 (walk/move-pending markers). Depending on the incoming flag [ebp+8], it either writes 0x9090 (two NOP bytes, from the local 0x90/0x90 buffer) over both fields via the WPM helper sub_4011E0 \u2014 freezing/cancelling an in-progress walk \u2014 or restores the original bytes from the saved originals at 0x45d020/0x45d024. This is a movement-lock toggle that patches the client's own walk routine, part of the anti-stuck / precise-step machinery.",
+"conf": "medium"
+},
+"0x42f141": {
+"name": "v860InjectDirectionalStep",
+"purpose": "Directional step injector into client memory, gated by enable flag [0x86c3954]==1 (else returns 0). Reads self X/Y/Z scalars ([0x86c33d0],[0x86c33cc],[0x45ff4c]) via RPM sub_401136, accumulates a pending-step delta into [0x86c3a90] from the arg [ebp+8], and when a step is due patches client walk bytes at [0x45fec8] with 0x9090 (sub_4011E0). It then computes clamped [0,7] direction indices from the scratch coordinate globals [0x46cb248] and [0x46cb244] (the west/east tiles set by 0x42ed46/0x42ed62) plus the arg offset, clamping out-of-range values to 0 or 7, and writes those direction bytes plus a marker (7) into client memory at [0x46cb248]/[0x46cb244], finally restoring/writing the self-pos scalar back at [0x45fec8] from 0x45d01c. Implements a single walk step by rewriting the client's movement direction fields \u2014 the WPM analogue of a Tibia walk packet.",
+"conf": "medium"
+},
+"0x42f2ee": {
+"name": "v860XteaSubtractBlock",
+"purpose": "Byte-stream transform over a caller buffer: for i in [0,count), reads b=in[0] and k=in2[0] and, tracking a borrow flag in [ebp-0x208], emits out[i] = b - borrow - k with wrap (the 0xFF - k + 1 branch handles underflow), producing a running big-integer/modular subtraction across the block; returns 0 on final borrow (underflow) else 1 and hands the result buffer to sub_4416C0 (a buffer-append/emit helper). Part of the login-crypto path (RSA/XTEA bignum arithmetic) feeding the team-server login packet builder; low confidence on the exact crypto primitive.",
+"conf": "low"
+},
+"0x42f601": {
+"name": "v860BignumMultiplyBlock",
+"purpose": "Nested-loop byte-array multiply-accumulate: outer loop over [ebp+0x10] result limbs, inner loop over [ebp+0x14] multiplier limbs, computing out[i+j] += in[k]*mul[j] + carry with carry propagated through [ebp-0x208] and >>8 limb overflow into [ebp-0x214] \u2014 a schoolbook big-integer multiplication (modular-exponentiation building block for RSA). Zeroes the 0x200-byte accumulator via sub_441A00, then emits the product via sub_4416C0. Sits alongside v860XteaSubtractBlock in the RSA login-handshake math; exact primitive inferred from structure.",
+"conf": "low"
+},
+"0x42f789": {
+"name": "v860BuildTeamServerLogin",
+"purpose": "Builds and sends the encrypted team-server login/handshake packet over the socket in [ebp+8]. Lays down a fixed header (0x0A 0x02 0x00 0x20 0x03 0x00), copies a 0x10-byte token from [ebp+0xc], then pulls per-account credential fields from the credential table at 0x8617130 + accountIdx*0xBB8 (accountIdx=[ebp+0x10]): a numeric field via atoi sub_4412E0 packed little-endian, and a string field via strcpy sub_441430 into successive length-prefixed slots. It reads the RSA modulus/timestamp from client memory ([0x45fed4] via sub_401294) and loads \"rsa.txt\" (fopen sub_4416A0) for the key material, sets the public exponent 0x10001, and calls the RSA encrypt routine sub_4498CB over the assembled 0x80-byte block; finally builds a 0x85-byte framed message (length byte 0x85) and send()s 0x87 bytes to the server. This is the WSOCK32 team-server auth frame builder, using the same rsa.txt key path noted in the lineage doc.",
+"conf": "high"
+},
+"0x42fa0d": {
+"name": "v860ComputeHwidFromMac",
+"purpose": "Hardware-ID generator. LoadLibraryA(\"RPCRT4\") + GetProcAddress(\"UuidCreateSequential\"), calls it to obtain a sequential UUID whose trailing 6 bytes are the machine's MAC address, copies MAC bytes [2..7] into a local, folds the dword at [ebp-0x24] and XORs it with 0x5331, storing the obfuscated fingerprint to global [0x86c3670]. Produces the per-machine HWID sent to the licensing/team backend (tibiadb.com licensing path).",
+"conf": "high"
+},
+"0x42fc4a": {
+"name": "v860ThrottledConsoleLog",
+"purpose": "Throttled console/debug logger. Uses GetTickCount (sub_4413AD) against last-tick [0x86c3aa4] with a 1000 ms (0x3E8) window and a per-window line counter [0x86c3aa0] capped at 0xF0, so it rate-limits output. When the debug-console flag [0x86c3574]==1 it walks the NUL-terminated string in [ebp+8] and WriteConsoleA's it one char at a time to the handle in [0x8632108]. A gated stdout tracer for the bot's diagnostic messages.",
+"conf": "medium"
+},
+"0x42fcdd": {
+"name": "v860CaptureWindowRegion",
+"purpose": "GDI screen-scrape helper. Creates a memory DC (CreateCompatibleDC), a compatible bitmap sized [ebp+0x10] x [ebp+0x14] from the desktop DC (GetDC(0)), SelectObject's it in, and BitBlt's (SRCCOPY 0xCC0020) from the desktop DC at origin 0,0 into the memory bitmap; then hands the HBITMAP plus dimensions and a context arg [ebp+0x18] to sub_4010DC (the GetDIBits/pixel-reader) before restoring the DC and cleaning up (SelectObject/DeleteObject/ReleaseDC). This is the tile/window pixel-capture primitive behind the BitBlt/GetDIBits screen-reading path described in the lineage doc.",
+"conf": "high"
+},
+"0x415b93": {
+"name": "v860LooterCorpseWalkTick",
+"purpose": "Looter corpse/container-walk tick. Entry-logs '\\nchking looter open %x' (fmt @0x460d68, arg [0x86c34b8] = loot-container handle) via sub_44135B(sprintf)+sub_4012EE(log-flush). Walks the on-screen entity/item mirror array (base [0x45ff10], stride 0x1ec, count [0x86c3410]) with the 4-byte ReadClientState RPM helper sub_401136: per slot skips empty records, reads the visible sub-record count at +0x38, then iterates that many 0xC-byte tuples at slot+[0x86c3460]+0x3b reading a match-id ([ebp-0x14]) and a value/count field ([ebp-0x1c], gated to 2..0x63). When the tuple id equals self id [0x45ff50] it packs (index,id,self-flags [0x86c34f4/f8],counter) into the Team-Server frame builder sub_40121C and Sleeps [0x45ff00] ms. Second phase (gated [0x86c3504]==1, driven by [0x86c3508]) filters a keycode/sprite blacklist (0xea/0xf0/0x11a/0x11e/0x10a/0x10c ranges), fires reactions through sub_4010D2, and on a floorchanger tile ([0x45ffa0/a4/a8] match) drives the corpse-open drag/drop sequence: sub_401145 (per-slot action), sub_40121C, then sub_4011B3(dir,...) mouse-frame pairs with the deposit counter [0x86c3864]/[0x86c386c] and sub_401181/sub_401226. This is the v860 corpse looter that opens the loot container, reads item ids from the mirror, and drag-drops matched ids into the loot pile via synthetic frames \u2014 mirrors the v10x Loot* path but recorder/itenids.txt-driven.",
+"conf": "medium"
+},
+"0x41608c": {
+"name": "v860LooterTickWithTeamBroadcast",
+"purpose": "Full looter/deposit tick with a GetTickCount throttle and Team-Server broadcast \u2014 the larger sibling of v860LooterCorpseWalkTick. Same entry trace family ('\\nchking looter open %x' fmt region @0x460d80, arg [0x86c34b8]) via sub_44135B+sub_4012EE. Bails immediately if [0x86c34b8]==1. First pass (gated [0x86c352c]==1 && [0x86c3504]==1) walks the entity mirror (base [0x45ff10], stride 0x1ec, count [0x86c3410]) with sub_401136, matching tuple id==self [0x45ff50] and emitting frames via sub_40121C. A GetTickCount gate (sub_4413AD, stamp [0x86c3898], interval 0x3a98 = 15000 ms) rate-limits the heavy scan. Middle phase counts matching records into [0x86c389c] and broadcasts the current followed/looted set to the Team Server via sub_401181 (2,[0x86c34fc/f8/f4/f0], count). Final phase (gated [0x86c3504]==1) tracks a floor-change threshold [0x86c38a0] (clamped >=3) and, when the target tile leaves the safe list [0x45ffa0/a4/a8], drives the drag-drop / step-toward-loot builder sub_4011B3 with a per-index dispatch counter table [0x86c3870] (idiv 0x14 wheel) capped at 0xfa0, calling sub_4013AC(0x1f4,0xc8) as the fallback move. Same looter subsystem as 0x415b93, extended with the 15 s cadence and team-wide broadcast documented for v860's 'all clients follow the main client' feature.",
+"conf": "medium"
+},
+"0x416c89": {
+"name": "v860PathReachTileWithFloorchangers",
+"purpose": "Route/reachability probe between two world tiles over the precomputed path grid, with floorchanger collection. Args (ebp+8,+0xc)=from x,y and (ebp+0x10,+0x14)=to x,y. Increments a call counter [0x86c38b8]; reads a self-scalar [0x86c3418] via sub_401136. GetTickCount gate (sub_4413AD, stamp [0x86c38c8], 0x190=400 ms) resets the retry budget [0x86c38c4]. Fast-outs: equal from/to returns 1; deltas outside dx\u2208[-8,9], dy\u2208[-6,7] return 0. Consults a small cached-target table (ids at [0x83e68e4], coords at [0x83e65c4], values at [0x83e62a4]) keyed by from-x/y. Otherwise packs the delta via sub_401320 and walks a route record list (0xC-stride, base [ebp-8]) read with sub_401136: field 0x63 sentinel marks route nodes, others index a per-tile flag table [0x86484bc] (bit 0x80000001 test). When a floorchanger-collection mode is active ([0x86c38ac] set, [0x86c38a4]==1) it recognizes floorchanger item ids (0x15a6/0x79c/0x7b0/0x182/0x1a5 up, 0x1b3 down) and records their (x,y,dir) into the parallel arrays [0x83e5304]/[0x83e4364]/[0x83e33c4] indexed by [0x86c38b4], logging '\\nfound floorchanger %x : %x' (fmt @0x460dd8) via sub_44135B+sub_4012EE; also scans a per-tile floorchanger map [0x86b0168/16c]. Uses sub_441A58 (abs) for the range guards. This is the v860 cavebot pathfinder's tile-reachability + ladder/rope/hole-locator that feeds the replayer's z-transition handling ('Near z change waypoint').",
+"conf": "medium"
+},
+"0x41719a": {
+"name": "v860PathFloodFillExpand",
+"purpose": "BFS/Lee flood-fill expansion step of the v860 tile pathfinder. Args (ebp+8,+0xc)=goal x,y; (ebp+0x10,+0x14)=current x,y; (ebp+0x18,+0x1c)=origin/self x,y. Bumps iteration counter [0x86c37d0] and bails after 0x5a (90) iterations. Reaching the goal appends (x,y) to the open-list arrays [0x83e86e8]/[0x83e80a8] and returns 1. Early-outs when the current tile is within the 8x6 window of self and already carries the current wave value in the 3D cost grid (base 0x46d91c4, z-stride 0x3d0900, x-stride 0xfa0, \u00d74) \u2014 sub_441A58 (abs) bounds. Validates walkability via sub_401028; on the first frontier tile ([0x86c37cc]==0) it seeds the wave: sets [0x86c38d0]=1 and memsets a 0xa80-byte visited bitmap [0x83e2944] via sub_441A00. Dedupes visited tiles through that 0x60-stride bitmap and the open-list arrays, then appends the tile and computes the two axis step-directions (sign of goal-current) with SETGE/abs (sub_441A58) tie-breaking toward the longer axis, and recurses/commits the next step via sub_401302 (neighbor step-test). On success with [0x86c38d0]==1 it compacts the open lists by memmove (sub_4416C0) through scratch [0x83e21c4]. This is the core wavefront/route-search that fills 0x46d91c4 \u2014 the v860 equivalent of the v10x cavebot pathfinder, consuming the blk/stop/mtiles grids.",
+"conf": "medium"
+},
+"0x4176a6": {
+"name": "v860PathTileCostSample",
+"purpose": "Tile-cost sampler over the 3D path grid used by the pathfinder scoring. Args (ebp+8,+0xc)=x,y (ebp+0x10)=z. If |x-0x1f4|>[0x4600f0] it returns GetTickCount(sub_4413AD)+|x-0x1f4|*0x3e8 as a huge out-of-bounds penalty; likewise for y. Otherwise, when in bounds, it reads the raw cost cell from the grid at 0x46d91c4 (z*0x3d0900 + x*0xfa0 + y*4) and returns it. The tail branch (loops [ebp-8]/[ebp-0x14] over a 2x2 neighborhood) averages the cell plus its neighbors (accumulate then arithmetic-shift-right by 2, with the cdq/and 3 round-to-nearest correction) \u2014 a 2x2 box-filter of the cost grid. sub_441A58 = abs on the coordinate deltas. Feeds the wavefront/route scorer (0x41719a / 0x4177d2) with per-tile traversal cost, reading the same blk/stop/mtiles-derived grid.",
+"conf": "medium"
+},
+"0x4177d2": {
+"name": "v860PathMarkNeighborTiles",
+"purpose": "Wavefront neighbor-marking / relaxation step that writes distance values into the path grid. Args (ebp+8,+0xc,+0x10)=x,y,z; (ebp+0x14)=wave value; (ebp+0x18,+0x1c)=origin x,y. Bails if the global expansion depth [0x86c38e4] exceeds the cap [0x4600f4], if the existing grid cell (0x46d91c4 + z*0x3d0900 + x*0xfa0 + y*4) already holds a value <= wave-2, or if the tile is outside the \u00b17 x / \u00b15 y window around the search origin [0x4600e4]/[0x4600e8]. First frontier expands an 8x6 (dx\u2208[-9,8], dy\u2208[-11,6]) block: for each walkable neighbor (sub_401028 test) it stamps the wave value into the grid. Then it writes the tile's own value and, re-checking walkability toward the origin, increments [0x86c38e4] and stores wave-1 into the tile before recursing into the 3x3 neighborhood via sub_4012DF (the neighbor step-commit helper), finally decrementing [0x86c38e4]. This is the grid-writer half of the flood-fill: it propagates the monotonically decreasing distance field over 0x46d91c4 that v860PathFloodFillExpand/v860PathTileCostSample later read back to reconstruct the route.",
+"conf": "medium"
+}
+}
