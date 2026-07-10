@@ -87,24 +87,47 @@ runtime wiring the stub stands in for:
 | `0x10005570` | `GetProcAddress(ws2_32, "setsockopt")` → store at `[0x101c4b0c]` |
 
 So the DLL caches the client's Winsock `send`/`setsockopt` addresses and starts a
-worker thread. There is a separate `"Hooked 9.1"` string in `.rdata`
-(`0x1000c5fd`) alongside `"Dll loaded 9.2"`, and the imports include
-`SetWindowLongA` + `CallWindowProcA` (a subclass/WndProc hook) and
-`VirtualProtectEx` (needed to make a code patch writable). The evidence points to
-the DLL patching the client's outgoing-`send` path so client→server traffic
-routes through DLL-controlled code — i.e. the real `fnPacket`-equivalent logic is
-installed into the client at runtime, not resolved from the export table. **This
-send-path patch is inferred from the cached `send` pointer + `VirtualProtectEx` +
-`"Hooked"` string; the exact patch site is not yet disassembled.** (unconfirmed)
+worker thread. **Both the send path and the keyboard hook are now disassembled**
+(worker `pkt_pipeServerThread` `0x10004c0b`, sender `pkt_xteaEncryptAndSend`
+`0x10004726`, WndProc hook `pkt_hookedWndProc` `0x100052ba`):
 
-The worker thread `0x10004c0b` opens a named-pipe / file IPC channel
-(`"Thread Started"`, `"C:\pipe11.dat"`, `\\.\pipe\SamplePipe%i`,
-`C:\pipechat%d.txt`, `C:\pipeteam%d.txt`, `C:\pipeonline%d.txt`) — this is the
-DLL↔exe transport. The DLL also pulls in `psapi.dll`
-(`EnumProcesses/EnumProcessModules/GetModuleBaseNameA/GetModuleInformation`) to
-find the client, and writes diagnostics to `packerrors.txt` / `p124.txt`. All of
-this confirms the DLL is the in-client agent and the exe is the out-of-process
-controller talking to it over pipes.
+**The pipe-server worker (`0x10004c0b`).** Reads `C:\pipe11.dat` for an instance
+number and the client window handle; builds `\\.\pipe\SamplePipe%i`; caches four
+client send-context pointers into a struct at `[0x1000c12c]+676/688/696/720`;
+`SetWindowLongA(hWnd, GWL_WNDPROC, pkt_hookedWndProc)` to subclass the client
+window. Then it loops: `CreateNamedPipeA` → `ConnectNamedPipe` → `ReadFile` a
+frame the exe wrote. It reads the *live* client socket handle from
+`[[g_clientSocketCtxPtr]+4]` (`g_clientSocketHandle 0x101c4b04`), calls
+`setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, 1)` once per socket change, and
+hands the frame to `pkt_xteaEncryptAndSend`. Two magic frames (`19 6f` / `19 70`,
+opcode 0x13 sub 111/112) toggle the Mwall-timer HUD (`g_mwallTimerOn 0x1000c308`)
+instead of being sent.
+
+**The sender (`pkt_xteaEncryptAndSend 0x10004726`) — the real `fnPacket`.** Given
+a plaintext Tibia frame from the pipe it: (1) pads the tail with an LCG PRNG
+(`0x1000d388`), (2) **XTEA-encrypts** it in 8-byte blocks — 32 rounds, delta
+`0x9E3779B9`, 128-bit key at `g_xteaKey 0x1000c128` (the client's session key),
+(3) computes an **Adler-32** checksum, prepends the `<len:2><adler:…>` header, and
+(4) calls the runtime-resolved **`send`** (`g_ws2_send 0x101c4b10`) on the client's
+live socket. So the exe writes *plaintext* frames to the pipe and the DLL does the
+XTEA+checksum+send exactly as the client's own protocol layer would — the injected
+packet is indistinguishable from a real client packet on the wire. (The earlier
+"send-path patch via `VirtualProtectEx`/`Hooked`" inference was wrong: injection is
+by *calling* the client's `send` with an encrypted frame, not by patching the send
+routine.)
+
+**The keyboard hook (`pkt_hookedWndProc 0x100052ba`).** The window subclass
+intercepts `WM_KEYDOWN/UP/CHAR`: when the bot is armed (`[0x101c4c4c]==1` without
+Ctrl/Shift, or `pkt_isInGameState`), it **swallows the arrow keys** (VK 0x25–0x28)
+and numpad digits so the bot's walker owns movement, and tracks Ctrl(163)/Shift(161)
+key-up state; everything else is forwarded via `CallWindowProcA(lpPrevWndFunc)`.
+This is the input side of the injection — it pairs with the exe's arrow/numpad
+walker threads ([07](07-master-loop-and-threads.md)).
+
+The channel also uses `C:\pipechat%d.txt` / `C:\pipeteam%d.txt` /
+`C:\pipeonline%d.txt` side files for the chat/team/who-is-online HUD data, and
+writes diagnostics to `p124.txt`. The DLL is the in-client agent; the exe is the
+out-of-process controller talking to it over the pipe.
 
 ## v10x vs v860 — same code, different buffer size
 
@@ -137,16 +160,18 @@ sized to its client.
   `client.exe`, spawns worker `0x10004c0b`, and caches `ws2_32!send`
   (`[0x101c4b10]`) and `setsockopt` (`[0x101c4b0c]`); the DLL↔exe channel is
   named pipes / `C:\pipe*` files.
-- **Inferred (from imports + strings, not yet from the patch site):** the DLL
-  hooks the client's `send` path (cached `send` ptr + `VirtualProtectEx` +
-  `"Hooked 9.1"`), so the on-disk `fnPacket` stub is a placeholder and the real
-  routing is installed at runtime.
+- **Confirmed (now disassembled):** the real injection is
+  `pkt_xteaEncryptAndSend 0x10004726` — it XTEA-encrypts the plaintext frame with
+  the client session key `g_xteaKey 0x1000c128` (32 rounds, delta `0x9E3779B9`),
+  Adler-32-checksums it, and calls the runtime-resolved `send` `g_ws2_send` on the
+  client socket `g_clientSocketHandle`. The DLL does **not** patch the send routine;
+  it *calls* `send` directly. The `SetWindowLongA` subclass `pkt_hookedWndProc
+  0x100052ba` is a keyboard hook that swallows arrow/numpad keys while the bot walks.
+- **Still open:** whether `nPacket` is a sequence counter or status word (its
+  writers), and the v860 DLL's byte-level deltas (same mechanism, re-verify addrs).
 
 ## Follow-up
 
-- Disassemble worker `0x10004c0b` fully and the `send`/`setsockopt` consumers at
-  `[0x101c4b10]`/`[0x101c4b0c]` to pin the exact send-path patch and framing.
-- Map the pipe protocol (`\\.\pipe\SamplePipe%i`, `C:\pipe11.dat`) to the exe
-  side to show how `nPacket`/injected packets cross the boundary.
-- Confirm whether `nPacket` is a sequence counter or a status word by finding its
-  writers in both the DLL and the exe's post-injection `WriteProcessMemory` pass.
+- Confirm `nPacket` semantics by finding its writers in DLL + exe.
+- Re-verify the v860 packet.dll (`0x100052b7` `fnPacket`) shares the exact
+  XTEA/Adler/send worker (addresses differ).
