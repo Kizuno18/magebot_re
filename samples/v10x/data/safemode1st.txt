@@ -1,0 +1,16 @@
+Welcome to Magebot Safe Mode
+
+Things to know
+
+1.In Safe Mode Magebot will not by default tamper with any client code, nor will it inject packets
+
+2.If you turn on LvL Spy or Light Hack, be aware that these still do some client modification.
+
+3.In order for Magebot to send mouse clicks and movements to the client, the client must be your ForeGround Window (you cant minimize it)
+
+4.In order for Magebot to loot or send items to and from your open backpacks, only the first row of every backpack should be visible and you should NOT minimize your inventory.  Also you should close the battlelist and your vip list.
+
+5.Some functions will not work in this mode(such as speedhack) and some others have not been added, so you should test it out thoroughly before using in a dangerous environment.
+
+6.Magebot SAFEMODE will attempt to find a hotkey in your hotkey list from F1 to F10 for every spell it tries to cast, so it is suggested that you add the spells you wish Magebot to use to your main hotkeys
+

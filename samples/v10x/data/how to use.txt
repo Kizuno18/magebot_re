@@ -1,0 +1,74 @@
+****** THIS FILE IS REALLY OUTDATED ******
+
+
+**--Please move all files into the same folder
+**--The cavebot does not run very long without a key-- to get a key you need to make an account at tibiadb
+
+
+
+!!--Make sure ur keyfile is in the directory of the bot and set ur game hotkeys to match the ones here
+!!--the keyword AUTO loads SSAs below 80% mana
+!!--the bot loads liferings only when below 90% mana and only when hunting
+!!--the cavebot will not walk down holes or ramps unless they are part of its path
+
+
+--SETTABLE KEYLIST-------------------
+The Key Remmapper can be configured with 
+1.any hotkey F1-F9 
+2.the word SSA( load 1 SSA) 
+3.and the word AUTOSSA (auto loads ammies in the order SSA>eammy>prt ammy also loads mightrings if no ssa --uncheck to stop)--
+4.GFB/HMM/SD/EXP (auto gfb hmm or sd);
+
+!!-IMPORTANT pt1- IF you add any character on your vip with a skull and use the SD/HMM/EXP/or GFB hotkey the bot will automatically fire on them.
+!!-IMPORTANT pt2-THE ESCAPE KEY as well as ANY of the SETTABLE KEYS that dont say SD/HMM/GFB/EXP turn the autofire off.
+!!-IMPORTANT pt3-THE FIRETIMER controls how many milleseconds pass before u shoot each SD/HMM/EXP/GFB set it to 500+ if u have a bad connection
+
+--PERMANENT KEYLIST------------------(at least for now)
+1.PAGE_UP-!!HEAL-FRIEND!!-If u double click any character or even a summon and then hit PAGEUP the healer will heal them with UH below 50% and IH if they are a summon.
+2.HOME!!AUTOLOOTER!!-HOME activates the autolooter
+3.ALT-record
+4.INSERT-startbot
+5.ESCAPE-pausebot
+--------------------------
+
+--------------------------
+How to write a script:
+
+1.Hit the ALT key
+2.Walk in a loop                 
+    a.--if you go up or down holes be sure to step on the rope hole before roping up
+    b.--if you go up ramps enter from the front of the ramps that you walk up it
+4.Hit HOME         -- when the window pops up choose the name of the sav file
+--------------------------
+To start botting:
+0.Hit HOME         -- choose the sav file from the window
+1.Hit INSERT
+2.If you would like to make lootbags while botting u must
+   a. Let the first backpack u open be empty
+   b. Place a backpack with some backpacks inside it on your route, then doubleclick it and hit tab-- you will hear a noise
+3.You may pause the bot at any time by hitting ESCAPE, Press INSERT to resume
+4.If you travel down holes you must have a rope in one of your open bps
+--------------------------
+
+To sort bags
+--------------------------
+1.open the bp u want sorted
+2.open a bp of up to 20 bps
+3.hit TAB then PAGEUP
+4.Hold down ESCAPE to stop
+--------------------------
+
+To load bp from ground
+--------------------------
+1.open a stacked emtpy bp to the innermost bp
+2.double click the item
+3.hit Load from ground
+4.Double click more as needed
+5.Hit Escape to stop
+--------------------------
+
+Manafluid Reloader
+--------------------------
+1.Fill the 1st bp inside ur dump bp full of bp manas
+2.Type the number of the bp you use to carry manas in the box
+3.Only use a single bp color for all mana bps

@@ -1,0 +1,19 @@
+# IDA / Ghidra databases (regenerable)
+*.i64
+*.idb
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+*.gpr
+*.rep/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# scratch
+scratch/
+*.tmp

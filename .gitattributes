@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+# Binary samples — never normalize
+*.dll  binary
+*.exe  binary
+*.dat  binary
+*.sav  binary
+*.savd binary
+*.bin  binary
+*.wav  binary
+*.i64  binary
+*.idb  binary

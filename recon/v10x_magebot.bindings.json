@@ -1,0 +1,317 @@
+[
+ {
+  "name": "DrawText",
+  "stub": "0x00437688",
+  "impl": "0x00437688"
+ },
+ {
+  "name": "SetTimerCallback",
+  "stub": "0x004375f6",
+  "impl": "0x004375f6"
+ },
+ {
+  "name": "printtext",
+  "stub": "0x0043776a",
+  "impl": "0x0043776a"
+ },
+ {
+  "name": "IsKeyDown",
+  "stub": "0x0040119a",
+  "impl": "0x00433b5c"
+ },
+ {
+  "name": "GetCursorX",
+  "stub": "0x004014d3",
+  "impl": "0x004345c0"
+ },
+ {
+  "name": "GetCursorY",
+  "stub": "0x0040146f",
+  "impl": "0x00434608"
+ },
+ {
+  "name": "PrintError",
+  "stub": "0x00401190",
+  "impl": "0x0043487a"
+ },
+ {
+  "name": "ReloadLua",
+  "stub": "0x00401131",
+  "impl": "0x004348c8"
+ },
+ {
+  "name": "LoadFile",
+  "stub": "0x004014c9",
+  "impl": "0x00434797"
+ },
+ {
+  "name": "SaveFile",
+  "stub": "0x0040118b",
+  "impl": "0x00434707"
+ },
+ {
+  "name": "GetScriptInfo",
+  "stub": "0x004013ac",
+  "impl": "0x00433d1f"
+ },
+ {
+  "name": "EnableScript",
+  "stub": "0x0040141a",
+  "impl": "0x00433bc7"
+ },
+ {
+  "name": "DisableScript",
+  "stub": "0x004013a2",
+  "impl": "0x00433c47"
+ },
+ {
+  "name": "GetClock",
+  "stub": "0x004014ce",
+  "impl": "0x004348d4"
+ },
+ {
+  "name": "ListScripts",
+  "stub": "0x0040127b",
+  "impl": "0x00433dff"
+ },
+ {
+  "name": "SetGuiParams",
+  "stub": "0x0040137f",
+  "impl": "0x00434653"
+ },
+ {
+  "name": "GetScriptNumber",
+  "stub": "0x0040122b",
+  "impl": "0x004348fe"
+ },
+ {
+  "name": "GetMaxContainers",
+  "stub": "0x004014dd",
+  "impl": "0x00434ab1"
+ },
+ {
+  "name": "GetContainerItems",
+  "stub": "0x004012d0",
+  "impl": "0x00434920"
+ },
+ {
+  "name": "UseInventoryItem",
+  "stub": "0x00401311",
+  "impl": "0x00434b54"
+ },
+ {
+  "name": "UseContainerItem",
+  "stub": "0x004011fe",
+  "impl": "0x00434ae6"
+ },
+ {
+  "name": "UseSpell",
+  "stub": "0x004014f6",
+  "impl": "0x00434e32"
+ },
+ {
+  "name": "UseGroundItem",
+  "stub": "0x0040111d",
+  "impl": "0x00434c19"
+ },
+ {
+  "name": "UseItemOnGround",
+  "stub": "0x0040109b",
+  "impl": "0x00434d55"
+ },
+ {
+  "name": "StopWaypoints",
+  "stub": "0x00401249",
+  "impl": "0x00434fba"
+ },
+ {
+  "name": "StartWaypoints",
+  "stub": "0x004012c6",
+  "impl": "0x00434f9f"
+ },
+ {
+  "name": "SetStopPoint",
+  "stub": "0x00401023",
+  "impl": "0x00434f86"
+ },
+ {
+  "name": "ClearWaypoints",
+  "stub": "0x00401064",
+  "impl": "0x00434f57"
+ },
+ {
+  "name": "SetWaypointInfo",
+  "stub": "0x004012f8",
+  "impl": "0x00434e89"
+ },
+ {
+  "name": "MoveTo",
+  "stub": "0x00401212",
+  "impl": "0x00433338"
+ },
+ {
+  "name": "StartAutoExplorer",
+  "stub": "0x004013c0",
+  "impl": "0x00434fcb"
+ },
+ {
+  "name": "StopAutoExplorer",
+  "stub": "0x004011e5",
+  "impl": "0x0043502b"
+ },
+ {
+  "name": "GetScriptPause",
+  "stub": "0x0040147e",
+  "impl": "0x004339a9"
+ },
+ {
+  "name": "ResumeScripts",
+  "stub": "0x00401433",
+  "impl": "0x004339cb"
+ },
+ {
+  "name": "GetCreatureInfo",
+  "stub": "0x0040136b",
+  "impl": "0x004355f6"
+ },
+ {
+  "name": "GetPlayerInfo",
+  "stub": "0x004013ca",
+  "impl": "0x00435046"
+ },
+ {
+  "name": "GetGroundInfo",
+  "stub": "0x00401019",
+  "impl": "0x00435487"
+ },
+ {
+  "name": "AttackTarget",
+  "stub": "0x004014ba",
+  "impl": "0x004357da"
+ },
+ {
+  "name": "FollowTarget",
+  "stub": "0x004011ae",
+  "impl": "0x00435818"
+ },
+ {
+  "name": "CastRuneTarget",
+  "stub": "0x00401096",
+  "impl": "0x00435856"
+ },
+ {
+  "name": "CastHotkey",
+  "stub": "0x004014b5",
+  "impl": "0x004358ad"
+ },
+ {
+  "name": "Sleep",
+  "stub": "0x004014e2",
+  "impl": "0x004358f2"
+ },
+ {
+  "name": "NpcSay",
+  "stub": "0x004012fd",
+  "impl": "0x0043594d"
+ },
+ {
+  "name": "NpcBuy",
+  "stub": "0x004010be",
+  "impl": "0x00435990"
+ },
+ {
+  "name": "NpcSell",
+  "stub": "0x004012ad",
+  "impl": "0x004359e5"
+ },
+ {
+  "name": "SetAutoLoot",
+  "stub": "0x00401366",
+  "impl": "0x00435a3a"
+ },
+ {
+  "name": "PlaySound",
+  "stub": "0x00401109",
+  "impl": "0x00433aa2"
+ },
+ {
+  "name": "ThrowItemCtoC",
+  "stub": "0x0040139d",
+  "impl": "0x00435bee"
+ },
+ {
+  "name": "ThrowItemCtoG",
+  "stub": "0x00401537",
+  "impl": "0x00435cc1"
+ },
+ {
+  "name": "ThrowItemGtoC",
+  "stub": "0x0040125d",
+  "impl": "0x00435d95"
+ },
+ {
+  "name": "ThrowItemGtoG",
+  "stub": "0x004014ec",
+  "impl": "0x00435e69"
+ },
+ {
+  "name": "ThrowItemCtoI",
+  "stub": "0x004013cf",
+  "impl": "0x00435a9e"
+ },
+ {
+  "name": "ThrowItemItoC",
+  "stub": "0x0040105f",
+  "impl": "0x00435b46"
+ },
+ {
+  "name": "SetManaPotIDS",
+  "stub": "0x00401055",
+  "impl": "0x00435f40"
+ },
+ {
+  "name": "SetHealPotIDS",
+  "stub": "0x004014c4",
+  "impl": "0x00435fdf"
+ },
+ {
+  "name": "SetRuneIDS",
+  "stub": "0x004012b7",
+  "impl": "0x0043607e"
+ },
+ {
+  "name": "SetHuntingOn",
+  "stub": "0x0040124e",
+  "impl": "0x00436141"
+ },
+ {
+  "name": "GetCurrentWaypoint",
+  "stub": "0x00401429",
+  "impl": "0x0043617d"
+ },
+ {
+  "name": "SetClipboard",
+  "stub": "0x0040110e",
+  "impl": "0x004361b7"
+ },
+ {
+  "name": "SetLootTimer",
+  "stub": "0x00401465",
+  "impl": "0x004361f2"
+ },
+ {
+  "name": "GetTargetInfo",
+  "stub": "0x00401244",
+  "impl": "0x0043663a"
+ },
+ {
+  "name": "GetFollowInfo",
+  "stub": "0x00401406",
+  "impl": "0x0043680e"
+ },
+ {
+  "name": "GetCreatureInt",
+  "stub": "0x0040117c",
+  "impl": "0x00436240"
+ }
+]

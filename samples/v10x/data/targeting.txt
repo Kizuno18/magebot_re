@@ -1,0 +1,281 @@
+//NOTE the bot will only cast the spell if you use the EXORIMAX hotkey
+//NOTE YOU CAN ADD (;number) after the spell, the bot attacks lower numbers first
+//     If you do not put a number the bot assumes the number 4
+//     Lowercase letters only
+//NOTE2: Putting ;9 means do not loot, and ;99 means do not attack at all
+fish;exori vis;99
+calamary;exori vis;99
+deepling scout;exori vis
+deepling warrior;exori vis
+deepling spellsinger;exori vis
+deepling guard;exori vis
+crawler;exori flam
+insectoid worker;exori flam
+swarmer;exori flam
+waspoid;exori flam
+death blob;exori flam
+pirate skeleton;exori frigo
+gravedigger;exori flam
+shadow pupil;exori flam
+pirate skeleton;exori frigo
+gravedigger;exori flam
+shadow pupil;exori flam
+war golem;exori vis;4
+worker golem;exori vis;5
+zombie;exori flam
+plaguesmith;exori vis
+mutated human;exori flam
+Ice Golem;exori vis
+banshee;exori frigo
+bear;exori frigo
+behemoth;exori frigo
+betrayed wraith;exori frigo
+blazing fire elemental;exori frigo
+blistering fire elemental;exori frigo
+blue djinn;exori frigo
+captain jones;exori frigo
+dark torturer;exori frigo
+deathspawn;exori frigo
+demon;exori frigo
+demon skeleton;exori frigo
+destroyer;exori frigo
+diabolic imp;exori frigo
+dragon;exori frigo
+dragon hatchling;exori frigo
+dragon lord;exori frigo
+dragon lord hatchling;exori frigo
+dreadbeast;exori frigo
+dwarf geomancer;exori frigo
+fire devil;exori frigo
+fire elemental;exori frigo
+fire overlord;exori frigo
+green djinn;exori frigo
+hairman the huge;exori frigo
+hand of cursed fate;exori frigo
+hellfire fighter;exori frigo
+hellhound;exori frigo
+kongra;exori frigo
+lion;exori frigo
+marid;exori frigo
+massive fire elemental;exori frigo
+merlkin;exori frigo
+nightmare;exori frigo
+nomad;exori frigo
+plaguesmith;exori frigo
+priestess;exori frigo;2
+rotworm queen;exori frigo
+rukor zad;exori frigo
+sibang;exori frigo
+son of verminor;exori frigo
+stonecracker;exori frigo
+stone golem;exori frigo
+tiger;exori frigo
+undead dragon;exori frigo
+ungreez;exori frigo
+war wolf;exori frigo
+wisp;exori frigo
+wolf;exori frigo
+wyrm;exori frigo
+xenia;exori frigo
+ancient scarab;exori flam
+arachir the ancient one;exori flam
+azure frog;exori flam
+beholder;exori flam
+big boss trolliver;exori flam
+black knight;exori flam
+blightwalker;exori flam
+blood crab;exori flam
+bonebeast;exori flam
+braindeath;exori flam
+bug;exori flam
+carniphila;exori flam
+carrion worm;exori flam
+cave rat;exori flam
+centipede;exori flam
+charged energy elemental;exori flam
+cobra;exori flam;7
+crab;exori flam
+crocodile;exori flam
+dark monk;exori flam
+defiler;exori flam
+diblis the fair;exori flam
+dwarf;exori flam
+dwarf guard;exori flam
+dwarf soldier;exori flam
+dworc fleshhunter;exori flam
+dwarf miner;exori flam
+dworc venomsniper;exori flam
+dworc voodoomaster;exori flam
+earth elemental;exori flam
+earth overlord;exori tera
+elder beholder;exori flam
+energy elemental;exori tera
+energy overlord;exori tera
+gargoyle;exori flam
+gazer;exori flam
+ghoul;exori flam;7
+giant spider;exori flam
+gravelord oshuran;exori flam
+grim reaper;exori flam
+hunter;exori flam
+high templar cobrass;exori flam
+jagged earth elemental;exori flam
+larva;exori flam;7
+koshei the deathless;exori flam
+lich;exori flam
+lizard sentinel;exori flam
+lizard snakecharmer;exori flam
+lizard templar;exori flam
+mammoth;exori flam
+massive earth elemental;exori flam
+massive energy elemental;exori flam
+monk;exori flam
+muddy earth elemental;exori flam
+mummy;exori flam;7
+necromancer;exori flam;2
+overcharged energy elemental;exori flam
+panda;exori flam
+phantasm;exori flam
+pirate buccaneer;exori flam
+pirate corsair;exori flam
+pirate cutthroat;exori flam
+pirate ghost;exori flam
+pirate marauder;exori flam
+pirate skeleton;exori flam
+poacher;exori flam
+poison spider;exori flam
+scarab;exori flam
+scorpion;exori flam;9
+serpent spawn;exori flam
+sheep;exori flam
+sir valorcrest;exori flam
+skeleton;exori flam;9
+skeleton warrior;exori flam
+slime;exori flam
+snake;exori flam;9
+spectre;exori flam
+spider;exori flam
+spit nettle;exori flam
+stalker;exori flam
+swamp troll;exori flam
+tarantula;exori flam
+terror bird;exori flam
+the big bad one;exori flam
+the count;exori flam
+the old whopper;exori flam
+thornback tortoise;exori flam
+toad;exori flam
+tortoise;exori flam
+vampire;exori flam
+zevelon duskbringer;exori flam
+cyclops;exori tera
+cyclops drone;exori tera
+cyclops smith;exori tera
+elf arcanist;exori tera
+frost troll;exori tera
+fury;exori tera
+orc;exori tera
+orc berserker;exori tera
+orc leader;exori tera
+orc rider;exori tera
+orc shaman;exori tera
+orc spearman;exori tera
+orc warlord;exori tera
+orc warrior;exori tera
+quara constrictor;exori tera
+quara hydromancer;exori tera
+quara mantassin;exori tera
+quara pincher;exori tera
+quara predator;exori tera
+quara constrictor scout;exori tera
+quara hydromancer scout;exori tera
+quara mantassin scout;exori tera
+quara pincher scout;exori tera
+quara predator scout;exori tera
+troll;exori tera
+troll champion;exori tera
+warlord ruzad;exori tera
+acolyte of the cult;exori vis
+adept of the cult;exori vis
+bog raider;exori vis
+chakoya toolshaper;exori vis
+chakoya tribewarden;exori vis
+chakoya windcaller;exori vis
+crypt shambler;exori vis
+crystal spider;exori vis
+elephant;exori vis
+enlightened of the cult;exori vis
+frost dragon;exori vis
+frost dragon hatchling;exori vis
+frost giant;exori vis
+frost giantess;exori vis
+ghost;exori vis;7
+grandfather tridian;exori vis
+hydra;exori vis
+ice golem;exori vis
+ice overlord;exori vis
+ice witch;exori vis
+juggernaut;exori vis
+lost soul;exori vis
+novice of the cult;exori vis
+plaguesmith;exori vis
+penguin;exori vis
+polar bear;exori vis
+roaring water elemental;exori vis
+sea serpent;exori vis
+slick water elemental;exori vis
+water elemental;exori vis
+winter wolf;exori vis
+young sea serpent;exori vis
+amazon;exori mort
+assassin;exori mort
+bandit;exori mort
+barbaria;exori mort
+barbarian bloodwalker;exori mort
+barbarian brutetamer;exori mort
+barbarian headsplitter;exori mort
+barbarian skullhunter;exori mort
+dark apprentice;exori mort
+dark magician;exori mort
+elf;exori mort
+elf scout;exori mort
+foreman kneebiter;exori mort
+goblin;exori mort
+goblin assassin;exori mort
+goblin scavenger;exori mort
+hero;exori mort
+hyaena;exori mort
+minotaur;exori mort
+minotaur archer;exori mort
+minotaur guard;exori mort
+minotaur mage;exori mort
+rotworm;exori mort
+smuggler;exori mort
+smuggler baron silvertoe;exori mort
+valkyrie;exori mort
+warlock;exori mort
+wild warrior;exori mort
+witch;exori mort
+wyvern;exori mort
+yaga the crone;exori mort
+zarabustor;exori mort
+orc marauder;exori mort
+draken spellweaver;exori mort
+draken warmaster;exori frigo
+killer caiman;exori vis
+lizard chosen;exori mort
+lancer beetle;exori vis
+lizard dragon priest;exori frigo
+lizard high guard;exori frigo
+lizard legionnaire;exori frigo
+lizard zaogun;exori mort
+renegade orc;exori mort
+terramite;exori flam
+ghastly dragon;exori vis
+wailing widow;exori flam
+Insect Swarm;exori flam
+gnarlhound;exori vis
+shard of corruption;exori frigo
+tirecz;exori frigo
+zulazza the Corruptor;exori flam
+sandcrawler;exori mort

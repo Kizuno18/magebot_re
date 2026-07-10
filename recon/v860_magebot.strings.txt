@@ -1,0 +1,1034 @@
+ (8PX
+700WP
+`h````
+ppxxxx
+(null)
+GAIsProcessorFeaturePresent
+KERNEL32
+e+000
+runtime error 
+TLOSS error
+SING error
+DOMAIN error
+R6028
+- unable to initialize heap
+R6027
+- not enough space for lowio initialization
+R6026
+- not enough space for stdio initialization
+R6025
+- pure virtual function call
+R6024
+- not enough space for _onexit/atexit table
+R6019
+- unable to open console device
+R6018
+- unexpected heap error
+R6017
+- unexpected multithread lock error
+R6016
+- not enough space for thread data
+abnormal program termination
+R6009
+- not enough space for environment
+R6008
+- not enough space for arguments
+R6002
+- floating point not loaded
+Microsoft Visual C++ Runtime Library
+Runtime Error!
+Program: 
+<program name unknown>
+SunMonTueWedThuFriSat
+JanFebMarAprMayJunJulAugSepOctNovDec
+GetLastActivePopup
+GetActiveWindow
+MessageBoxA
+user32.dll
+1#QNAN
+1#INF
+1#IND
+1#SNAN
+ios::eofbit set
+ios::failbit set
+ios::badbit set
+invalid ios::iword/pword index
+string too long
+invalid string position
+bad allocation
+Unknown exception
+asdsadsa
+2349324038
+109120132967399429278860960508995541528237502902798129123468757937266291492576446330739696001110603907230888610072655818825358503429057592827629436413108566029093628212635953836686562675849720620786279431090218017681061521755056710823876476444260558147179707119674283982419152118103759076030616683978566631413
+p123.txt
+p1234.txt
+/community/?subtopic=guilds&page=view&GuildName=
+tibia.com
+psapi.dll
+EnumProcesses
+EnumProcessModules
+GetModuleBaseNameA
+GetModuleInformation
+Current.wav
+vppartread %x %i %i
+mppartread %x %i
+Speedboost On
+Sending pipe:
+New ck %x
+Sending pipeSP:
+SendCaptured --:
+Action Recorded
+Set 2nd Bound
+mwallcombosent
+----Recieved
+SendCaptured --:
+sendkey %x
+right
+.=%d %d
+dragging %d,%d:%d,%d
+PZ Gone
+due to an attack by
+*%s*%s
+utamo vita
+ssaa loaded
+ssaa loaded
+utani gran hur
+utamo vita
+utani gran hur
+exura sio
+exura gran
+exura san
+exura vita
+exura gran san
+exura ico
+utani hur
+utani gran hur
+utamo tempo san
+utani tempo hur
+exura gran ico
+exura
+exura
+testing potioning:%x
+possible !potion! on:%x
+testing potioning:%x
+used !potion! on:%x
+[%i,%i]
+blkingtile %x
+[%i,%i]
+blkingtile %x
+[%i,%i]
+blkingtile %x
+[%i,%i]
+blkingtile %x
+trace:%s
+[%i,%i]
+blkingtile %x
+[%i,%i]
+blkingtile %x
+firing:%s
+exura sio "%s"
+You cannot throw there.
+This action is not permitted in a protection zone.
+Destination is out of range.
+exura sio "%s"
+exura sio "%s"
+There is no way.
+goodtile %x %x
+mpsq %x
+mpsq %x
+Push found %d %d %d %d
+exori frigo
+Mwall found
+Warlock
+You cannot throw there.
+This action is not permitted in a protection zone.
+Destination is out of range.
+*%s*%s %i west and %i south and %i below..
+*%s*%s %i west and %i south and on the same level!..
+npc alert %i %s 
+Normal
+Dodge
+Dragon
+running reset
+vising x:%i y:%i bwalk:%i
+ctmb:%i
+trace failed
+attacking %i %i %i iDist %i %s:%d
+found at distance
+opencontid %x posit %i:: %i %i mouse %i %i
+Depot
+Backpack
+Key Ring
+Locker
+Parcel
+Depot
+Backpack
+Key Ring
+Locker
+Parcel
+item: %i :: %i %i mouse %i %i numitem %i
+found iten
+This object is too heavy.
+baditen %x
+bag opened %x %x
+found iten
+This object is too heavy.
+baditen %x
+recording %i %i %i %i
+pile loot2
+chking looter open %x
+chking looter open %x
+opentosser
+You cannot put any more objects in this container.
+found floorchanger %x : %x
+Doing quicktest:%d
+New explore %d %d %d:%d
+ %d:%d:%d
+ %d:%d
+Blk Random
+Going to %d:%d:%d distance:%d val:%d
+quicktest failed
+ %d:%d:%d explorer
+ladder/rope
+ %d:%d:%d explorer
+ %d:%d:%d explorer
+reduced :2
+Going to %d:%d:%d distance:%d reduced:%d
+Map Click:
+Near z change waypoint
+doing z wait
+Starting deposit
+Deposit Complete. Restarting Script
+Deposit all
+Checking depositor
+searching z change tile
+moving from %i %i %i waypt %i to %i %i %i
+eted fud
+ring loaded
+ring unloaded
+ring loaded
+ring unloaded
+exeta con
+spear loaded
+eted fud
+HP is below your light healing %, Pausing
+Restoring mana to %d using %s MP Potions
+trade
+iten loaded %x %x
+Sell %s
+nnlocation is %x :: %x %x %x : %x %x %x 
+verified self%x %x 
+ntiles ahead: 
+:%x %x 
+%x %x 
+Findself FAILED,refinding
+chkin self
+LOCATION %x :: %x %x %x : %x %x %x 
+cctiles ahead: 
+:%x %x 
+not found
+found MK 2
+LOCATION %x :: %x %x %x : %x %x %x 
+cctiles ahead: 
+:%x %x 
+not found MK 2
+*%s* %s %s
+exevo gran mas vis
+exevo gran mas tera
+exevo gran mas frigo
+exevo gran mas flam
+exori gran
+exevo mas san
+.move
+.stopfire
+*%s* stopping fire
+.stopfollow
+*%s* stopping follow
+.channel
+.mana
+utamo vita
+utamo vita
+utani gran hur
+utani gran hur
+.follow
+*%s* Follow set on :%s: id:%i
+*%s* UH Heal set on :%s: id:%i
+*%s* exura sio Heal set on :%s: id:%i
+.otfollow
+*%s* OT style follow set on :%s: id:%i
+.attack
+*%s* Attack set on :%s: id:%i
+*%s* Autofire non safelist on
+enemy
+*%s* Autofire enemy on
+*%s* Attack set on :%s: id:%i
+*%s* Autofire non safelist on
+enemy
+*%s* Autofire enemy on
+.mwall
+*%s* Autofire non safelist on
+enemy
+*%s* Autofire enemy on
+*%s* Autofire non safelist on
+enemy
+*%s* Autofire enemy on
+.players
+*%s* 
+::%s<hp>%i<z>%i 
+*%s* Listing too large
+otitenids.txt
+itenids.txt
+FileLoad size %i
+tradehelper.txt
+FileLoad size %i
+enemies.txt
+FileLoad size %i
+customhotkeys.txt
+FileLoad size %i
+EMPTY
+friends.txt
+FileLoad size %i
+targeting.txt
+FileLoad size %i
+pzzones.txt
+FileLoad size %i
+safelist.txt
+FileLoad size %i
+stoptiles.bin
+FileLoad size %i
+blktiles.bin
+FileLoad size %i
+blktilesbin.txt
+blkktiles.bin
+FileLoad size %i
+mtiles.bin
+FileLoad size %i
+This action is not permitted in a protection zone.
+Target lost.
+Leader:
+ Wrong version
+Internet Error
+This channel is full, please try another password
+nav1st.txt1
+nav1st.txt1
+nav1st.txt
+First time information
+Welcome to the Tibiadb.com teamserver.  If this is your first time, you can create a private server by connecting with a different password.  The limit is 10 players per private server
+Stream Client connecting to server: %s on port: %d
+lphostentry error
+socket()
+could not connect socket to server
+Connected to Team Server, hihi
+enemies.txt
+sendlead
+sendchat
+sendteam
+sendlead
+%s%s[%d]
+sendlead
+sendcmb
+teamrecv %d byte: %x %x %x %x %x %x
+enemy list recieved :%d
+enemies.txt
+Combo request recved
+Delay:%d:%d
+exori gran
+chged
+TEAMLOCFOUND
+ (%d,%d,%d)
+TibiaMB %s
+Team Server Disconnect, bye bye
+rsa.txt
+ u:%x w:%x l:%x
+iplist.txt
+SETTINGS.txt
+FileLoad size %i
+Welcome to MageBot this window will show help information when u click on items
+Creaturelist                               
+COMBOBOX
+Normal
+Dodge/Hotkey
+Cave_Run/Hotkey
+Open_Run/Hotkey
+Turn/Face
+Paladin Run
+Paladin Melee
+Normal
+exura
+config.txt
+config.txt
+SAFE MODE
+Enter Serial for Computer: %i
+Demo Version %s
+Fully Registered %s
+AntiPush-Worm and GP
+look at  destination for push char id%x
+attempting to push id%x
+CK:%x
+%s %i
+pmana
+smana
+gmana
+aksdhaskjdaskdjs
+sakldasldsdkj
+utani hur
+sheal
+gheal
+uheal
+pmana
+smana
+gmana
+pmana
+Paladin Run
+Paladin Melee
+Dodge
+Mage Vis
+exori vis
+Mage Mort
+exori mort
+Cave_Run/Hotkey
+Open_Run/Hotkey
+Turn/Face
+Dodge/Hotkey
+Dodge
+Normal
+Normal
+The system will beep if you are attacked
+Using an mwall crosshairs hotkey such as MWALLCOMBO will disable automana and the MAX hotkeys until the mwall is fired
+Attack the Team leader's target
+Mana bar will be shown above character's head
+Team Info displayed on screen
+The cavebot will only attack monsters who have attacked you
+This limits the framerate of the client to 4 fps
+The bot will show online guilds and your bigVIP.txt on the right side of the screen.  You can bring the mouse over the names to get a character list.  Also the box underneath the online list checkbox is the minimum level of character to display.
+The cavebot will pause for up to 3 seconds while monsters approach you before engaging them
+Uncheck this to hide the list of guilds
+The AutoExplore feature will try to avoid players while exploring
+The cavebot will attempt to use map-clicks to move more smoothly.  Only works with the AutoExplorer.
+The MAX and LAST hotkeys will attack the player they are shooting runes on
+Heal paralyzed team members
+Bot will only heal paladins(Team Server only)
+Bot will only heal knights(Team Server only)
+Team Chat Enabled, Type @What_you_want_to_say
+Speedhack is on if checked
+Will automatically combo off the team leader
+Will only shoot players with skulls
+Will only shoot players in your party or in warmode
+Will shoot targets that are not your color.  Use the MAX hotkeys to toggle on and off(RMAX xxxx, SDMAX, SDMAX1, PARAMAX1, MWALLMAX1
+Will shoot targets that are not your outfit.  Use the MAX hotkeys to toggle on and off(RMAX xxxx, SDMAX, SDMAX1, PARAMAX1, MWALLMAX1
+Will shoot targets that are not in your party.
+All clients will respond to MAGEBOT hotkeys; OTFollow mode activated;All clients following the main client will respond to attack commands; 
+Character will autoattack monsters in Targeting.txt, Mages should try the new hotkey EXORIMAX
+If you wish to do combo UEMAX, put your spell in the box next to this checkbox
+Show Team Leader Position on screen
+Auto Heal Vip Characters with Heart Symbols
+Auto Heal Team Server Members
+Auto Heal characters in the file c:\\program files\magebot\friends.txt
+Use Your default Heal Potion to Heal Friends
+Ammo slot refill(bolts/pbolts/arrows ect) when it gets to less than 5
+Bot will cure paralyze
+This makes a 2nd lootpile if u need it
+This disables the hotkey atk if the creature is below 5% hp, to conserve mana
+Check this while recording a deposit script,from hunt to bank and hit save.  Or check this while botting, and the bot will use the deposit script that is the same name as the hunting script.
+If you wish to be a combo leader in your team server, check the box
+If you with the bot to maintain great haste
+If you with the bot to maintain regular haste(utani hur)
+Leader will get a Big outfit and Low Mana chars will get a Rat outfit
+If u wish to be potioned when you are low mana, low level knights should probably uncheck this)
+If u wish to potion your friends using the potions in the autopotioner at the top left (mana/smana/gmana)
+Turns on light hack
+Reveals Invisible Monsters
+Turn Mwall Timers and HUD on/off NOTE: You Must close and reopen tibia after you set this
+Client will eat meat, ham, fish, brown mushrooms from open containers
+Will Beep if a player enters your screen
+Client is closed if you are attacked by a player
+Character will follow people up and down ramps and ladders, press ESCAPE to cancel
+Please double click (LOOK) at any items you wish to sell
+You can use the numpad keys for movement, Make Sure NUMLOCK is ON. Also remember Num0 and Num(.) are still hotkeys
+SSAs will be loaded below 80% mana
+Manashield casted
+Please use the look (doubleclick) function on the backpack full of backpacks u wish to store loot in while it is on the ground.  Then press TAB
+The first bp in your ground loot store bp should have ur bp manas.
+Outfit match to Ground tile
+Alert char can issue commands: 
+ Command list :
+ .say text 
+ .follow charname (.follow 0 to stop) 
+ .otfollow charname(uses arrowkeys) 
+ .stopfire 
+ .sd charname(.gfb  + .hmm also work) 
+ .sd enemy(shoots skulls) 
+ .sd all (shoots non-safelist) 
+ .attack charname 
+ .players 
+ .channel 10(starts with 10) 
+ .mov x y(example .mov -1 4) 
+ .log (switches to the next character down .log 1 forthe next one up)
+TEMPORARILY DISABLED Use NumPad + and Numpad - to change view level
+Use this if u wish the cavebot to loot each monster before killing the next one
+The bot will pause if another player enters the screen.
+Sends default chat + damage messages to Alert char
+char wont log
+Skulled chars will be given special outfits.
+If an autofirehotkey (SD/GFB ect) is pressed the bot will automatically fire at any character not in Safelist.txt
+If an autofirehotkey (SD/GFB ect) is pressed the bot will automatically fire at any character marked with a skull on the viplist
+Bot heals all players in VIP marked with a heart using EXURA SIO
+1.Put RuneSpell in box 2.open bp with blanks 3. Make right hand empty
+Bot steps back on attack or person on screen/ steps forward 5mins later if no person on screen
+Bot will try to keep attack locked even if target or player is ladder hopping
+Bot autologs if person on screen
+Bot heals all players in VIP marked with a heart using UH RUNES
+Cavebot will toss loot on the ground from your 1st bp. Stand on the square you wish the bot to dump loot on.
+Auto Loot corpses. Items are tossed into your bps based on the itenids.txt file
+Auto opens corpses for looting
+Auto skins corpses
+Change heavy and Light Healing Spells to UH runes
+Use UH Rune if there is not enough mana to cast heavy healing
+Enable Click-Reuse
+Your light healing spell choices= exura | exura gran | exura vita | UH
+Your light healing spell choices= exura | exura gran | exura vita | UH
+This is the health percent that you wish the bot to use the light healing spell
+Your choices for the key remapper = SD | GFB | EXP | HMM | AUTOSSA | MWALL | F1-F12 | FRIEND | POTSPAM | FOLLOW | POTFIRE | fOLLOW | LOOT | STARTBOT
+This number is the time the bot will wait before attempting to shoot an attack rune. 1000 = 1 second
+Your heavy healing spell choices= exura vita | exura sio name | UH
+This number is the range at which the cavebot will attack monsters.
+For this box you may put a spell (exori vis) or type (Run) or (Run;HMM). If you use Run mode set the range to the distance you want the bot to keep, and if you are using ammo(arrows/bolts) change the MF bp to the backpack number you are keeping your ammo in.
+For this box you may enter the character u wish to recieve alerts and/or remote control while you are afk. If you do not wish to recieve a certain characters messages type the character name inside Safelist.txt. This does not affect the remote control.
+This is your autoresponder
+This sets your looting speed. 500ms means you will loot one item every half a second.
+This is where you put your IP for the IP Changer if you want to connect to an otserv.  You can use the mouse scroll wheel to see previous IPs
+This number is the BP where u carry ur manas.
+MAGEBOMB LOADED from lognoobs.txt PRESS MAGESTOP to Cancel
+Attempting to log off noobs, Magebomb unloaded
+targeting.txt
+notepad.exe
+BigVIP.txt
+notepad.exe
+You must log on a different character to activate this
+customhotkeys.txt
+notepad.exe
+enemies.txt
+notepad.exe
+otitenids.txt
+itenids.txt
+notepad.exe
+friends.txt
+notepad.exe
+iplist.txt
+Invalid Key
+bot.key
+Correct Key! Enjoy
+Walk in a loop and then press the save button
+%sSETTINGS.txt
+%sSETTINGS.txt
+sorcerer
+%sSETTINGS.txt
+knight
+%sSETTINGS.txt
+paladin
+%sSETTINGS.txt
+FileLoad size %i
+Welcome to MageBot this window will show help information when u click on items
+Creaturelist                               
+config.txt
+%sSETTINGS.txt
+FileLoad size %i
+Sidekick
+attack
+follow
+runeT
+runeL
+runeN
+runeg
+runeG
+Sleep
+HuntBot Loaded
+Unloaded
+$nlineoflabel:
+IfTrue
+setLoot
+move 
+sayMessage exiva >
+sayMessage
+fastExiva
+waitX
+gotoScriptLine
+record.sav
+record.sav
+Sav Files
+*.sav
+Open a file
+Record done. Saving Record.
+Save File As
+record.sav
+.savd
+Loading Record
+record.sav
+FileLoad size %i
+Deposit FileLoad size %i
+Recording
+WSAStartup() returned error code %i
+lognoobs.txt
+Logging on noobs, threads %i
+autosay
+Autosay %s On, Click Target to Activate
+PUSHMAX
+SDNEAR
+MWALLBEHIND
+PAUSEBOT
+AUTORING
+AutoRing On
+AutoRing Off
+AUTOSSA
+AutoSSA On
+AutoSSA Off
+SDCOMBO
+sdcombo On
+sdcombo Off
+STOPMANA
+Mana Refiller=OFF, press ESCAPE to turn ON
+PUSHMAXD
+PUSHMAX=ON, Press Escape to turn OFF
+PUSHMAX
+PUSHMAX=ON, Press Escape to turn OFF
+LOGOUT
+LOGOUTMAX ON
+LOGOUTMAX OFF
+SSAFAST
+AutoSSAFAST On
+AutoSSAFAST Off
+EXORIMAX
+AutoFire (exori frigo,exori tera,...) targeting.txt
+No way found
+OPENDOOR
+No door found
+CLOSEDOOR
+No door found
+RECORDACTION
+Do Action Now, and it will be recorded in Script
+autorune
+AutoRune on
+Sprint
+sprintc
+sprintd
+sprint
+SPRINT
+DODGE
+full mana
+target
+RMAX1
+Rune Enemy 1 shot on
+UEMAX
+UEMAX 1 shot on, you must attack a target to activate
+CHANGEALL
+Changing outfit to id:%d
+CHANGESELF
+Changing outfit to id:%d
+Rune Enemy on
+MANAFILL
+PUSHCHAR
+LOOKATK
+MANAFRIEND
+Mana friend 97% ON, Release key to stop
+DIAGONALKEYS
+Diagonal Keys: OFF
+Diagonal Keys: ON
+ANTIPUSH
+AGEBOMB
+MAGEBOMB LOADED from lognoobs.txt PRESS MAGESTOP to Cancel
+AGESTOP
+Auto FBOMB on
+SDMAX1
+SD Enemy 1 Shot on
+SDMAX
+Auto SD Enemy on
+SDNEAR
+Auto SD Closest Enemy on
+MWALLMAX
+Auto Mwall Enemy on
+MWALLCOMBO
+Mwall Combo Mode On
+GFBCOMBO
+GFB Combo Mode On
+MWALLBOUND
+Mwall Set Bounds
+MWALLTEAM
+Mwall Team Server Single Shot
+MWALLMAX1
+1 Shot Mwall Enemy on
+SDLOC
+Auto SD Enemy Location on
+SDLOC1
+1 Shot SD Enemy Location on
+PARAMAX
+Auto PARALYZE Enemy on
+PARAMAX1
+PARALYZE Enemy 1 Shot on
+PARAMAX2
+PARALYZE Enemy 1 Shot on
+ATKMAX
+ATK Enemy on
+ATKMAX1
+ATK Enemy on
+AUTOMANASHIELD
+AutoManashield On
+AutoManashield Off
+AUTOGRANHUR
+Auto UtaniGranHur On
+Auto UtaniGranHur Off
+AUTOHUR
+Auto UtaniHur On
+Auto UtaniHur Off
+SDLAST1
+Firing at last target
+SDLAST
+Auto Firing at last target
+WALLSEE
+AutoMwall when Look at aquare
+Enemy Chase Mode ON/Press Escape to turn OFF
+OLLOW
+Attack Follow Mode ON
+Follow Mode ON/ Press Escape to turn OFF
+TARTBOT
+OTFIRE
+Pot spam on :%i please look at target
+Follow on char %i:%i
+TibiaMB
+Loading SSA
+AutoSD on / Hit Escape to Turn OFF
+AutoGFB on / Hit Escape to Turn OFF
+AutoHMM on / Hit Escape to Turn OFF
+AutoSD OLD CLIENT on / Hit Escape to Turn OFF
+AutoSD OLD CLIENT on / Hit Escape to Turn OFF
+AutoEXPLOSION on / Hit Escape to Turn OFF
+FIRING POTS
+AutoMWALL on / Hit Escape to Turn OFF
+x:%i y:%i z:%i
+rsa.txt
+Tibia
+Tibia Testserver
+TibiaMB
+RPCRT4
+UuidCreateSequential
+http://www.tibiadb.com/resendkey.php
+http://www.tibiadb.com/addcomputer.php?computer=%d&id=%s&m=%d
+http://www.tibiadb.com/key.php
+froze.bmp
+tibiadb.com
+/authorize.php?id=
+ Wrong version
+Stream Client connecting to server: %s on port: %d
+lphostentry error
+socket()
+could not connect socket to server
+GET %s%d&v=55&m=%d HTTP/1.1
+Host: tibiadb.com
+Accept: */*
+locked
+locked
+unlocked
+http:
+/community/?subtopic=characters&name=
+Stream Client connecting to server: %s on port: %d
+lphostentry error
+socket()
+could not connect socket to server
+GET %s HTTP/1.1
+Host: %s
+Accept: */*
+/community/?subtopic=characters&name=
+tibia.com
+World:</td><td>
+</td></tr>
+/community/?subtopic=whoisonline&world=%s
+/community/?subtopic=guilds&world=%s
+BigVIP.txt
+Big VIP
+enemies.txt
+Enemies
+GuildName VALUE=
+GuildName VALUE=
+%s_%s.txt
+loading Guild: %s
+subtopic=characters&name=
+Invited
+btopic=characters&name=
+&name=
+<A HREF=
+&name=
+%s-%s
+%s[%d]
+safemode1st.txt1
+safemode1st.txt1
+safemode1st.txt
+notepad.exe
+RPCRT4
+UuidCreateSequential
+bkey.bin
+bkey.bin
+Too Many Computers
+You have too many computers on this account using this software today, please wait until tommorrow(16:00 Central USA time).  You should also check to make sure that your email is showing the right number of computers on your account.  If the number is too low, its likely because of invalid payment.  The Demo is now Activated
+Internet Error
+Internet Error, could not authorize.Please try again later.
+Internet Error
+Could not connect to tibiadb.com.  Check your antivirus or firewall program and allow Magebot to access the internet during loadup, or check your internet connection to our website.
+Internet Error
+Socket Error during authorization, try closing and reopening magebot or reboot computer
+Internet Error
+Corrupt Packet Stream,  check your connection or try again.  Possibly your firewall is blocking our program.  It could also be the website is overloaded, check tibiadb.com and make sure you can connect to it then try again
+Internet Error
+The account that authorized this computer has been disabled
+Internet Error
+Your computer has been disabled, please download and run the newest Setup file, then remove and add your computer from your email
+TibiaClient
+TibiaClientTest
+\\.\pipe\SamplePipe%i
+Tibia.exe
+tibia.bin
+\packet.dll
+LoadLibraryA
+Kernel32
+C:\DXSDK\Samples\C++\Direct3D\Tutorials\packet\Release\packet.dll
+config.txt
+Thread : %i
+TibiaMB
+recordnons.dat
+FileLoad size %i
+fltiles.bin
+found 1
+Tibia
+AntiPush 
+PushMax 
+AutoSSA 
+YOU SHOULD BUY A MAGEBOT KEY OMG :(
+Magebot will close in a few minutes
+not logged in
+Ping : %i 
+Cavebot Unloads after 20 minutes Please Buy a Key
+TibiaMB %s
+TibiaMB    Exp/hr: %i TNL: %i
+TibiaMB
+AutoFire(OFF) MC Formation Mode (OFF) Cavebot(OFF) Follow Mode (OFF)
+Change gold
+Sell %s
+tiles:
+%d %d 
+id:%i ct%i x:%i y:%i z:%i
+Enter
+{%d,%d-%d}%s
+%s[%d]:%s
+chat sent
+%d %d-b2:%d %d
+%d %d
+Delay:%d:%d
+Backpack at %i %i %i
+Drop Square at %i %i %i
+ Look Tiles: 
+:%x %x
+mouse %i %i see-d %i:%x tossID %i lootbpnumber %i lookct %x
+*%s* .
+exani hur "up
+idling
+z?aUY
+zc%C1
+-64OS
+zzn2_times_irp
+zzn2_ssub
+zzn2_sadd
+zzn2_from_ints
+zzn2_from_big
+zzn2_from_bigs
+zzn2_powl
+zzn2_timesi
+zzn2_inv
+zzn2_mul
+zzn2_smul
+zzn2_sub
+zzn2_add
+zzn2_conj
+zzn2_negate
+zzn2_from_int
+zzn2_isunity
+nres_double_modsub
+nres_double_modadd
+zzn2_imul
+nres_lazy
+bigbits
+expb2
+hamming
+epoint_x
+double_inverse
+nres_double_inverse
+epoint_double_add
+epoint_getxyz
+set_io_buffer_size
+big_to_bytes
+bytes_to_big
+strong_bigrand
+prepare_basis
+mul2_brick
+ebrick2_init
+ecurve2_mult2
+ecurve2_multn
+ecurve2_mult
+ecurve2_multi_add
+ecurve2_sub
+epoint2_negate
+ecurve2_add
+epoint2_comp
+epoint2_get
+epoint2_norm
+epoint2_set
+ecurve2_init
+ecurve_multi_add
+epoint_negate
+nres_dotprod
+nres_multi_inverse
+epoint_norm
+mul_brick
+ebrick_init
+ecurve_multn
+powmodn
+nres_powmodn
+set_user_function
+pow_brick
+brick_init
+lucas
+nres_lucas
+nxsafeprime
+trial_division
+ecurve_sub
+ecurve_mult2
+nres_premult
+sqroot
+nres_sqroot
+nres_powmod2
+epoint_get
+epoint_set
+epoint_init
+ecurve_mult
+ecurve_add
+ecurve_init
+nres_negate
+nres_modsub
+nres_modadd
+fmodulo
+remain
+divisible
+nres_powltr
+nres_moddiv
+nres_powmod
+nres_modmult
+prepare_monty
+powmod2
+cinstr
+cotstr
+instr
+otstr
+crt_init
+fft_mult
+powltr
+gprime
+facosh
+fcosh
+fasinh
+fsinh
+fatanh
+ftanh
+facos
+fasin
+fatan
+fpowf
+froot
+fpower
+expint
+logb2
+build
+sftbit
+frand
+ftrunc
+fincr
+fpmul
+frecip
+fconv
+fcomp
+mround
+mr_shift
+dconv
+fpack
+mirsys
+subtract
+putdig
+multi_inverse
+mirvar
+isprime
+nxprime
+bigrand
+bigdig
+powmod
+power
+nroot
+cotnum
+cinnum
+cbase
+fdsize
+subdiv
+premult
+divide
+multiply
+normalise
+otnum
+innum
+your program
+Undefined error
+Composite modulus
+No irreducible basis defined
+Base must be binary (MR_ALWAYS_BINARY defined in mirdef.h ?)
+Unable to control Floating-point rounding
+Specified basis is NOT irreducible
+Specified double length type isn't double length
+Unsupported Feature - check mirdef.h
+Exponent too big
+No modulus defined
+Illegal modulus 
+MIRACL not initialised - no call to mirsys()
+I/O buffer overflow
+Flash to double conversion failure
+Log of a non-positive number
+Numbers too big
+Flash overflow
+Integer operation attempted on Flash number
+Attempt to take illegal root
+Raising integer to negative power
+Even root of a negative number
+Out of space
+Illegal parameter usage
+Illegal number base
+Input format error
+Internal result is negative
+Overflow - Number too big
+Division by zero attempted
+Number base too big for representation
+              called from 
+MIRACL error from routine 
+.?AVios_base@std@@
+.?AV?$basic_ios@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_istream@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_ostream@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_streambuf@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_filebuf@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_ios@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_istream@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_ostream@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_filebuf@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_streambuf@GU?$char_traits@G@std@@@std@@
+.?AVexception@@
+.?AVruntime_error@std@@
+.?AVfailure@ios_base@std@@
+.?AVfacet@locale@std@@
+.?AV_Locimp@locale@std@@
+.?AVlogic_error@std@@
+.?AVlength_error@std@@
+.?AVout_of_range@std@@
+.?AVbad_alloc@std@@
+.?AVtype_info@@

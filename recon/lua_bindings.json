@@ -1,0 +1,317 @@
+[
+ {
+  "name": "DrawText",
+  "cfunc": "0x00437688",
+  "site": "0x00436a43"
+ },
+ {
+  "name": "SetTimerCallback",
+  "cfunc": "0x004375f6",
+  "site": "0x00436a71"
+ },
+ {
+  "name": "printtext",
+  "cfunc": "0x0043776a",
+  "site": "0x00436a9f"
+ },
+ {
+  "name": "IsKeyDown",
+  "cfunc": "0x0040119a",
+  "site": "0x00436ace"
+ },
+ {
+  "name": "GetCursorX",
+  "cfunc": "0x004014d3",
+  "site": "0x00436afc"
+ },
+ {
+  "name": "GetCursorY",
+  "cfunc": "0x0040146f",
+  "site": "0x00436b2a"
+ },
+ {
+  "name": "PrintError",
+  "cfunc": "0x00401190",
+  "site": "0x00436b59"
+ },
+ {
+  "name": "ReloadLua",
+  "cfunc": "0x00401131",
+  "site": "0x00436b87"
+ },
+ {
+  "name": "LoadFile",
+  "cfunc": "0x004014c9",
+  "site": "0x00436bb5"
+ },
+ {
+  "name": "SaveFile",
+  "cfunc": "0x0040118b",
+  "site": "0x00436be4"
+ },
+ {
+  "name": "GetScriptInfo",
+  "cfunc": "0x004013ac",
+  "site": "0x00436c12"
+ },
+ {
+  "name": "EnableScript",
+  "cfunc": "0x0040141a",
+  "site": "0x00436c40"
+ },
+ {
+  "name": "DisableScript",
+  "cfunc": "0x004013a2",
+  "site": "0x00436c6f"
+ },
+ {
+  "name": "GetClock",
+  "cfunc": "0x004014ce",
+  "site": "0x00436c9d"
+ },
+ {
+  "name": "ListScripts",
+  "cfunc": "0x0040127b",
+  "site": "0x00436ccb"
+ },
+ {
+  "name": "SetGuiParams",
+  "cfunc": "0x0040137f",
+  "site": "0x00436cfa"
+ },
+ {
+  "name": "GetScriptNumber",
+  "cfunc": "0x0040122b",
+  "site": "0x00436d28"
+ },
+ {
+  "name": "GetMaxContainers",
+  "cfunc": "0x004014dd",
+  "site": "0x00436d56"
+ },
+ {
+  "name": "GetContainerItems",
+  "cfunc": "0x004012d0",
+  "site": "0x00436d85"
+ },
+ {
+  "name": "UseInventoryItem",
+  "cfunc": "0x00401311",
+  "site": "0x00436db3"
+ },
+ {
+  "name": "UseContainerItem",
+  "cfunc": "0x004011fe",
+  "site": "0x00436de1"
+ },
+ {
+  "name": "UseSpell",
+  "cfunc": "0x004014f6",
+  "site": "0x00436e10"
+ },
+ {
+  "name": "UseGroundItem",
+  "cfunc": "0x0040111d",
+  "site": "0x00436e3e"
+ },
+ {
+  "name": "UseItemOnGround",
+  "cfunc": "0x0040109b",
+  "site": "0x00436e6c"
+ },
+ {
+  "name": "StopWaypoints",
+  "cfunc": "0x00401249",
+  "site": "0x00436e9b"
+ },
+ {
+  "name": "StartWaypoints",
+  "cfunc": "0x004012c6",
+  "site": "0x00436ec9"
+ },
+ {
+  "name": "SetStopPoint",
+  "cfunc": "0x00401023",
+  "site": "0x00436ef7"
+ },
+ {
+  "name": "ClearWaypoints",
+  "cfunc": "0x00401064",
+  "site": "0x00436f26"
+ },
+ {
+  "name": "SetWaypointInfo",
+  "cfunc": "0x004012f8",
+  "site": "0x00436f54"
+ },
+ {
+  "name": "MoveTo",
+  "cfunc": "0x00401212",
+  "site": "0x00436f82"
+ },
+ {
+  "name": "StartAutoExplorer",
+  "cfunc": "0x004013c0",
+  "site": "0x00436fb1"
+ },
+ {
+  "name": "StopAutoExplorer",
+  "cfunc": "0x004011e5",
+  "site": "0x00436fdf"
+ },
+ {
+  "name": "GetScriptPause",
+  "cfunc": "0x0040147e",
+  "site": "0x0043700d"
+ },
+ {
+  "name": "ResumeScripts",
+  "cfunc": "0x00401433",
+  "site": "0x0043703c"
+ },
+ {
+  "name": "GetCreatureInfo",
+  "cfunc": "0x0040136b",
+  "site": "0x0043706a"
+ },
+ {
+  "name": "GetPlayerInfo",
+  "cfunc": "0x004013ca",
+  "site": "0x00437098"
+ },
+ {
+  "name": "GetGroundInfo",
+  "cfunc": "0x00401019",
+  "site": "0x004370c7"
+ },
+ {
+  "name": "AttackTarget",
+  "cfunc": "0x004014ba",
+  "site": "0x004370f5"
+ },
+ {
+  "name": "FollowTarget",
+  "cfunc": "0x004011ae",
+  "site": "0x00437123"
+ },
+ {
+  "name": "CastRuneTarget",
+  "cfunc": "0x00401096",
+  "site": "0x00437152"
+ },
+ {
+  "name": "CastHotkey",
+  "cfunc": "0x004014b5",
+  "site": "0x00437180"
+ },
+ {
+  "name": "Sleep",
+  "cfunc": "0x004014e2",
+  "site": "0x004371ae"
+ },
+ {
+  "name": "NpcSay",
+  "cfunc": "0x004012fd",
+  "site": "0x004371dd"
+ },
+ {
+  "name": "NpcBuy",
+  "cfunc": "0x004010be",
+  "site": "0x0043720b"
+ },
+ {
+  "name": "NpcSell",
+  "cfunc": "0x004012ad",
+  "site": "0x00437239"
+ },
+ {
+  "name": "SetAutoLoot",
+  "cfunc": "0x00401366",
+  "site": "0x00437268"
+ },
+ {
+  "name": "PlaySound",
+  "cfunc": "0x00401109",
+  "site": "0x00437296"
+ },
+ {
+  "name": "ThrowItemCtoC",
+  "cfunc": "0x0040139d",
+  "site": "0x004372c4"
+ },
+ {
+  "name": "ThrowItemCtoG",
+  "cfunc": "0x00401537",
+  "site": "0x004372f3"
+ },
+ {
+  "name": "ThrowItemGtoC",
+  "cfunc": "0x0040125d",
+  "site": "0x00437321"
+ },
+ {
+  "name": "ThrowItemGtoG",
+  "cfunc": "0x004014ec",
+  "site": "0x0043734f"
+ },
+ {
+  "name": "ThrowItemCtoI",
+  "cfunc": "0x004013cf",
+  "site": "0x0043737e"
+ },
+ {
+  "name": "ThrowItemItoC",
+  "cfunc": "0x0040105f",
+  "site": "0x004373ac"
+ },
+ {
+  "name": "SetManaPotIDS",
+  "cfunc": "0x00401055",
+  "site": "0x004373da"
+ },
+ {
+  "name": "SetHealPotIDS",
+  "cfunc": "0x004014c4",
+  "site": "0x00437409"
+ },
+ {
+  "name": "SetRuneIDS",
+  "cfunc": "0x004012b7",
+  "site": "0x00437437"
+ },
+ {
+  "name": "SetHuntingOn",
+  "cfunc": "0x0040124e",
+  "site": "0x00437465"
+ },
+ {
+  "name": "GetCurrentWaypoint",
+  "cfunc": "0x00401429",
+  "site": "0x00437494"
+ },
+ {
+  "name": "SetClipboard",
+  "cfunc": "0x0040110e",
+  "site": "0x004374c2"
+ },
+ {
+  "name": "SetLootTimer",
+  "cfunc": "0x00401465",
+  "site": "0x004374f0"
+ },
+ {
+  "name": "GetTargetInfo",
+  "cfunc": "0x00401244",
+  "site": "0x0043751f"
+ },
+ {
+  "name": "GetFollowInfo",
+  "cfunc": "0x00401406",
+  "site": "0x0043754d"
+ },
+ {
+  "name": "GetCreatureInt",
+  "cfunc": "0x0040117c",
+  "site": "0x0043757b"
+ }
+]

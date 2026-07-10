@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "re-ida": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/ida/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-ghidra": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/ghidra/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-x64dbg": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/x64dbg/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-frida": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/frida/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-ce": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/ce/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-wireshark": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/wireshark/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-winctl": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/winctl/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-procmon": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/procmon/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    },
+    "re-upload": {
+      "type": "http",
+      "url": "https://re03-mcp.kizubot.com/upload/mcp?token=Cd0tJPjjjiFkyGOBP2C14nHs2JpJTMX8"
+    }
+  }
+}

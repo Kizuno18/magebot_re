@@ -1,0 +1,387 @@
+ios::eofbit set
+ios::failbit set
+ios::badbit set
+string too long
+invalid string position
+Unknown exception
+LC_TIME
+LC_NUMERIC
+LC_MONETARY
+LC_CTYPE
+LC_COLLATE
+LC_ALL
+H:mm:ss
+dddd, MMMM dd, yyyy
+M/d/yy
+December
+November
+October
+September
+August
+April
+March
+February
+January
+Saturday
+Friday
+Thursday
+Wednesday
+Tuesday
+Monday
+Sunday
+ (8PX
+700WP
+`h````
+ppxxxx
+(null)
+GAIsProcessorFeaturePresent
+KERNEL32
+e+000
+runtime error 
+TLOSS error
+SING error
+DOMAIN error
+R6028
+- unable to initialize heap
+R6027
+- not enough space for lowio initialization
+R6026
+- not enough space for stdio initialization
+R6025
+- pure virtual function call
+R6024
+- not enough space for _onexit/atexit table
+R6019
+- unable to open console device
+R6018
+- unexpected heap error
+R6017
+- unexpected multithread lock error
+R6016
+- not enough space for thread data
+abnormal program termination
+R6009
+- not enough space for environment
+R6008
+- not enough space for arguments
+R6002
+- floating point not loaded
+Microsoft Visual C++ Runtime Library
+Runtime Error!
+Program: 
+<program name unknown>
+Paraguay
+Uruguay
+Chile
+Ecuador
+Argentina
+Colombia
+Venezuela
+Dominican Republic
+South Africa
+Panama
+Luxembourg
+Costa Rica
+Switzerland
+Guatemala
+Canada
+Spanish - Modern Sort
+Australia
+English
+Austria
+German
+Belgium
+Mexico
+Spanish
+Basque
+Sweden
+Swedish
+Iceland
+Icelandic
+France
+French
+Finland
+Finnish
+Spain
+Spanish - Traditional Sort
+united-states
+united-kingdom
+trinidad & tobago
+south-korea
+south-africa
+south korea
+south africa
+slovak
+puerto-rico
+pr-china
+pr china
+new-zealand
+hong-kong
+holland
+great britain
+england
+czech
+china
+britain
+america
+swiss
+swedish-finland
+spanish-venezuela
+spanish-uruguay
+spanish-puerto rico
+spanish-peru
+spanish-paraguay
+spanish-panama
+spanish-nicaragua
+spanish-modern
+spanish-mexican
+spanish-honduras
+spanish-guatemala
+spanish-el salvador
+spanish-ecuador
+spanish-dominican republic
+spanish-costa rica
+spanish-colombia
+spanish-chile
+spanish-bolivia
+spanish-argentina
+portuguese-brazilian
+norwegian-nynorsk
+norwegian-bokmal
+norwegian
+italian-swiss
+irish-english
+german-swiss
+german-luxembourg
+german-lichtenstein
+german-austrian
+french-swiss
+french-luxembourg
+french-canadian
+french-belgian
+english-usa
+english-us
+english-uk
+english-trinidad y tobago
+english-south africa
+english-nz
+english-jamaica
+english-ire
+english-caribbean
+english-can
+english-belize
+english-aus
+english-american
+dutch-belgian
+chinese-traditional
+chinese-singapore
+chinese-simplified
+chinese-hongkong
+chinese
+canadian
+belgian
+australian
+american-english
+american english
+american
+SunMonTueWedThuFriSat
+JanFebMarAprMayJunJulAugSepOctNovDec
+GetLastActivePopup
+GetActiveWindow
+MessageBoxA
+user32.dll
+1#QNAN
+1#INF
+1#IND
+1#SNAN
+Sleep
+ExitProcess
+CreateThread
+KERNEL32.dll
+WSOCK32.dll
+WideCharToMultiByte
+MultiByteToWideChar
+RtlUnwind
+RaiseException
+HeapFree
+GetLastError
+DeleteFileA
+GetSystemTimeAsFileTime
+GetCommandLineA
+GetVersion
+HeapAlloc
+HeapReAlloc
+TerminateProcess
+GetCurrentProcess
+LCMapStringA
+LCMapStringW
+GetCPInfo
+SetUnhandledExceptionFilter
+HeapDestroy
+HeapCreate
+VirtualFree
+VirtualAlloc
+IsBadWritePtr
+HeapSize
+GetProcAddress
+GetModuleHandleA
+ReadFile
+SetFilePointer
+SetHandleCount
+GetStdHandle
+GetFileType
+GetStartupInfoA
+CloseHandle
+UnhandledExceptionFilter
+GetModuleFileNameA
+FreeEnvironmentStringsA
+FreeEnvironmentStringsW
+GetEnvironmentStrings
+GetEnvironmentStringsW
+WriteFile
+FlushFileBuffers
+IsValidLocale
+IsValidCodePage
+GetLocaleInfoA
+EnumSystemLocalesA
+GetUserDefaultLCID
+GetVersionExA
+GetStringTypeA
+GetStringTypeW
+IsBadReadPtr
+IsBadCodePtr
+SetStdHandle
+CreateFileA
+GetACP
+GetOEMCP
+LoadLibraryA
+SetEndOfFile
+GetLocaleInfoW
+default
+default
+127.0.0.1
+Enter Server Password:
+Enter Server Leader Password(COMBO LEADER MUST USE THIS IN MAGEBOT):
+WSAStartup() returned error code 
+.?AVexception@@
+.?AVbad_cast@std@@
+missing locale facet
+false
+Connected to Team Server
+Send Enemy List Y/N ?
+enemies.txt
+enemy list:
+passlist.txt
+Team Server is running...
+establish listener
+Waiting for connections...
+Acceptor restarting...
+bind() failed
+TBytes:
+ was closed by the client. Shutting down.
+Socket 
+LEADER
+Password failed.
+disconnected for spam
+Enemy list request recieved
+Sending new list length
+Chat recieved
+Bad Chat length
+bad leader attempt
+combo command recved 
+bad leader attempt
+potion command recved 
+single shot found
+ was closed by the client. Shutting down.
+Socket 
+error only part sent to 
+, socket 
+Accepted connection from 
+WARNING: More than 63 client connections accepted.  This will not work reliably on some Winsock stacks!
+accept() failed
+Exception on listening socket: 
+General socket error
+Read error
+Write error
+select() failed
+No error
+Interrupted system call
+Bad file number
+Permission denied
+Bad address
+Invalid argument
+Too many open sockets
+Operation would block
+Operation now in progress
+Operation already in progress
+Socket operation on non-socket
+Destination address required
+Message too long
+Protocol wrong type for socket
+Bad protocol option
+Protocol not supported
+Socket type not supported
+Operation not supported on socket
+Protocol family not supported
+Address family not supported
+Address already in use
+Can't assign requested address
+Network is down
+Network is unreachable
+Net connection reset
+Software caused connection abort
+Connection reset by peer
+No buffer space available
+Socket is already connected
+Socket is not connected
+Can't send after socket shutdown
+Too many references, can't splice
+Connection timed out
+Connection refused
+Too many levels of symbolic links
+File name too long
+Host is down
+No route to host
+Directory not empty
+Too many processes
+Too many users
+Disc quota exceeded
+Stale NFS file handle
+Too many levels of remote in path
+Network system is unavailable
+Winsock version out of range
+WSAStartup not yet called
+Graceful shutdown in progress
+Host not found
+No host data of that type was found
+unknown error
+ unexpected bytes during shutdown.
+FYI, received 
+.?AVios_base@std@@
+.?AV?$basic_ios@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_istream@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_ostream@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_streambuf@DU?$char_traits@D@std@@@std@@
+.?AV?$basic_filebuf@DU?$char_traits@D@std@@@std@@
+.?AVruntime_error@std@@
+.?AVfailure@ios_base@std@@
+.?AVfacet@locale@std@@
+.?AV_Locimp@locale@std@@
+.?AV?$num_put@DV?$ostreambuf_iterator@DU?$char_traits@D@std@@@std@@@std@@
+.?AV?$numpunct@D@std@@
+.?AUctype_base@std@@
+.?AV?$ctype@D@std@@
+.?AV?$basic_ios@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_istream@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_ostream@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_filebuf@GU?$char_traits@G@std@@@std@@
+.?AV?$basic_streambuf@GU?$char_traits@G@std@@@std@@
+.?AVlogic_error@std@@
+.?AVlength_error@std@@
+.?AVout_of_range@std@@
+.?AVstrstreambuf@std@@
+.?AVostrstream@std@@
+.?AVtype_info@@
+z?aUY
+zc%C1
+-64OS

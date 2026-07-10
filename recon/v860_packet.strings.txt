@@ -1,0 +1,180 @@
+ (8PX
+700WP
+`h````
+ppxxxx
+(null)
+runtime error 
+TLOSS error
+SING error
+DOMAIN error
+R6028
+- unable to initialize heap
+R6027
+- not enough space for lowio initialization
+R6026
+- not enough space for stdio initialization
+R6025
+- pure virtual function call
+R6024
+- not enough space for _onexit/atexit table
+R6019
+- unable to open console device
+R6018
+- unexpected heap error
+R6017
+- unexpected multithread lock error
+R6016
+- not enough space for thread data
+abnormal program termination
+R6009
+- not enough space for environment
+R6008
+- not enough space for arguments
+R6002
+- floating point not loaded
+Microsoft Visual C++ Runtime Library
+Runtime Error!
+Program: 
+<program name unknown>
+GetLastActivePopup
+GetActiveWindow
+MessageBoxA
+user32.dll
+H:mm:ss
+dddd, MMMM dd, yyyy
+M/d/yy
+December
+November
+October
+September
+August
+April
+March
+February
+January
+Saturday
+Friday
+Thursday
+Wednesday
+Tuesday
+Monday
+Sunday
+SunMonTueWedThuFriSat
+JanFebMarAprMayJunJulAugSepOctNovDec
+GetProcAddress
+LoadLibraryA
+WriteConsoleA
+VirtualProtectEx
+GetCurrentProcess
+CloseHandle
+DisconnectNamedPipe
+ReadFile
+GetLastError
+ConnectNamedPipe
+Sleep
+CreateNamedPipeA
+CreateThread
+KERNEL32.dll
+SetWindowLongA
+GetAsyncKeyState
+CallWindowProcA
+USER32.dll
+GetSystemTimeAsFileTime
+DeleteFileA
+GetCommandLineA
+GetVersion
+EnterCriticalSection
+LeaveCriticalSection
+HeapFree
+InitializeCriticalSection
+ExitProcess
+TerminateProcess
+GetCurrentThreadId
+TlsSetValue
+TlsAlloc
+TlsFree
+SetLastError
+TlsGetValue
+SetHandleCount
+GetStdHandle
+GetFileType
+GetStartupInfoA
+DeleteCriticalSection
+GetModuleFileNameA
+FreeEnvironmentStringsA
+FreeEnvironmentStringsW
+WideCharToMultiByte
+GetEnvironmentStrings
+GetEnvironmentStringsW
+HeapDestroy
+HeapCreate
+VirtualFree
+WriteFile
+HeapAlloc
+VirtualAlloc
+HeapReAlloc
+SetStdHandle
+FlushFileBuffers
+SetFilePointer
+InterlockedDecrement
+InterlockedIncrement
+MultiByteToWideChar
+GetStringTypeA
+GetStringTypeW
+CreateFileA
+GetCPInfo
+GetACP
+GetOEMCP
+RtlUnwind
+SetEndOfFile
+LCMapStringA
+LCMapStringW
+packet.dll
+?fnPacket@@YAHPBDHH@Z
+?nPacket@@3HA
+p124.txt
+p124.txt
+p124.txt
+psapi.dll
+EnumProcesses
+EnumProcessModules
+GetModuleBaseNameA
+GetModuleInformation
+packerrors.txt
+found MK 2
+LOCATION %x :: %x %x %x : %x %x %x 
+cctiles ahead: 
+%x %x 
+not found MK 2
+..........
+changing
+ %d %d %d %d
+mw %d %d
+Leader : %d
+Guildless
+%s(%s)
+Enemies
+Magebot %s
+Last Magic Wall:%d
+Sending pipe:
+Sending pipe:calced
+Thread Started
+\\.\pipe\SamplePipe%i
+pipe:%s wnd:%d
+C:\\pipechat%d.txt
+C:\\pipeteam%d.txt
+C:\\pipeonline%d.txt
+socket #: %i %i
+socket: %i 
+pipe connected
+bytes : %i value : %s
+nosocket:%x
+mwalltimer on
+mwalltimer off
+Error not enough bytes
+sending %i on sock %x req
+Hooked 9.1
+Dll loaded 9.2
+Tibia.exe
+ws2_32.dll
+setsockopt

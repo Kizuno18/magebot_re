@@ -1,0 +1,118 @@
+{
+ "path": "samples/v10x/packet.dll",
+ "imagebase": "0x10000000",
+ "entry": "0x1000648b",
+ "timestamp": "2017-09-03T18:37:37+00:00",
+ "sections": [
+  {
+   "name": ".text",
+   "va": "0x10001000",
+   "vsize": "0x9a32",
+   "rsize": "0xa000"
+  },
+  {
+   "name": ".rdata",
+   "va": "0x1000b000",
+   "vsize": "0xcbb",
+   "rsize": "0x1000"
+  },
+  {
+   "name": ".data",
+   "va": "0x1000c000",
+   "vsize": "0x1ba34c",
+   "rsize": "0x2000"
+  },
+  {
+   "name": ".reloc",
+   "va": "0x101c7000",
+   "vsize": "0x2398",
+   "rsize": "0x3000"
+  }
+ ],
+ "imports": {
+  "KERNEL32.dll": [
+   "Beep",
+   "CloseHandle",
+   "ConnectNamedPipe",
+   "CreateFileA",
+   "CreateNamedPipeA",
+   "CreateThread",
+   "DeleteCriticalSection",
+   "DeleteFileA",
+   "DisconnectNamedPipe",
+   "EnterCriticalSection",
+   "ExitProcess",
+   "FlushFileBuffers",
+   "FreeEnvironmentStringsA",
+   "FreeEnvironmentStringsW",
+   "GetACP",
+   "GetCPInfo",
+   "GetCommandLineA",
+   "GetCurrentProcess",
+   "GetCurrentThreadId",
+   "GetEnvironmentStrings",
+   "GetEnvironmentStringsW",
+   "GetFileType",
+   "GetLastError",
+   "GetModuleFileNameA",
+   "GetOEMCP",
+   "GetProcAddress",
+   "GetStartupInfoA",
+   "GetStdHandle",
+   "GetStringTypeA",
+   "GetStringTypeW",
+   "GetSystemTimeAsFileTime",
+   "GetVersion",
+   "HeapAlloc",
+   "HeapCreate",
+   "HeapDestroy",
+   "HeapFree",
+   "HeapReAlloc",
+   "InitializeCriticalSection",
+   "InterlockedDecrement",
+   "InterlockedIncrement",
+   "LCMapStringA",
+   "LCMapStringW",
+   "LeaveCriticalSection",
+   "LoadLibraryA",
+   "MultiByteToWideChar",
+   "ReadFile",
+   "RtlUnwind",
+   "SetEndOfFile",
+   "SetFilePointer",
+   "SetHandleCount",
+   "SetLastError",
+   "SetStdHandle",
+   "Sleep",
+   "TerminateProcess",
+   "TlsAlloc",
+   "TlsFree",
+   "TlsGetValue",
+   "TlsSetValue",
+   "VirtualAlloc",
+   "VirtualFree",
+   "VirtualProtectEx",
+   "WideCharToMultiByte",
+   "WriteConsoleA",
+   "WriteFile"
+  ],
+  "USER32.dll": [
+   "CallWindowProcA",
+   "GetAsyncKeyState",
+   "SetWindowLongA"
+  ]
+ },
+ "exports": [
+  [
+   "?fnPacket@@YAHPBDHH@Z",
+   "0x10005641"
+  ],
+  [
+   "?nPacket@@3HA",
+   "0x101c4c58"
+  ]
+ ],
+ "n_functions": 107,
+ "n_bindings": 0,
+ "n_strings": 182
+}

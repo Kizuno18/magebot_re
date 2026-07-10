@@ -1,0 +1,98 @@
+;This file can be used to add extra hotkeys if you require more than the ones provided. 
+;We also will provide a list of possible hotkeys and their functions.
+;
+;   1. autosay exori vis ->says the spell if u have a target
+;   2. autorune xxxx ->shoot rune if u have target
+;   3. say spell ->says the spell
+;   4. self xxxx ->use item on self like mana potion or uh/ if it is a manapotion it wont use if u are near full
+;   5. target xxxx ->shoot rune on target
+;   6. ring xxxx ->equip ring
+;   7. amul xxxx ->equip amulet
+;   8. ANTIPUSH ->keep 1-2 gp under u at all times from an open container
+;   9. AUTOGRANHUR-> Turns on Automatic cast Great Haste, Press again to turn off(disable)
+;   10.AUTOHUR->     Turns on Automatic Cast Regular Haste, Press again to turn off
+;   11.EXORIMAX -> same as autosay exori vis, but instead of exori vis, it chooses the best strike spell(based on monster weakness) from targeting.txt
+;   
+;   11. SDMAX ->auto traced sds from enemies.txt
+;   12. SDMAX1 ->shoots a singe traced sd from enemies.txt
+;   13. SDLAST1 ->shoots a single traced sd on the last target
+;   14. SDLAST ->auto traced sd on the last target
+;   15. RMAX xxxx -> same as SDMAX but uses runes with ID xxxx
+;   16. RMAX1 xxxx -> same as SDMAX1 but uses runes with ID xxxx
+;   17. PARAMAX    -> same as SDMAX but with paralyze runes
+;   18. PARAMAX1   -> same as SDMAX1 but with paralyze runes
+;   19. MWALLMAX   -> tries to continuously target (or enemy from enemies.txt) with magic wall runes.
+;   20. MWALLMAX1  -> shoots a single magic wall to try to block or trap target.
+;   21. MWALLCOMBO -> If you are leader your team will shoot an mwall line where you click.  If you are not leader just gives you an mwall crosshair
+;   22. FOLLOW ->first use the tibia follow on a char before pressing this hotkey (escape cancels)
+;   23. SSA1-> Loads a single stone skin amulet
+;   24. AUTOSSA -> Autoloads stone skin amulets
+;   25. SSAFAST xxxx -> Spams SSA loading every xxxx milliseconds(default 300)
+;   26. ATKMAX -> Automatically Attacks an enemy from enemies.txt
+;   27. SPRINT -> Speedhack. You must hold down this key while tapping arrow keys.(Default is the DELETE key)
+;
+;   28. CHANGEALL  ->Changes everyones outfit to a random outfit (CHANGEALL xxxx will change to the number xxxx)
+;   29. CHANGESELF ->Changes your outfit to a random outfit (CHANGESELF xxxx will change to the outfit number xxxx);
+;   30. GOUP       ->Your character will use ladders,rope holes that are next to him
+;   31. LOGOUT     ->Your character will logout as soon as PZ is gone
+;   32. UEMAX      ->Leader uses this to make other chars cast their uecombo spell if they are in range
+;   33. PUSHMAX and PUSHMAXD -> Pushes chars on enemy list or if you look at or target a character
+;   34. STOPMANA   -> Stops the Auto Mana Refiller until you press Escape
+;   35. GFBCOMBO xxxx   -> If you are leader your team will shoot a GFB rune combo with rune xxxx where you click.  If you are not leader just gives you an xxxx crosshair
+;   36. SDNEAR   -> Shoots an SD on the target from enemies list that is closest to your you and your team
+;   37. MWALLBEHIND->Shoots an Magic Wall behind your character 
+;   38. MANAFRIEND->Manas nearby friends up to 97%, hold down to activate
+;   39. DIAGONALKEYS->Turns Diagonal Keys On/Off
+;   40. PING "text to say"->Move your mouse over a square and hit this hotkey while connected to the team server with team chat enabled
+;   41. PING%200% "text to say"->Same as PING, except the number changes the color of the text.  Note: you can ping from the default chat by typing @! %200% text to say
+;   42. ANTIPUSH 3031,238->Same as ANTIPUSH except it drops items 3031 and 238 instead of gold and worms
+;   43. DODGE->Same as SPRINT except will try to avoid obstacles
+;   44. RMAX 3195->Same as RMAX xxxx except will try to not shoot the same target twice since it is a soulfire rune
+;
+;Older depreciated hotkeys
+;   1. MWALLSEE ->mwall on last viewed square (spammable with mc active enabled)
+;   2. MAGESTOP ->stops magebomb and disconects all chars 
+;   3. FBOMB ->shoots auto fbombs on target
+;   4. MAGEBOMB ->starts magebomb from lognoobs.txt (DO NOT USE IF U DO NOT HAVE A MAGEBOMB TYPED IN)
+;   5. aOLLOW ->first use the tibia attack follow on a char before pressing this hotkey (escape cancels)
+;   6. GG ->for ots only (old client sd/uh mode uses runes frmo backpacks)
+;   7. POTFIRE ->pot trapper (no longer useful)
+;   8. SD/SD1 ->shoots sd runes (For use with autofire vip skull)
+;   9. EXP/EXP1 ->shoots explosion runes
+;   10. HMM/HMM1 ->shoots hmm runes
+;   11. GFB/GFB1 ->shoots gfb runes
+;
+;
+; ////Here are the hotkeys. Change the word EMPTY to the hotkey of your choice (Example: SDMAX1;44        //PRINT SCREEN key)      ////
+; ////Remember you can add more to the end of this file if you can find the virtual key code of the key, you ONLY need the number. ////
+; ////Some samples here(http://www.liquidcabaret.com/webhelp/ams/Program_Reference/Misc/Virtual_Key_Codes.htm) ////
+; ////After you make your changes, SAVE this file, then press Start then Stop on the cavebot to reload all files, or just close the bot and reopen////
+EMPTY;1         //Left mouse button
+EMPTY;2         //Right mouse button 
+EMPTY;8         //BACKSPACE key 
+EMPTY;16        //SHIFT KEY
+EMPTY;17  	//CTRL key 
+EMPTY;18  	//ALT key 
+EMPTY;32  	//SPACEBAR 
+EMPTY;44  	//PRINT SCREEN key
+SPRINT;46       //DELETE key 
+EMPTY;112  	//F1 key 
+EMPTY;113  	//F2 key 
+EMPTY;114  	//F3 key 
+EMPTY;144  	//NUM LOCK key 
+EMPTY;145  	//SCROLL LOCK key 
+EMPTY;104  	//Numeric keypad 8 key 
+EMPTY;105  	//Numeric keypad 9 key 
+EMPTY;103  	//Numeric keypad 7 key 
+EMPTY;99  	//Numeric keypad 3 key 
+EMPTY;(Put the keynumber you want here)
+EMPTY;
+EMPTY;4         //Middle mouse button (three-button mouse)
+EMPTY;5         //Windows 2000/XP: X1 mouse button
+EMPTY;6         //Windows 2000/XP: X2 mouse button 
+EMPTY;
+EMPTY;
+EMPTY;
+EMPTY;
+EMPTY;
+EMPTY;

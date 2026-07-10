@@ -1,0 +1,53 @@
+exura
+exura gran
+exori vis
+SDMAX
+AUTOSSA
+MWALLCOMBO
+AUTOGRANHUR
+GOUP
+PUSHMAX
+ANTIPUSH
+say exani hur "down
+say exevo vis hur
+FOLLOW
+say exani hur "up
+300
+300
+80
+30
+60
+60
+70
+160
+0
+heal
+
+gmana
+00
+Magebot.no-ip.org
+password
+1000
+1000
+EXORIMAX
+EXORIMAX
+22
+40
+77
+1
+utani gran hur
+140
+0
+160
+exura vita
+7171
+
+UH
+4
+3
+
+50
+70
+exevo gran mas vis
+SD
+20

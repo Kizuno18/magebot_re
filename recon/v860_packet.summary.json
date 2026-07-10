@@ -1,0 +1,118 @@
+{
+ "path": "samples/v860/packet.dll",
+ "imagebase": "0x10000000",
+ "entry": "0x100060fb",
+ "timestamp": "2022-02-15T21:50:57+00:00",
+ "sections": [
+  {
+   "name": ".text",
+   "va": "0x10001000",
+   "vsize": "0x96a2",
+   "rsize": "0xa000"
+  },
+  {
+   "name": ".rdata",
+   "va": "0x1000b000",
+   "vsize": "0xcbb",
+   "rsize": "0x1000"
+  },
+  {
+   "name": ".data",
+   "va": "0x1000c000",
+   "vsize": "0x4a2cc",
+   "rsize": "0x2000"
+  },
+  {
+   "name": ".reloc",
+   "va": "0x10057000",
+   "vsize": "0x14dc",
+   "rsize": "0x2000"
+  }
+ ],
+ "imports": {
+  "KERNEL32.dll": [
+   "Beep",
+   "CloseHandle",
+   "ConnectNamedPipe",
+   "CreateFileA",
+   "CreateNamedPipeA",
+   "CreateThread",
+   "DeleteCriticalSection",
+   "DeleteFileA",
+   "DisconnectNamedPipe",
+   "EnterCriticalSection",
+   "ExitProcess",
+   "FlushFileBuffers",
+   "FreeEnvironmentStringsA",
+   "FreeEnvironmentStringsW",
+   "GetACP",
+   "GetCPInfo",
+   "GetCommandLineA",
+   "GetCurrentProcess",
+   "GetCurrentThreadId",
+   "GetEnvironmentStrings",
+   "GetEnvironmentStringsW",
+   "GetFileType",
+   "GetLastError",
+   "GetModuleFileNameA",
+   "GetOEMCP",
+   "GetProcAddress",
+   "GetStartupInfoA",
+   "GetStdHandle",
+   "GetStringTypeA",
+   "GetStringTypeW",
+   "GetSystemTimeAsFileTime",
+   "GetVersion",
+   "HeapAlloc",
+   "HeapCreate",
+   "HeapDestroy",
+   "HeapFree",
+   "HeapReAlloc",
+   "InitializeCriticalSection",
+   "InterlockedDecrement",
+   "InterlockedIncrement",
+   "LCMapStringA",
+   "LCMapStringW",
+   "LeaveCriticalSection",
+   "LoadLibraryA",
+   "MultiByteToWideChar",
+   "ReadFile",
+   "RtlUnwind",
+   "SetEndOfFile",
+   "SetFilePointer",
+   "SetHandleCount",
+   "SetLastError",
+   "SetStdHandle",
+   "Sleep",
+   "TerminateProcess",
+   "TlsAlloc",
+   "TlsFree",
+   "TlsGetValue",
+   "TlsSetValue",
+   "VirtualAlloc",
+   "VirtualFree",
+   "VirtualProtectEx",
+   "WideCharToMultiByte",
+   "WriteConsoleA",
+   "WriteFile"
+  ],
+  "USER32.dll": [
+   "CallWindowProcA",
+   "GetAsyncKeyState",
+   "SetWindowLongA"
+  ]
+ },
+ "exports": [
+  [
+   "?fnPacket@@YAHPBDHH@Z",
+   "0x100052b7"
+  ],
+  [
+   "?nPacket@@3HA",
+   "0x10054bc4"
+  ]
+ ],
+ "n_functions": 98,
+ "n_bindings": 0,
+ "n_strings": 180
+}
