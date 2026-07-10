@@ -49,6 +49,19 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   `attackComboEngineTick`, `waypointWalker`, `runWaypointNavigator`,
   `buildPathToTileFloodFill`, `healerAndReloader`, `pileLootStackableItems`,
   `chatCommandDispatcher`, `initLuaStateAndRegisterApi`, `dispatchTimerCallbacks`.
+- **Subsystem flow deep-dives** — 8 docs tracing every engine end-to-end:
+  master loop/threads ([07](07-master-loop-and-threads.md)), address resolution +
+  mirror ([08](08-address-resolution-and-mirror.md)), packet build/inject pipeline
+  ([09](09-packet-build-inject-pipeline.md)), targeting/attack
+  ([10](10-targeting-and-attack.md)), cavebot/navigation
+  ([11](11-cavebot-navigation.md)), healer/looter/hotkeys
+  ([12](12-healer-looter-hotkeys.md)), chat commands + Lua
+  ([13](13-chat-commands-and-lua.md)), login/crypto/licensing
+  ([14](14-login-crypto-licensing.md)).
+- **Support region classified** — the `0x440000`–`0x465794` band (~83 funcs) is
+  statically-linked MSVC CRT / STL, no bot logic
+  ([functions/support-region.md](functions/support-region.md)); bot code is the
+  `0x401000`–`0x440000` half, now fully catalogued.
 
 ## In progress / TODO (IDA-driven deep passes)
 

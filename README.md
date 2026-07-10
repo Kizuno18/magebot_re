@@ -48,7 +48,15 @@ scripts), `*.sav`/`*.savd` (v860 binary cavebot recordings), `*.bin` tile maps
 | [`docs/04-packet-dll.md`](docs/04-packet-dll.md) | `packet.dll` — `fnPacket` / `nPacket` injection primitive |
 | [`docs/05-teamserver.md`](docs/05-teamserver.md) | `server.exe` + `tibiadb.com` teamserver: licensing, combo/follow coordination |
 | [`docs/06-v860-lineage.md`](docs/06-v860-lineage.md) | The non-Lua chat-command bot: healer, targeting, cavebot recorder, looter |
-| `docs/functions/` | Per-function catalog (in progress) |
+| [`docs/07-master-loop-and-threads.md`](docs/07-master-loop-and-threads.md) | Boot, the `WinMain` engine-tick driver, the 5 worker threads |
+| [`docs/08-address-resolution-and-mirror.md`](docs/08-address-resolution-and-mirror.md) | The client-address resolver bank + the RPM-polling read cache (the read half) |
+| [`docs/09-packet-build-inject-pipeline.md`](docs/09-packet-build-inject-pipeline.md) | Every packet builder → `SendAction` → `InjectFrame` → XTEA pipe → `packet.dll` |
+| [`docs/10-targeting-and-attack.md`](docs/10-targeting-and-attack.md) | Target selection scoring, attack/combo, rune casting, creature scan |
+| [`docs/11-cavebot-navigation.md`](docs/11-cavebot-navigation.md) | Waypoint navigator, `.sav` recorder ring, flood-fill cost-grid pathing |
+| [`docs/12-healer-looter-hotkeys.md`](docs/12-healer-looter-hotkeys.md) | Healer/reloader, auto-food, potion/rune hotkeys, loot pile/scan |
+| [`docs/13-chat-commands-and-lua.md`](docs/13-chat-commands-and-lua.md) | Chat-command dispatcher + Lua state, script slots, timer-callback tick |
+| [`docs/14-login-crypto-licensing.md`](docs/14-login-crypto-licensing.md) | RSA login packet, bignum modexp, machine-id, `tibiadb.com` licensing, client patches |
+| [`docs/functions/`](docs/functions/) | Per-function catalog: [catalog-bot.md](docs/functions/catalog-bot.md) (222 bot funcs), Lua catalogs, [engine-core.md](docs/functions/engine-core.md), [support-region.md](docs/functions/support-region.md) (CRT/STL) |
 
 ## Method
 
