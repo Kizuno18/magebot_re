@@ -9,11 +9,14 @@ noted. Recovered function starts and the Lua binding table live in `../../recon/
 | [`engine-core.md`](engine-core.md) | The backbone: `SendAction` (0x00405f1d), the `ReadClientState` RPM reader (0x004024a2) that reads client memory on demand, the named-pipe injector, boot path, tick/thread model |
 | [`lua-api-catalog-reads.md`](lua-api-catalog-reads.md) | Lua read/script/draw/input primitives (script control, HUD, self/creature/world reads) |
 | [`lua-api-catalog-actions.md`](lua-api-catalog-actions.md) | Lua action primitives (combat, item use/move, NPC, waypoints, ID config) + the Lua-action → Tibia-opcode map |
+| [`catalog-bot.md`](catalog-bot.md) | The remaining **222 bot-logic functions** of the `0x401000`–`0x440000` region, each named + given a mechanism-level purpose: client-address resolvers, RPM read/write helpers, packet builders (`buildUseOnTileOrCreatureFrame83`, `buildRsaLoginPacket`, …), input drivers, and the subsystem engines (targeting/cavebot/healer/looter/walker) |
 
 The 63 Lua globals and their thunk-resolved implementation addresses are the
 entry points into the action/read layer; the engine backbone is what those
 primitives call. See [`../03-lua-api.md`](../03-lua-api.md) for the binding table
-and the `sample.lua` API contract.
+and the `sample.lua` API contract. Beyond the Lua boundary, the bot's actual
+engines (the tick subsystems the poller threads and Lua callbacks drive) are
+catalogued in [`catalog-bot.md`](catalog-bot.md).
 
 ## Naming
 

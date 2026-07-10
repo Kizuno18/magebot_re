@@ -38,6 +38,17 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   GUI / arrow-walk+follow / numpad-walk+aim / tibia.com enemy-guild scraper /
   in-game watcher (not the heal engine). Walk opcodes confirmed `0x65`–`0x6C`
   (`MB_SendWalk` frame `[01 00 <dir>]`).
+- **Bot-region function catalog** — all **222 bot-logic functions** of the
+  `0x401000`–`0x440000` region named + given a mechanism-level purpose
+  ([functions/catalog-bot.md](functions/catalog-bot.md)); 209 persisted into the
+  IDB (`allow_overwrite:false`, only `sub_*` touched — no curated name clobbered).
+  Reveals the full flow: the client-address resolver bank (`0x401axx`–`0x402xxx`
+  fills the `0x4db3xxx` band), RPM read/write helpers, the packet-builder family
+  (`buildUseOnTileOrCreatureFrame83`, `buildNpcBuy/SellFrame`, `buildRsaLoginPacket`,
+  `sendPipeXteaFrame`), client-input drivers, and the engines: `runTargetSelectionEngine`,
+  `attackComboEngineTick`, `waypointWalker`, `runWaypointNavigator`,
+  `buildPathToTileFloodFill`, `healerAndReloader`, `pileLootStackableItems`,
+  `chatCommandDispatcher`, `initLuaStateAndRegisterApi`, `dispatchTimerCallbacks`.
 
 ## In progress / TODO (IDA-driven deep passes)
 
