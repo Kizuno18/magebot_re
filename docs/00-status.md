@@ -105,13 +105,16 @@ Note: `allow_overwrite:false` protects only *user*-assigned names, **not** IDA's
 auto FLIRT/demangled library names — so server/v860 renames were filtered to skip
 addresses IDA had already demangled (a `name_regex ^[?]` sweep) and the CRT region.
 
-## Remaining (deep refinements only)
+## Remaining (deep refinements only — need live-client analysis)
 
 - The dynamic `Cast*`/`Use*` opcode bytes (built from RPM reads, not immediates).
-- The full `client.exe` field map beyond the named self/creature/container bases.
 - The per-client `0x5084` struct layout in `server.exe`.
 - Per-build client offsets for Gunz/v1098 (same code as T10o, different constants —
   [15-version-comparison.md](15-version-comparison.md)).
+
+The client-side struct map is consolidated in [16-memory-map.md](16-memory-map.md)
+(structural: base→offset→slot for all ~50 resolvers; semantic labels where a
+`Get*` reveals the field). Remaining slot semantics need the live 10.x client.
 - **packet.dll runtime wiring** — the on-disk `fnPacket` is a `return 1` stub; the
   exe injects the DLL via `VirtualAllocEx`+`WriteProcessMemory`+
   `CreateRemoteThread(LoadLibraryA)` at 0x438222; confirm the exact `ws2_32!send`
