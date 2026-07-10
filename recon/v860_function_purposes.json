@@ -1168,5 +1168,85 @@
 "name": "v860PathMarkNeighborTiles",
 "purpose": "Wavefront neighbor-marking / relaxation step that writes distance values into the path grid. Args (ebp+8,+0xc,+0x10)=x,y,z; (ebp+0x14)=wave value; (ebp+0x18,+0x1c)=origin x,y. Bails if the global expansion depth [0x86c38e4] exceeds the cap [0x4600f4], if the existing grid cell (0x46d91c4 + z*0x3d0900 + x*0xfa0 + y*4) already holds a value <= wave-2, or if the tile is outside the \u00b17 x / \u00b15 y window around the search origin [0x4600e4]/[0x4600e8]. First frontier expands an 8x6 (dx\u2208[-9,8], dy\u2208[-11,6]) block: for each walkable neighbor (sub_401028 test) it stamps the wave value into the grid. Then it writes the tile's own value and, re-checking walkability toward the origin, increments [0x86c38e4] and stores wave-1 into the tile before recursing into the 3x3 neighborhood via sub_4012DF (the neighbor step-commit helper), finally decrementing [0x86c38e4]. This is the grid-writer half of the flood-fill: it propagates the monotonically decreasing distance field over 0x46d91c4 that v860PathFloodFillExpand/v860PathTileCostSample later read back to reconstruct the route.",
 "conf": "medium"
+},
+"0x4017aa": {
+"name": "v860InitSlot345cFromBaseC0Plus7cc354",
+"purpose": "Reads client base global [0x45fec0], adds 0x7cc354, and stores the resolved pointer into mirror slot [0x86c345c]. This is the root/seed resolver of the bank: it computes a far-forward pointer (+0x7cc354) off the [0x45fec0] base that the next resolver (0x4017c8) then chains from. Feeds the ReadClientState RPM reader.",
+"conf": "high"
+},
+"0x4017c8": {
+"name": "v860InitSlot3458FromSlot345cPlus4",
+"purpose": "Chained resolver: reads the previously-computed mirror slot [0x86c345c] (set by 0x4017aa), adds 0x4, and stores into mirror slot [0x86c3458]. Derives the adjacent field pointer (+4 bytes) from the seed slot rather than from a [0x45ffxx] base, so it must run after 0x4017aa.",
+"conf": "high"
+},
+"0x4017e4": {
+"name": "v860InitSlot3454FromBaseF08Minus2c",
+"purpose": "Reads client base global [0x45ff08], subtracts 0x2c, and stores the resulting client-state field pointer into mirror slot [0x86c3454]. Mirror-slot initializer resolving a field 0x2c before the [0x45ff08] base.",
+"conf": "high"
+},
+"0x401800": {
+"name": "v860InitSlot3450FromBaseF0cMinus98",
+"purpose": "Reads the creature/self base global [0x45ff0c], subtracts 0x98, and stores the pointer into mirror slot [0x86c3450]. Mirror-slot initializer for a client-state field 0x98 below the [0x45ff0c] base (the creature-array base band).",
+"conf": "high"
+},
+"0x40181e": {
+"name": "v860InitSlot344cFromBaseF0cMinus74",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x74, and stores the pointer into mirror slot [0x86c344c]. Mirror-slot initializer for a client-state field 0x74 below the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x40183a": {
+"name": "v860InitSlot3448FromBaseF0cMinus14",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x14, and stores the pointer into mirror slot [0x86c3448]. Mirror-slot initializer for a client-state field 0x14 below the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x401856": {
+"name": "v860InitSlot3444FromBaseF0cMinus18",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x18, and stores the pointer into mirror slot [0x86c3444]. Mirror-slot initializer for a client-state field 0x18 below the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x401872": {
+"name": "v860InitSlot3440FromBaseF0cPlus36970",
+"purpose": "Reads base global [0x45ff0c], adds 0x36970 (a large forward stride), and stores the pointer into mirror slot [0x86c3440]. Mirror-slot initializer resolving a far-forward client-state region relative to the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x401890": {
+"name": "v860InitSlot343cFromBaseF0cMinus88",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x88, and stores the pointer into mirror slot [0x86c343c]. Mirror-slot initializer for a client-state field 0x88 below the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x4018ae": {
+"name": "v860InitSlot3438FromBaseF0cMinus9c",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x9c, and stores the pointer into mirror slot [0x86c3438]. Mirror-slot initializer for a client-state field 0x9c below the [0x45ff0c] base; this slot is itself consumed by the chained resolver at 0x4018ea.",
+"conf": "high"
+},
+"0x4018cc": {
+"name": "v860InitSlot3434FromBaseF0cMinus9b",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x9b, and stores the pointer into mirror slot [0x86c3434]. Mirror-slot initializer for a client-state field 0x9b below the [0x45ff0c] base (one byte after the 0x9c field of 0x4018ae, suggesting a byte-granular sub-field).",
+"conf": "high"
+},
+"0x4018ea": {
+"name": "v860InitSlot3430FromSlot3438Minus40",
+"purpose": "Chained resolver: reads the previously-computed mirror slot [0x86c3438] (set by 0x4018ae), subtracts 0x40, and stores into mirror slot [0x86c3430]. Derives a field pointer relative to the already-resolved 0x9c slot rather than from a [0x45ffxx] base, so it must run after 0x4018ae.",
+"conf": "high"
+},
+"0x401906": {
+"name": "v860InitSlot342cFromBaseF0cMinus68",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x68, and stores the pointer into mirror slot [0x86c342c]. Mirror-slot initializer for a client-state field 0x68 below the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x401922": {
+"name": "v860InitSlot3428FromBaseF0cMinus6c",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x6c, and stores the pointer into mirror slot [0x86c3428]. Mirror-slot initializer for a client-state field 0x6c below the [0x45ff0c] base (adjacent to the 0x68 field of 0x401906).",
+"conf": "high"
+},
+"0x40193e": {
+"name": "v860InitSlot3424FromBaseF0cMinus84",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x84, and stores the pointer into mirror slot [0x86c3424]. Mirror-slot initializer for a client-state field 0x84 below the [0x45ff0c] base.",
+"conf": "high"
+},
+"0x40195c": {
+"name": "v860InitSlot3420FromBaseF0cMinus94",
+"purpose": "Reads base global [0x45ff0c], subtracts 0x94, and stores the pointer into mirror slot [0x86c3420]. Mirror-slot initializer for a client-state field 0x94 below the [0x45ff0c] base.",
+"conf": "high"
 }
 }

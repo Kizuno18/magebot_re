@@ -71,16 +71,35 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
 - **server.exe cataloged** — all 195 functions of the Team Server documented
   ([functions/catalog-server.md](functions/catalog-server.md)); complements the
   protocol write-up in [05-teamserver.md](05-teamserver.md).
+- **v860 lineage cataloged** — 250 functions of the non-Lua Tibia 8.60 build
+  ([functions/catalog-v860.md](functions/catalog-v860.md)): the client-address
+  resolver bank (base `[0x45ff0c]` stride `0xA8`), chat-command dispatcher,
+  healer/targeting/cavebot/looter engines, packet builders at the v860 offsets.
 
-## In progress / TODO (IDA-driven deep passes)
+## Coverage
 
-- **SendAction lower builder** — 0x00405f1d threads the opcode to a builder
-  (`0x401415` / callees); enumerate the per-opcode packet layout for every action
-  (attack, move, use, throw, npc, say) to a complete opcode→wire-format table.
-- **Client struct layout** — extend the recovered client-side offset tables
-  (self scalar block `0x4db3728`–`0x4db37b8`, creature array base `[0x468f38]`
-  stride `0xE0`, container header `0x468f2c`) into a full map of `client.exe`
-  fields the bot reads; label the currently-unnamed slots.
+Every distinct binary in the distribution is documented function-by-function:
+
+| Binary | Functions | Where |
+|---|---|---|
+| `magebotv55.exe` v10x (bot half) | ~300 named + purpose | [catalog-bot.md](functions/catalog-bot.md), [03-lua-api.md](03-lua-api.md), [engine-core.md](functions/engine-core.md) |
+| `magebotv55.exe` v10x (CRT/STL half) | ~83, classified | [support-region.md](functions/support-region.md) |
+| `packet.dll` (injector) | key funcs named, mechanism confirmed | [04-packet-dll.md](04-packet-dll.md) |
+| `server.exe` (Team Server) | 195 | [catalog-server.md](functions/catalog-server.md) |
+| `magebotv55.exe` v860 | 250 | [catalog-v860.md](functions/catalog-v860.md) |
+
+Plus 14 architecture/flow docs (00–14) tracing every subsystem end-to-end.
+
+## Remaining (deferred)
+
+- **IDB name persistence** for `packet.dll` / `server.exe` / v860 — the catalogs
+  exist and their rename batches are staged (`.work/*_ida_rename.json`), but the
+  RE-lab IDA MCP disconnected mid-session; apply them (`allow_overwrite:false`,
+  `sub_*` only) when a VM session reattaches. The v10x main-bot `.i64` already
+  carries its 300 names.
+- **Deep refinements** — the dynamic `Cast*`/`Use*` opcode bytes, the full
+  `client.exe` field map beyond the named self/creature/container bases, and the
+  per-client `0x5084` struct layout in `server.exe`.
 - **packet.dll runtime wiring** — the on-disk `fnPacket` is a `return 1` stub; the
   exe injects the DLL via `VirtualAllocEx`+`WriteProcessMemory`+
   `CreateRemoteThread(LoadLibraryA)` at 0x438222; confirm the exact `ws2_32!send`
