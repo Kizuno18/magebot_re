@@ -30,6 +30,14 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   static analysis ([02](02-static-analysis.md)), Lua API catalog
   ([functions/](functions/)), packet.dll ([04](04-packet-dll.md)), teamserver
   ([05](05-teamserver.md)), v860 lineage ([06](06-v860-lineage.md)).
+- **IDA db populated (v10x)** — `magebotv55_v10x.exe.i64` on the RE VM: 78
+  functions named (`MB_` prefix — the 63 Lua impls, `MB_SendAction`,
+  `MB_ReadClientState`, `MB_InjectFrame`, `MB_WinMain`, `MB_SendWalk`, the 5
+  `WinMain` threads) + 12 client-mirror globals + backbone plate comments.
+- **Worker threads + walk subsystem (Hex-Rays)** — the 5 `WinMain` threads are
+  GUI / arrow-walk+follow / numpad-walk+aim / tibia.com enemy-guild scraper /
+  in-game watcher (not the heal engine). Walk opcodes confirmed `0x65`–`0x6C`
+  (`MB_SendWalk` frame `[01 00 <dir>]`).
 
 ## In progress / TODO (IDA-driven deep passes)
 
@@ -46,11 +54,14 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   patch site the shim installs (inferred, not yet disassembled).
 - **server.exe protocol** — byte-level Team Server handshake + combo/position
   message format (447 funcs; WSOCK32).
+- **Heal/cavebot/target/loot engine** — not in the 5 threads; likely the
+  `DialogFunc` (`0x4013b6`) `WM_TIMER` path (`USER32!SetTimer`) + the Lua tick.
+  Trace `DialogFunc` and document the engine loop.
 - **v860 chat-command dispatcher** — decompile the `.attack`/`.follow`/… parser
   and the healer/targeting/cavebot/looter engines; `.sav`/`.savd` + `*.bin`
-  tile-map binary formats.
-- **Persist names** into an IDA/Ghidra db over the RE-lab MCP gateway
-  (`.mcp.json` → `re03-mcp.kizubot.com`) once a VM session is attached.
+  tile-map binary formats. Upload `magebotv55_v860.exe` is already on the VM.
+- **Port IDA names to `.i64` for v860 / packet.dll / server.exe** — same `MB_`
+  convention; then a scripted pass to name the remaining ~1300 v10x functions.
 
 ## Conventions
 

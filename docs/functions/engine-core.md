@@ -186,11 +186,13 @@ bot resolves each game field's address inside `client.exe` and caches it in the
 `0x4db3xxx` band; every `Get*` and every dynamic builder then reads through
 `ReadClientState`.
 
-### The worker threads (Section 5) are the "tick"
+### Who triggers the refill
 
-The five threads spawned by `WinMain` are the poll loops that periodically call
-`ReadClientState` to refresh cached state and drive healing/cavebot/targeting.
-They are Sleep-gated polling loops, not a packet parser.
+The cache refill is lazy — it happens *inside* `ReadClientState` on the calling
+thread whenever the throttle window has elapsed, not on a dedicated refresh
+thread. Any caller reading a creature/container/map address pays the batch RPM if
+the timer is due. The five `WinMain` threads (§6) are input/intel/watch loops,
+not the state tick; they read through `ReadClientState` like everything else.
 
 ---
 
@@ -266,31 +268,35 @@ suppresses actual injection.
    key/addcomputer requests. On licensing failure it `MessageBox`es
    "The account that authorized this computer has been disabled" / "Internet
    Error" and jumps to the exit `0x43ba8c` (`0x437f00`–`0x437f3c`).
-5. **Spawn 5 worker threads** (`CreateThread`, `0x437f55`–`0x437fbd`):
+5. **Spawn 5 worker threads** (`CreateThread`, `0x437f55`–`0x437fbd`).
+   Hex-Rays-confirmed roles (these are **input / intel / watch** loops — the
+   heal/cavebot/target engine is *not* here, see below):
 
-   | Thread proc (thunk → impl) | Role (from body) |
-   |---|---|
-   | `0x4010b9` → `0x0042b49a` | poll loop |
-   | `0x4012ee` → `0x0042ba17` | poll loop |
-   | `0x4012e4` → `0x0042b7ec` | poll loop (Sleep-gated) |
-   | `0x40134d` → `0x00431ff6` | poll loop (`Sleep`+`jmp 0x43201b`) |
-   | `0x40140b` → `0x00421d0b` | poll loop (`Sleep`+`jmp 0x421d1a`) |
+   | Thread impl | Name | Role |
+   |---|---|---|
+   | `0x0042b49a` | `MB_ThreadConfigDialog` | just `DialogBoxParamA(dlg 0x65, DialogFunc)` — the GUI thread, not a poller |
+   | `0x0042b7ec` | `MB_ThreadWalkFollow` | arrow-key walker + follow-target tracker; reads VK 37–40 → walk dir, resolves follow id `[0x4db3784]` in the creature array; `Sleep([0x469590])` |
+   | `0x0042ba17` | `MB_ThreadNumpadWalkAim` | numpad walker (numpad VK 97–105 → walk opcodes `0x65`–`0x6D` incl. diagonals) + auto-turn: when target `[0x4db38b0]` is ≤3 sqm on the same floor, forwards arrow VKs to the client |
+   | `0x00431ff6` | `MB_ThreadEnemyGuildScraper` | HTTP-scrapes `tibia.com/community` (`characters`, `whoisonline`, `guilds`) every ~120 s to build enemy/VIP/guild battle-lists (`BigVIP.txt`, `enemies.txt`, `<world>_<guild>.txt`); pure HTML `strstr` parsing |
+   | `0x00421d0b` | `MB_ThreadInGameWatch` | waits until `ReadClientState([0x468f28]) == 11` (in-game), then `sub_401280([0x468f0c])` — connection/attach state watcher |
 
-   Each is a `while(1){ … ; Sleep(n); }` tick that refreshes state via
-   `ReadClientState` and drives a subsystem (heal / cavebot / target / loot).
-   Exact per-thread mapping is **(unconfirmed)** — bodies are Sleep-gated loops;
-   which is which needs their inner `ReadClientState`/action calls traced.
+   Walk sender: `MB_SendWalk` (`0x00404a9b`, via thunk `0x4011f4`) builds a 3-byte
+   frame `[01 00 <dir>]` and injects it — walk opcodes are single-byte
+   `0x65`=N `0x66`=E `0x67`=S `0x68`=W, `0x69`–`0x6C` the diagonals.
 
 6. `DialogBoxParamA` (`0x437e19`) — the modal config GUI. There is **no**
    `GetMessage`/`PeekMessage` pump anywhere in the binary (confirmed: neither is
-   imported); the bot logic lives entirely in the 5 poller threads, and the main
-   thread blocks in the dialog.
+   imported). The main thread blocks in the dialog; `USER32!SetTimer` is imported,
+   so the heal / cavebot / targeting / loot engine is most likely driven by a
+   `WM_TIMER` in `DialogFunc` (and the Lua `SetTimerCallback` tick), **not** by the
+   five threads above — **(to confirm: trace `DialogFunc` `0x4013b6` WM_TIMER)**.
 
 ---
 
 ### Open items
 
-- Per-thread role assignment for the 5 workers (heal vs cavebot vs target).
+- The heal/cavebot/target/loot driver: confirm it is the `DialogFunc` `WM_TIMER`
+  path (`SetTimer`) + the Lua tick, and document that engine loop.
 - Exact opcode bytes for the dynamic `Cast*`/`Use*` builders (built from RPM
   reads, not immediates).
 - The `0xA1` ATTACK fast-path helpers `0x4014d8`/`0x4014a1` (target validation?).

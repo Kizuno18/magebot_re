@@ -285,10 +285,12 @@ MWALL `[0x46902c]`, ROPE `[0x46903c]`. Example from sample.lua:
 
 ## Open / unconfirmed
 
-- MoveTo walk opcodes 0x65–0x68 are inferred from the "one directional step per
-  call" behavior of `0x40108c`; the exact byte store was not disassembled here
-  (the builder is a larger pathfinder). Marked **(unconfirmed)** pending a dump
-  of `0x40108c`.
+- MoveTo walk opcodes 0x65–0x68 are now **confirmed**: the walk sender
+  `MB_SendWalk` (`0x00404a9b`) builds a 3-byte frame `[01 00 <dir>]` with `dir` in
+  `0x65`(N)/`0x66`(E)/`0x67`(S)/`0x68`(W) and `0x69`–`0x6C` diagonals, verified via
+  the walker threads (`MB_ThreadWalkFollow` `0x42b7ec`, `MB_ThreadNumpadWalkAim`
+  `0x42ba17`) that feed those opcodes from arrow/numpad keys. See
+  [engine-core.md](engine-core.md) §6.
 - UseItemOnGround's precise packet layout (0x82 "use-with" vs a distinct opcode)
   was not fully expanded; it shares the rel-coord conversion with UseGroundItem
   and calls the use-with variant. **(unconfirmed on exact opcode byte.)**
