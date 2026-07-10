@@ -9,10 +9,11 @@ Output: scratchpad/mb_chunks/chunk_NNN.json + scratchpad/mb_corpus.json
 """
 import pefile, capstone, struct, json, re, sys, os
 
-PATH = "samples/v10x/magebotv55.exe"
+PATH = os.environ.get("CORPUS_PE", "samples/v10x/magebotv55.exe")
+SUB = os.environ.get("CORPUS_SUBDIR", "mb_chunks")
 OUT = sys.argv[1] if len(sys.argv) > 1 else \
     "/tmp/claude-1000/-home-kizudev-Documents-Repos-magebot-re/9b8c3669-5386-483d-bbab-ee0854da4916/scratchpad"
-os.makedirs(f"{OUT}/mb_chunks", exist_ok=True)
+os.makedirs(f"{OUT}/{SUB}", exist_ok=True)
 
 pe = pefile.PE(PATH)
 IB = pe.OPTIONAL_HEADER.ImageBase
@@ -42,14 +43,15 @@ for iat, n in names.items():
 
 # known named functions (my MB_* set) — load from recon bindings + backbone
 KNOWN = {}
-try:
-    for b in json.load(open("recon/v10x_magebot.bindings.json")):
-        if b.get("impl"):
-            KNOWN[int(b["impl"], 16)] = "MB_" + b["name"]
-except Exception:
-    pass
-KNOWN.update({0x405f1d: "MB_SendAction", 0x4024a2: "MB_ReadClientState",
-              0x40320a: "MB_InjectFrame", 0x437aa5: "MB_WinMain", 0x404a9b: "MB_SendWalk"})
+if not os.environ.get("CORPUS_NOBIND"):
+    try:
+        for b in json.load(open("recon/v10x_magebot.bindings.json")):
+            if b.get("impl"):
+                KNOWN[int(b["impl"], 16)] = "MB_" + b["name"]
+    except Exception:
+        pass
+    KNOWN.update({0x405f1d: "MB_SendAction", 0x4024a2: "MB_ReadClientState",
+                  0x40320a: "MB_InjectFrame", 0x437aa5: "MB_WinMain", 0x404a9b: "MB_SendWalk"})
 
 def cstr(v):
     lo, nm, d = sec(v)
@@ -85,7 +87,7 @@ def is_jmp_thunk(va):
     o = va - tbase
     return 0 <= o < len(tdata) and tdata[o] == 0xE9  # lone jmp rel32
 
-MAXADDR = 0x440000  # bot-logic region; 0x44xxxx+ is MSVC CRT / Lua / STL
+MAXADDR = int(os.environ.get("CORPUS_MAXADDR", "0x440000"), 16)  # bot region; above = CRT/STL
 corpus = []
 for i, va in enumerate(starts):
     end = starts[i + 1] if i + 1 < len(starts) else thi
@@ -130,7 +132,7 @@ for i, va in enumerate(starts):
                    "apis": sorted(apis), "strs": sorted(strs)[:12],
                    "calls": sorted(calls)[:20], "asm": "\n".join(lines)})
 
-json.dump(corpus, open(f"{OUT}/mb_corpus.json", "w"))
+json.dump(corpus, open(f"{OUT}/{SUB.replace('_chunks','')}_corpus.json", "w"))
 # chunk ~16 funcs, cap ~38k chars asm
 chunks, cur, curlen = [], [], 0
 for r in corpus:
@@ -141,5 +143,5 @@ for r in corpus:
 if cur:
     chunks.append(cur)
 for i, ch in enumerate(chunks):
-    json.dump(ch, open(f"{OUT}/mb_chunks/chunk_{i:03d}.json", "w"))
+    json.dump(ch, open(f"{OUT}/{SUB}/chunk_{i:03d}.json", "w"))
 print(f"corpus {len(corpus)} funcs | {len(chunks)} chunks | known-skipped {len(KNOWN)}")

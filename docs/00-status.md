@@ -62,6 +62,15 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   statically-linked MSVC CRT / STL, no bot logic
   ([functions/support-region.md](functions/support-region.md)); bot code is the
   `0x401000`–`0x440000` half, now fully catalogued.
+- **packet.dll internals confirmed** — the injection is `pkt_xteaEncryptAndSend`
+  (0x10004726): XTEA-encrypt (key `0x1000c128`) + Adler-32 + call runtime-resolved
+  `ws2_32!send` on the client socket, fed by the named-pipe server thread
+  (0x10004c0b); plus a `SetWindowLong` keyboard hook (0x100052ba) that swallows
+  arrow/numpad keys. Corrected the earlier "send-path patch" guess.
+  ([04-packet-dll.md](04-packet-dll.md))
+- **server.exe cataloged** — all 195 functions of the Team Server documented
+  ([functions/catalog-server.md](functions/catalog-server.md)); complements the
+  protocol write-up in [05-teamserver.md](05-teamserver.md).
 
 ## In progress / TODO (IDA-driven deep passes)
 

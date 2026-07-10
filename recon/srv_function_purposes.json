@@ -1,0 +1,977 @@
+{
+"0x407f80": {
+"name": "stlCharFillConstruct",
+"purpose": "MSVC STL byte copy/construct helper. Allocates an 8-byte stack frame, takes the low byte of an uninitialized local ([ebp-8]) and stores it into *[ebp+8] (the destination char*), then returns the destination pointer. This is the inlined single-element char fill/copy-construct primitive (std::_Uninit_fill / char* operator= for a std::string or char buffer element); it moves one byte into a target slot and yields the slot address. No WSOCK calls, no client-struct fields, no command opcodes \u2014 pure CRT/STL scaffolding.",
+"conf": "medium"
+},
+"0x407fa0": {
+"name": "stlIterDistanceAccumulate",
+"purpose": "MSVC STL random-access iterator distance helper for an 8-byte element type. Computes (arg2 - arg1) >> 3 (byte span / 8 = element count) and adds it to the counter pointed to by arg3 (*arg3 += count), writing the result back. This is the inlined std::distance / std::advance-count accumulation used when measuring a range over a container whose elements are 8 bytes (e.g. a vector of pointers or of small pairs). Not the 0x5084-stride client registry loop. No sockets, no opcodes.",
+"conf": "medium"
+},
+"0x407fc0": {
+"name": "stlIterAdvance8",
+"purpose": "MSVC STL random-access iterator operator+= for an 8-byte element type. Loads *arg1 (current iterator pointer), computes ptr + arg2*8 (lea [ecx + edx*8]), and stores it back into *arg1, advancing the iterator by arg2 elements of stride 8. Inlined pointer-arithmetic helper for iterating an 8-byte-element STL container; unrelated to the 0x5084-byte per-client struct stride. No WSOCK32 calls, no framing, no password/spam logic.",
+"conf": "medium"
+},
+"0x4020e0": {
+"name": "localeGetFacetVectorBase",
+"purpose": "Getter on a std::locale::_Locimp-like object (thiscall, ecx=this). Loads [this+0x1c] (a pointer to a facet-array control block) and [this+0x2c] (a second index/offset control block), dereferences both (*[+0x1c] = base ptr, *[+0x2c] = offset) and returns base+offset \u2014 computes the effective address of a facet slot inside the locale's facet table. No WSOCK/network; pure pointer arithmetic accessor.",
+"conf": "medium"
+},
+"0x402100": {
+"name": "localeAdvanceFacetIterator",
+"purpose": "thiscall mutator paired with 0x4020e0. Decrements the count/offset word at *[this+0x2c] (--*[+0x2c]) and increments the base index at *[this+0x1c] (++*[+0x1c]) \u2014 a combined step/advance over the facet table (post-decrement remaining, pre-advance cursor). Pure STL iterator bookkeeping, no network.",
+"conf": "medium"
+},
+"0x402140": {
+"name": "ctypeIsMaskMatch",
+"purpose": "std::ctype-style character classification test (thiscall, __stdcall args ret 8). Takes a char arg [ebp+8] and a mask arg [ebp+0xc], masks the char to 0xff, indexes the ctype mask table at [this+0x10] as word[table + ch*2], ANDs it with the requested mask (word [ebp+8]) and returns a normalized boolean (neg/sbb/neg idiom -> 0 or 1). Classic ctype<char>::is(mask,ch). No network.",
+"conf": "medium"
+},
+"0x402170": {
+"name": "getMemberDword14",
+"purpose": "Trivial thiscall getter: returns dword [this+0x14]. In context (see 0x402190 setter and 0x402410) this field holds a facet/locale-name pointer or ref slot. MSVC-generated accessor, no network.",
+"conf": "medium"
+},
+"0x402190": {
+"name": "swapMemberDword14",
+"purpose": "thiscall setter/exchange (__stdcall ret 4): saves old [this+0x14], stores the arg [ebp+8] into [this+0x14], returns the previous value \u2014 a swap-in of a facet/name pointer field. No network.",
+"conf": "medium"
+},
+"0x4021c0": {
+"name": "localeUseFacetOrThrow",
+"purpose": "std::use_facet<Facet> implementation. Sets up SEH frame (handler 0x415a14), constructs a temporary via 0x404720, obtains the facet id/index for object 0x421670 via 0x4023c0, then looks the facet up in the passed locale (arg8) via 0x4090eb. If not present (and the create-flag arg [ebp+0x10] is set) it verifies availability via 0x40912a; on failure it builds a std::runtime_error string \"missing locale facet\" (via 0x4022e0/0x40b707) and throws (0x40b6f9 allocate exception, 0x402410 construct, 0x404ba0). Otherwise caches the created facet into global 0x41c6bc and returns it. Locale facet lookup/throw, no network.",
+"conf": "medium"
+},
+"0x4022e0": {
+"name": "runtimeErrorCtorFromCStr",
+"purpose": "Constructor for a std::runtime_error/exception-derived object (thiscall). Calls base ctor 0x40b61e with the C-string arg (&[ebp+8]) then patches the vtable pointer *[this]=0x4172c8. Returns this. Builds the 'missing locale facet' exception object for 0x4021c0. No network.",
+"conf": "medium"
+},
+"0x402310": {
+"name": "runtimeErrorDtor",
+"purpose": "Destructor for the exception object built by 0x4022e0: sets vtable *[this]=0x4172c8 then calls base-class destructor 0x40b6a5 (std::exception::~exception / _Tidy). MSVC scalar-deleting-adjacent dtor, no network.",
+"conf": "medium"
+},
+"0x402390": {
+"name": "runtimeErrorCopyCtor",
+"purpose": "Copy constructor for the same exception type (thiscall, arg = source): calls base copy-ctor 0x40b65b with the source [ebp+8], sets vtable *[this]=0x4172c8, returns this. MSVC-generated exception copy ctor, no network.",
+"conf": "medium"
+},
+"0x4023c0": {
+"name": "facetIdAllocate",
+"purpose": "std::locale::id::operator size_t() \u2014 lazy facet-id allocator (thiscall, ecx=&id). Constructs a guard via 0x404720; if the id value *[this]==0 it atomically bumps global counter 0x421660 (++) and stores the new unique index into *[this], assigning this facet type a slot number on first use. Returns the id. Used by 0x4021c0. No network.",
+"conf": "medium"
+},
+"0x402410": {
+"name": "runtimeErrorCtorFromStdString",
+"purpose": "Constructor for the exception object taking a std::string message (thiscall, SEH handler 0x415a3b). Copy-constructs the message string member via 0x402500, sets vtable *[this]=0x4172b0, builds a std::string temp from C-str 0x41a21c via 0x40939c, stores it via 0x402600, then wires up the name/what pointer fields [this+0x10]/[this+0x14] (freeing any prior via 0x40b741). Full exception ctor for the throw in 0x4021c0. No network.",
+"conf": "low"
+},
+"0x402500": {
+"name": "excMsgMemberCopyCtor",
+"purpose": "Copy-constructs the std::string message member of the exception object (thiscall): delegates to 0x402530 with the source arg, sets vtable *[this]=0x417148. MSVC member copy-ctor. No network.",
+"conf": "medium"
+},
+"0x402530": {
+"name": "stringWrapperCtor",
+"purpose": "Simple wrapper/handle ctor (thiscall): stores the arg pointer [ebp+8] into [this+4] and sets vtable *[this]=0x41726c. A std::string-holder or _Ref-counted string wrapper node. No network.",
+"conf": "low"
+},
+"0x402590": {
+"name": "stringWrapperSetVtable",
+"purpose": "Destructor/reset stub for the 0x402530 wrapper: sets vtable *[this]=0x41726c and returns. Base of the destructor chain, no member teardown. No network.",
+"conf": "low"
+},
+"0x4025e0": {
+"name": "stringWrapperDtor",
+"purpose": "Thin destructor forwarder (thiscall): calls 0x402590 to reset the vtable pointer of the string wrapper, then returns. MSVC scalar destructor thunk. No network.",
+"conf": "low"
+},
+"0x402600": {
+"name": "excStoreWhatString",
+"purpose": "Moves/copies a constructed std::string (arg) into the exception object's what/name storage (thiscall, SEH 0x415a59): via 0x4026a0 it materializes the source string's 4 dwords (ptr/len/cap/sso) and copies them into [this+8..this+0x14]. If global 0x421664 is still 0 it seeds it from [this+0x10] and registers atexit cleanup 0x4026f0 via 0x40b7dd. Finalizes the string message field of the exception. No network.",
+"conf": "low"
+},
+"0x403540": {
+"name": "stlCharTraitsAssign",
+"purpose": "Thin trampoline: pushes arg2 (count/dest), sign-extends the byte at [arg3], pushes it, pushes arg1, and tail-calls sub_40B940 (memset-style fill). MSVC char_traits<char>::assign(dest,count,ch) helper that widens the fill char before the fill primitive. Not network code.",
+"conf": "medium"
+},
+"0x403560": {
+"name": "stlStreambufBumpPut",
+"purpose": "__thiscall on a streambuf/string-builder object: stores arg (count) into this+8, computes this+4 + count as the new put pointer, seeds a 1-byte local (0) and calls sub_4035A0 to copy one byte to that position. MSVC ostream/streambuf put-area advance + null terminate. No WSOCK/relay logic.",
+"conf": "low"
+},
+"0x4035a0": {
+"name": "stlByteCopy1",
+"purpose": "Copies a single byte from *[arg2] to *[arg1] (mov dl,[ecx]; mov [eax],dl). MSVC char_traits<char>::copy of length 1 / one-char store primitive. Pure memory helper.",
+"conf": "high"
+},
+"0x4035b0": {
+"name": "stlNumPutPadWidth",
+"purpose": "__thiscall field-width/fill handler for MSVC num_put/ostream formatting. Calls sub_404450 (get current width) vs requested count; if smaller returns early. Reads fill char via sub_4036F0, rejects 0 and 0xff sentinels, then depending on adjustfield flag (arg2==0 vs the 0xff/0xc byte) either decrements a width counter and emits fill (sub_402FD0) or sets padding side via sub_403560/sub_404490. Pure iostream padding math, no sockets.",
+"conf": "low"
+},
+"0x4036f0": {
+"name": "stlGetFillCharPtr",
+"purpose": "__thiscall accessor: stores this in a local, returns arg-1 (pointer to the byte just before arg). MSVC helper used by the num_put padding code to address the fill/locale char slot. Trivial pointer arithmetic, not network code.",
+"conf": "low"
+},
+"0x403710": {
+"name": "stlBuildFloatFormatSpec",
+"purpose": "Builds a printf-style conversion spec string for floating-point output into arg1: writes '%', conditionally '+' (flag&0x20), '#' (flag&0x10), then '.', '*', an optional precision char (arg2), then selects the conversion letter from (flag&0x3000): 0x2000->'f', 0x1000->'e'/'g' pair via setne/dec math ('g'=0x67/'e'=0x65), null-terminates, returns arg1. MSVC num_put<char>::_Fput format-string assembler. No WSOCK.",
+"conf": "medium"
+},
+"0x4037e0": {
+"name": "stlNumPutDoInt",
+"purpose": "MSVC num_put<char>::do_put integer implementation (SEH-framed, handler 0x415b09). Gets locale width (sub_402170), computes right-pad count, reads ios flags (sub_404430) masking adjustfield 0x1c0 to pick internal(0x40)/left(0x100) padding. Emits sign prefix ('+'/'-' at [ebp+0x1c]), inserts thousands-grouping separators, uses group-size table via sub_40BA45/sub_40B9A0, streams digit runs through the ostreambuf iterator helpers sub_4040e0/sub_404080 and fill emitter sub_404920. Selects uppercase/lowercase hex-prefix strings 0x41a228/0x41a224 by ios flag&4. Pure numeric formatting; touches no client struct or socket.",
+"conf": "medium"
+},
+"0x403b90": {
+"name": "stlBuildLongFormatSpec",
+"purpose": "Sibling of 0x403710 for long/integer conversions: writes '%', optional '+' (flag&0x20), '#' (flag&8), 'l' length modifier, then picks conversion letter from (flag&0xe00): 0x400->'o' (octal), 0x800->arg2 (caller letter, i.e. hex x/X), else base-10 with 'u'/'d' chosen via flag&4 (unsigned) math yielding 0x78/'x' region or 'd'-range, null-terminates, returns arg1. MSVC num_put integer format-string assembler. No network.",
+"conf": "medium"
+},
+"0x403c50": {
+"name": "stlNumPutGroupDigits",
+"purpose": "MSVC num_put<char>::do_put worker (SEH-framed, handler 0x415b32) that post-processes a formatted numeric buffer: detects base prefix ('+','-','0x'/'0X') to set skip length, pulls the locale grouping string and thousands-separator via sub_404770/sub_404750/sub_402F70, then walks the digit buffer inserting the ',' grouping char (byte 0x2c written into [ebp+0x1c] buffer) per the grouping sizes using sub_40BA90 (memmove). Applies width padding (sub_404430 adjustfield), streams out through ostreambuf iterators (sub_4040e0/sub_404080) and the decimal/point string 0x41a22c via sub_40BA50. Uses std::string temp (ctor via sub_402F50/sub_402F70). Pure locale-aware number rendering; no sockets/client struct.",
+"conf": "low"
+},
+"0x404030": {
+"name": "stlCopyBytesToIterator",
+"purpose": "Loop that streams a raw char buffer to an ostreambuf_iterator: while count>0, dereferences the iterator (sub_404720), writes one char via sub_4046C0 (sputc), advances source ptr. Returns the iterator pair into [arg1]. MSVC _Fput/std::copy-to-iterator helper used by the num_put put routines. No WSOCK/relay.",
+"conf": "medium"
+},
+"0x404080": {
+"name": "stlPutFillCharsN",
+"purpose": "Like 0x404030 but each emitted byte is first passed through sub_404920 (ctype/widen or fill transform) before sputc via sub_4046C0. MSVC padding/fill emitter: writes N transformed characters to the ostreambuf iterator. Numeric-formatting support, not network code.",
+"conf": "medium"
+},
+"0x4040e0": {
+"name": "stlRepeatFillChar",
+"purpose": "Emits the single fill byte [ebp+0x14] exactly count (arg 0x18) times to the ostreambuf iterator (deref sub_404720, sputc sub_4046C0), returning the iterator pair. This is the field-width pad loop for MSVC num_put/ostream. No sockets.",
+"conf": "high"
+},
+"0x404130": {
+"name": "stlIosVirtualCall10",
+"purpose": "__thiscall dispatch to virtual slot [vtbl+0x10] on an ios/streambuf-derived object, passing arg1; ORs result low bit into a status local and returns it. MSVC ostream sentry / virtual streambuf op. Not network code.",
+"conf": "low"
+},
+"0x404160": {
+"name": "stlIosVirtualCall14",
+"purpose": "__thiscall dispatch to virtual slot [vtbl+0x14] (next slot after 0x404130) passing arg1, OR low bit into status, return. MSVC ostream/streambuf virtual op. No WSOCK.",
+"conf": "low"
+},
+"0x404190": {
+"name": "stlGetVtblSlot10",
+"purpose": "__thiscall accessor returning [this+0x10] (a stored vtable/member pointer). MSVC iostream object field getter. Trivial, not network.",
+"conf": "medium"
+},
+"0x4041b0": {
+"name": "stlIteratorInitEof",
+"purpose": "__thiscall: pushes the global 0xffffffff EOF sentinel (0x417150), a 0, and arg1, then calls sub_4041E0 to initialize an ostreambuf_iterator/sentry-like object with the traits::eof() value. MSVC iostream setup helper. No sockets.",
+"conf": "low"
+},
+"0x4067cc": {
+"name": "srvRegisterClientVecDtorAtexit",
+"purpose": "Tiny wrapper that pushes the address 0x4067de (a static-storage destructor/cleanup thunk for the global client-registry vector object at 0x421160) onto the stack and calls sub_40B7DD, the MSVC atexit/_onexit registration helper. Standard compiler-emitted __tcf-style teardown registrar; touches no client struct or WSOCK state.",
+"conf": "medium"
+},
+"0x406810": {
+"name": "srvRegisterClientObjDtorAtexit_1",
+"purpose": "Compiler-emitted atexit registrar: pushes destructor thunk address 0x405090 and calls sub_40B7DD (MSVC _onexit/atexit helper). Registers static-duration cleanup for a per-client-object member; no network or per-client-struct logic of its own.",
+"conf": "medium"
+},
+"0x406822": {
+"name": "srvRegisterClientObjDtorAtexit_2",
+"purpose": "Identical MSVC atexit-registration stub to 0x406810: pushes cleanup thunk 0x405090, calls sub_40B7DD. Duplicate static-init teardown registrar emitted per translation unit; no runtime server behavior.",
+"conf": "medium"
+},
+"0x406834": {
+"name": "srvRegisterClientObjDtorAtexit_3",
+"purpose": "Third identical MSVC atexit-registration stub (push 0x405090; call sub_40B7DD). Compiler-generated destructor registration for a static object; inert with respect to sockets and the client registry.",
+"conf": "medium"
+},
+"0x406850": {
+"name": "srvConstructClientObject",
+"purpose": "Constructor for the per-client object (0x5084-stride registry record). Given this=ecx and args (socket-related dword at +8, std::string/name source at +0xc): stores arg0 into [this+0] (the client socket fd), zeroes [this+0x4e54], [this+0x4e58] (outbound queue length, cap 0x2728), and [this+0x4e5c] (authenticated flag, 0 = not yet password-verified), then calls sub_40B140 (std::string copy-construct) to initialize the name/label field at this+0x4e64 from arg at [ebp+0xc]. Returns this. This is the object built by the accept loop before push into the registry.",
+"conf": "high"
+},
+"0x4068b0": {
+"name": "srvFormatAcceptedConnLog",
+"purpose": "Builds one of the connection log lines emitted from the accept path. Sets up an SEH frame (push 0x415c62, fs:[0]), constructs a temporary iostream/locale helper via sub_401470, and if sub_401600 (stream-good test, returns bool in al) succeeds, formats an unsigned value: it reads a widened 16-bit field ([ebp+8] & 0xffff, i.e. an ntohs port or socket id) plus a byte flag (sub_401450) and a value from sub_4013F0, feeds them through sub_4015E0 and streams them out via sub_406E20. Sets stream failbit (or |=4) on error. MSVC ostream operator<< sequence assembling the \"Accepted connection ... socket <fd>\" style output; the 0xffff mask confirms a 16-bit port/id argument.",
+"conf": "medium"
+},
+"0x406a40": {
+"name": "srvFormatClientLogLine",
+"purpose": "Near-identical sibling of 0x4068b0 (separate SEH cookie 0x415c82) that formats a client-related log/status line via the same ostream helper chain (sub_401470 setup, sub_401600 good-test, sub_401450 byte flag, sub_4013F0 field fetch, sub_4015E0 num-put, sub_406E20 emit). The only difference is it pushes the full [ebp+8] argument without the 0xffff mask, i.e. it streams a 32-bit value (socket fd / count) rather than a 16-bit port. MSVC operator<< formatting for a console log line; error path sets the stream fail flag.",
+"conf": "medium"
+},
+"0x406bd0": {
+"name": "srvClientVecInitFromProto",
+"purpose": "Initializes a small vector/holder object (this=ecx) from a prototype: copies one byte from [arg0] into [this+0] (an allocator/tag byte) and zeroes the three pointer slots [this+4], [this+8], [this+0xc] \u2014 the begin / end / capacity-end pointers of the client-registry vector (stride 0x5084). Standard STL std::vector default/allocator-copy constructor for the 0x421160 registry container. Returns this.",
+"conf": "high"
+},
+"0x406c10": {
+"name": "srvClientVecDestroy",
+"purpose": "Destructor for the client-registry vector. Calls sub_406DD0 to run the per-element destructor across [this+4]..[this+8] (begin..end), computes element count as (cap_end[+0xc] - begin[+4]) / 0x5084 and calls sub_406E00 (operator delete / deallocate) to free the backing storage, then nulls begin/end/cap-end ([this+4],[this+8],[this+0xc]). Confirms 0x5084 stride and the {ptr,ptr,ptr} layout of the registry vector.",
+"conf": "high"
+},
+"0x406c80": {
+"name": "srvClientVecEndPtr",
+"purpose": "Trivial accessor: returns [this+8], the end pointer (one-past-last) of the client-registry vector. STL std::vector::end()/_Mylast getter; used by push-back and count logic.",
+"conf": "high"
+},
+"0x406ca0": {
+"name": "srvClientVecSize",
+"purpose": "Returns the client count of the registry vector: if begin ([this+4]) is null returns 0, else computes (end[+8] - begin[+4]) / 0x5084. This is the std::vector::size() referenced by the accept loop when checking the 63/64-client cap. Confirms 0x5084 element stride.",
+"conf": "high"
+},
+"0x406ce0": {
+"name": "srvClientVecPushBack",
+"purpose": "push_back into the client-registry vector: fetches the current end pointer via sub_406C80, then calls sub_406D80 with (endPtr, newElem) to place-construct the incoming client object at the end and advance. This is the registry insertion invoked by the accept loop after srvConstructClientObject builds a new 0x5084-byte client record. Takes the source element by arg (ret 4).",
+"conf": "high"
+},
+"0x406d10": {
+"name": "srvClientVecPopBackOrErase",
+"purpose": "Removes the last element of the client-registry vector: gets end via sub_406C80, calls sub_4071C0 with (elem, elem+0x5084) to move/relocate one 0x5084-byte slot, destroys the trailing element via sub_406DD0 over [end-0x5084 .. end], then decrements the end pointer [this+8] by 0x5084. Vector erase-last / pop-back used when a client is evicted from the registry. Returns the arg element pointer.",
+"conf": "high"
+},
+"0x406d80": {
+"name": "srvClientVecInsertAt",
+"purpose": "Helper that place-constructs one client element at a given position: computes the index as (pos - begin)/0x5084 (begin via sub_401760), calls sub_406E70(pos, 1, srcElem) to construct/relocate the element, re-reads begin (which may have moved after growth) and returns begin + index*0x5084 \u2014 the stable pointer to the inserted client record. STL vector _Ucopy/emplace-at primitive backing push_back.",
+"conf": "high"
+},
+"0x406dd0": {
+"name": "srvClientVecDestroyRange",
+"purpose": "Destroys a range of client-registry elements: iterates from arg0 (begin) to arg1 (end) stepping by 0x5084 per element, calling sub_4070D0 on each to run the per-client object destructor (frees the std::string name field etc.). STL _Destroy_range over the 0x5084-stride records; used by the vector destructor and erase paths.",
+"conf": "high"
+},
+"0x406e00": {
+"name": "srvClientVecDeallocate",
+"purpose": "Deallocation wrapper: forwards the backing-buffer pointer (arg0) to sub_4090BF (operator delete / free) to release the client-registry vector's storage. STL allocator::deallocate; called by the vector destructor after the elements are destroyed.",
+"conf": "high"
+},
+"0x4047c0": {
+"name": "srvLocaleFacetRefClamp",
+"purpose": "MSVC STL <locale> helper. Loads a hardcoded refcount/count value 0xffffffff into a local, then compares it to 0 and returns max(value,1): if the dword is >0 (0xffffffff as unsigned jbe fails) it returns the value, else 1. This is the std::locale::facet / _Locinfo reference-count normalizer (a '_Getcat'/refcount == -1 sentinel meaning 'permanent facet, never delete' clamped so the caller sees a nonzero count). ecx is a this-ptr but unused. Pure CRT/STL primitive, no server logic, no sockets.",
+"conf": "medium"
+},
+"0x4047f0": {
+"name": "srvReturnTrueByte",
+"purpose": "Trivial stub returning al=1 (bool true). Compiler-generated predicate/virtual-thunk that unconditionally reports success (e.g. a facet 'always ok' or a std::ctype/collate 'do_always_noconv'-style constant-true method). No arguments used, no side effects. CRT/STL primitive, unrelated to the relay.",
+"conf": "medium"
+},
+"0x404800": {
+"name": "srvGetLocaleFacetOrThrow",
+"purpose": "MSVC STL std::use_facet<>-style facet lookup with lazy construction. Sets up SEH frame (handler 0x415b64), default-constructs a temp locale (sub_404720), fetches the global locale id table object at 0x421674 via sub_4023C0, then calls sub_4090EB(id,1) to look up the facet in the locale's facet vector. If not found (result 0) and the 'construct-if-absent' flag [ebp+0x10] is set, it verifies via sub_40912A; if still absent it builds the exception string 'missing locale facet' (sub_4022E0) and invokes the throw/report path (sub_40B707 with 0x418bc8 = std::bad_cast/logic_error vtable), otherwise lazily operator-new's (sub_40B6F9, size 0x18) and constructs the facet (sub_404950), caches it into global [0x41c6c4], and returns it. Standard use_facet machinery; no server, no sockets.",
+"conf": "medium"
+},
+"0x404920": {
+"name": "srvBoolFromArg",
+"purpose": "One-line accessor: returns al = byte at [ebp+8], i.e. reads a byte argument and returns it as a bool/char. Used by sub_404D00 to coerce the two decoded name-char bytes into bool flags. CRT/STL helper, trivial.",
+"conf": "medium"
+},
+"0x404930": {
+"name": "srvAllocClampNonNeg",
+"purpose": "Allocation-size guard wrapper around operator new (sub_40B6F9). Clamps a signed size argument to >=0 (if [ebp+8]<0 forces 0) then calls the allocator with that size. Standard MSVC 'reserve/allocate n bytes, treat negative as zero' STL container helper. No server logic.",
+"conf": "medium"
+},
+"0x404950": {
+"name": "srvFacetInitFromLocaleName",
+"purpose": "STL facet constructor body (SEH handler 0x415b82). Takes a locale/_Locinfo argument, calls base-init sub_402530(arg) on the this-object (ecx), installs the facet vtable by storing 0x417274 into [this+0], builds a std::string/_Locinfo from the C string at 0x41a21c (sub_40939C) and passes it to sub_404D00 to parse locale attributes, then destroys the temporary (sub_409455). This is the constructor invoked lazily by srvGetLocaleFacetOrThrow. 0x41a21c is a locale-descriptor string constant. Pure CRT/STL; no sockets, ret 4 (thiscall+1 arg).",
+"conf": "medium"
+},
+"0x404b10": {
+"name": "srvFacetDtorFreeMembers",
+"purpose": "STL facet destructor. Re-installs vtable ptr 0x417274 into [this+0], then frees three heap-allocated member pointers at [this+8], [this+0x10], [this+0x14] via operator delete (sub_4090BF), and calls base-destructor sub_402590. Matches the layout populated by sub_404D00 (offsets +8/+0x10/+0x14). CRT/STL cleanup, no server logic.",
+"conf": "medium"
+},
+"0x404b70": {
+"name": "srvStringOneCharInit",
+"purpose": "Small helper that seeds a std::string-like object (ecx) with a single character: copies byte [arg+0] into [this+0], calls sub_402FD0(this,0) (string state/length init), then sub_404640(this,arg1) to finish building. Returns this. STL string construction primitive, ret 8 (thiscall + 2 stack args). No server logic.",
+"conf": "low"
+},
+"0x404ba0": {
+"name": "srvRegisterAtexitCleanup860",
+"purpose": "Global/static-object registrar (SEH handler 0x415b99). Default-constructs a temp (sub_404720), stores the incoming pointer [ebp+8] into global [0x41c6c8], runs sub_401830 on it, and registers destructor thunk 0x404dd0 with the atexit table via sub_40B7DD. This is one of three near-identical MSVC __tls/static-init-and-atexit sequences (see 0x404c10, 0x404c80) that install a locale-related singleton and schedule its teardown at process exit. No server logic.",
+"conf": "medium"
+},
+"0x404c10": {
+"name": "srvRegisterAtexitCleanup8c8",
+"purpose": "Second static-singleton registrar, identical shape to 0x404ba0 (SEH 0x415bb9). Stores [ebp+8] into global [0x41c6cc], runs sub_401830, and registers atexit destructor thunk 0x404e60 via sub_40B7DD. MSVC static-init + atexit for a locale singleton. No server logic.",
+"conf": "medium"
+},
+"0x404c80": {
+"name": "srvRegisterAtexitCleanup8d0",
+"purpose": "Third static-singleton registrar, identical shape to 0x404ba0/0x404c10 (SEH 0x415bd9). Stores [ebp+8] into global [0x41c6d0], runs sub_401830, and registers atexit destructor thunk 0x404ef0 via sub_40B7DD. MSVC static-init + atexit for a locale singleton. No server logic.",
+"conf": "medium"
+},
+"0x404cf0": {
+"name": "srvStoreThisStub",
+"purpose": "Empty thiscall stub: just spills ecx into a local and returns (ret 4). Compiler-generated no-op constructor/placeholder (e.g. a base-class default ctor with empty body). No behavior, no server logic.",
+"conf": "medium"
+},
+"0x404d00": {
+"name": "srvParseLocalePunctFlags",
+"purpose": "Populates a locale-facet (likely numpunct/moneypunct) struct from a _Locinfo-like source. Fetches an accessor object via sub_404DA0(arg), reads two leading chars from its [0]/[4] sub-strings and coerces each to a bool via srvBoolFromArg, storing them at [this+0xc] and [this+0xd] (e.g. 'grouping present' / 'thousands-sep present' flags). Then copies three strings \u2014 from source[+8], from sub_404DB0 (the literal 'false'), and from sub_404DC0 (the literal 'true') \u2014 each duplicated via sub_404F80, into [this+8], [this+0x10], [this+0x14] (the boolalpha truename/falsename pair plus a grouping string). This is std::numpunct<char>::_Init. The 'true'/'false' strings confirm boolalpha facet init. CRT/STL, no server logic. ret 4.",
+"conf": "medium"
+},
+"0x404da0": {
+"name": "srvLocinfoAccessor",
+"purpose": "Thin thiscall wrapper that forwards to sub_40BA45 to obtain a _Locinfo/locale-data accessor object used by srvParseLocalePunctFlags. CRT/STL locale primitive. No server logic.",
+"conf": "medium"
+},
+"0x404db0": {
+"name": "srvGetFalseString",
+"purpose": "Constant accessor returning eax = 0x41a230, the pointer to the ASCII literal 'false'. Supplies the boolalpha falsename to srvParseLocalePunctFlags (numpunct init). CRT/STL, no server logic.",
+"conf": "high"
+},
+"0x404dc0": {
+"name": "srvGetTrueString",
+"purpose": "Constant accessor returning eax = 0x41a238, the pointer to the ASCII literal 'true'. Supplies the boolalpha truename to srvParseLocalePunctFlags (numpunct init). The declared size 448 overstates the real 8-instruction body (padding/misdetected extent). CRT/STL, no server logic.",
+"conf": "high"
+},
+"0x406e20": {
+"name": "srvClientVecEmplaceBack",
+"purpose": "std::vector<ClientObj> emplace/insert helper (ret 0x18 = 6 dword args + this). Loads the vector object from ecx into [ebp-0xc], then calls the allocator/relocate vtable slot via `call [edx+0x10]` (indirect through the object's vptr at [eax]) passing 6 stack args (the 0x5084-byte element payload: [ebp+0xc]..[ebp+0x1c] including a byte arg at [ebp+0x18]). Copies the returned pair {iterator,end} (dwords at [eax],[eax+4]) into the caller's return-struct at [ebp+8]. This is the STL container-adapter shim that grows the client registry at 0x421160 by one per-client ClientObj entry.",
+"conf": "medium"
+},
+"0x406e70": {
+"name": "srvClientVecInsertRange",
+"purpose": "std::vector<ClientObj>::_Insert_n / range-insert for the 0x5084-byte-stride client registry (stride 0x5084 is used in every idiv/imul here). Computes current size = ([this+0xc]-[this+8])/0x5084 and capacity via sub_406CA0 (capacity() in elements). If size+count exceeds capacity it takes the grow path: computes new capacity (max(count, capacity) added to capacity), allocates a fresh block via sub_407180, then uses sub_4070F0 (uninitialized copy-construct), sub_407140 (fill/construct count copies), sub_406DD0 (destroy old range) and rewrites the three vector pointers [this+4]=first, [this+8]=cap-end, [this+0xc]=last by stride 0x5084. The in-place branch (enough capacity) shuffles the tail with sub_407200 (memcpy of one 0x5084 element = 0x1421 dwords) and sub_407230 (backward move), then sub_407140 to insert. This is how srvAcceptClient pushes a new ClientObj into the vector; each element is a full per-client 0x5084 struct (socket +0, inbound scratch +4, outbound queue +0x272c, authed flag +0x4e5c, leader flag +0x4e60, etc.).",
+"conf": "medium"
+},
+"0x4070d0": {
+"name": "srvClientVecGetAllocator",
+"purpose": "Trivial thiscall thunk (ret 4): forwards its single stack arg to sub_405090 and returns. This is an STL allocator accessor/get-allocator-proxy wrapper around the vector's allocator object; sub_405090 is the underlying allocator primitive. No socket or client-field logic of its own.",
+"conf": "low"
+},
+"0x4070f0": {
+"name": "srvClientRangeUninitCopy",
+"purpose": "std::_Uninitialized_copy over ClientObj elements: loop from src [ebp+8] to end [ebp+0xc], stepping both src and dest [ebp+0x10] by 0x5084 (one client-struct stride), calling sub_4071A0 (single-element copy-construct via the allocator) for each. Returns final dest pointer. Used by srvClientVecInsertRange to copy existing 0x5084-byte client entries into a newly allocated registry block during vector growth.",
+"conf": "medium"
+},
+"0x407140": {
+"name": "srvClientRangeFillConstruct",
+"purpose": "std::_Uninitialized_fill_n over ClientObj: given dest [ebp+8], count [ebp+0xc], and a source element [ebp+0x10], loops count times decrementing the counter and advancing dest by 0x5084 per iteration, calling sub_4071A0 to copy-construct one 0x5084-byte client struct each time. Constructs `count` copies of one ClientObj into raw registry storage during vector insert/grow.",
+"conf": "medium"
+},
+"0x407180": {
+"name": "srvClientVecAllocate",
+"purpose": "std::allocator<ClientObj>::allocate wrapper (ret 8): pushes 0 and the element count [ebp+8], calls sub_407270 which multiplies count by 0x5084 (the ClientObj size) and calls the raw allocator. Returns the base pointer of a freshly allocated block sized to hold N 0x5084-byte client registry entries.",
+"conf": "medium"
+},
+"0x4071a0": {
+"name": "srvClientCopyConstructOne",
+"purpose": "std::allocator<ClientObj>::construct wrapper (ret 8): forwards dest [ebp+8] and source [ebp+0xc] to sub_4072A0, which allocates/copies one 0x5084-byte ClientObj (0x1421-dword rep movsd). Copy-constructs a single per-client registry element; invoked per-element by the uninit-copy and fill-construct loops.",
+"conf": "medium"
+},
+"0x4071c0": {
+"name": "srvClientRangeCopyFwd",
+"purpose": "Forward block-copy of a range of ClientObj entries: loop from src [ebp+8] to end [ebp+0xc] stepping src and dest [ebp+0x10] by 0x5084, each iteration doing `rep movsd` of 0x1421 dwords (0x5084 bytes = one client struct) from src to dest. This is std::copy specialized for the trivially-copyable 0x5084-byte registry element; forward direction (used when moving elements toward higher addresses is safe).",
+"conf": "medium"
+},
+"0x407200": {
+"name": "srvClientFillCopy",
+"purpose": "Fill a range of ClientObj slots with one source element: loop dest [ebp+8]..[ebp+0xc] stepping 0x5084, each iteration `rep movsd` 0x1421 dwords from the fixed source [ebp+0x10] into the current 0x5084-byte slot. std::fill specialized for the client-registry element; used by srvClientVecInsertRange to splat a client struct across newly opened slots.",
+"conf": "medium"
+},
+"0x407230": {
+"name": "srvClientRangeCopyBwd",
+"purpose": "Backward block-copy of ClientObj entries (std::copy_backward): iterate while [ebp+8]!=[ebp+0xc], predecrement both dest [ebp+0x10] and src [ebp+0xc] by 0x5084, `rep movsd` 0x1421 dwords per element. Reverse direction so overlapping ranges shift correctly when opening a gap for an inserted client in the registry vector.",
+"conf": "medium"
+},
+"0x407270": {
+"name": "srvClientAllocBytes",
+"purpose": "std::allocator<ClientObj>::allocate byte-size stage: clamps a negative count to 0, multiplies count by 0x5084 (ClientObj size) to get the byte count, and calls sub_40B6F9 (operator new / raw allocator). Returns the raw allocation for N client-registry entries.",
+"conf": "medium"
+},
+"0x4072a0": {
+"name": "srvClientAllocAndCopyOne",
+"purpose": "Allocate one ClientObj (0x5084 bytes via sub_4072F0) and, if allocation succeeded, `rep movsd` 0x1421 dwords copying the source element [ebp+0xc] into it; returns the new pointer or 0 on failure. Element-level copy-construct-into-fresh-storage used by srvClientCopyConstructOne.",
+"conf": "medium"
+},
+"0x4072f0": {
+"name": "srvIdentityReturnArg2",
+"purpose": "Stub that returns its second stack arg ([ebp+0xc]) unchanged; the first arg (0x5084 size) is ignored. Acts as the allocation-primitive tail called by srvClientAllocAndCopyOne \u2014 effectively an inlined allocator hook returning the buffer pointer. Not networking logic.",
+"conf": "low"
+},
+"0x40730a": {
+"name": "srvInitWsockErrorTable",
+"purpose": "One-time initializer that populates a global WSOCK error-code -> message-string map/table starting at 0x4212a0. For each Winsock error number (0=No error, 0x2714 WSAEINTR 'Interrupted system call', 0x2719 WSAEBADF, 0x2726 WSAEINVAL, 0x2733 WSAEWOULDBLOCK 'Operation would block', 0x2745 WSAECONNABORTED, 0x2746 WSAECONNRESET 'Connection reset by peer', 0x274c WSAETIMEDOUT, 0x274d WSAECONNREFUSED, ... up to 0x2af9 WSAHOST_NOT_FOUND / 0x2afc) it calls sub_407D60 to build a {code,string} pair from the immediate error id and .rdata literal, storing the resulting 8-byte pair into consecutive global slots (0x4212a0, 0x4212a8, ...). This is the lookup table srvFormatWsockError (0x407a50) reads to turn a WSAGetLastError code into human-readable text for the server's diagnostic logging.",
+"conf": "medium"
+},
+"0x407a50": {
+"name": "srvFormatWsockError",
+"purpose": "Formats a Winsock error into a std::string message. Sets up SEH, constructs a std::string via sub_40A889 seeded from global 0x42119c, appends a prefix literal (0x41ab18) with sub_402860 (string append/operator<<). Takes the error code from arg [ebp+0xc] if nonzero, else calls WSAGetLastError. Builds the code pair via sub_407D60 and searches the global error-string map at 0x421430/0x4212a0 (populated by srvInitWsockErrorTable) with sub_407E30 (map find); on hit appends the matched message string, on miss appends 'unknown error' (0x41ab1c) plus the numeric code (0x41ab2c/0x41ab30 formatting). Returns the assembled diagnostic string; used to print 'bind() failed'/'General socket error'/'Read error'-style lines with the decoded Winsock reason.",
+"conf": "medium"
+},
+"0x407bc2": {
+"name": "srvGracefulSocketClose",
+"purpose": "Graceful socket shutdown+close for a client fd (arg [ebp+8]). Calls shutdown(fd, 1=SD_SEND); on -1 returns false. Then loops draining leftover inbound data with recv(fd, buf[0x400], 0x400, 0) until recv returns 0 (peer closed): recv==-1 returns false; recv>0 logs 'FYI, received <n> unexpected bytes during shutdown.' via the cout chain (sub_4011D0/sub_402860/sub_4011F0 stream inserters, count-prefixed at 0x4215e8). On clean drain calls closesocket(fd); returns true on success, false if closesocket==-1. This is the polite teardown path (SD_SEND then flush-read-to-FIN then close) for evicting a Team Server client connection.",
+"conf": "high"
+},
+"0x4026a0": {
+"name": "srvCopy16ByteStructByValue",
+"purpose": "Thin accessor/copy helper: takes a hidden return-slot pointer ([ebp+8]) and a this-object (ecx), calls sub_4095F4 into a 0x20-byte local, then copies the first 4 dwords (16 bytes) of the returned aggregate into the caller's return slot and returns that slot (ret 4). This is a compiler-generated by-value return of a 16-byte POD (e.g. an iterator or small value struct) built by sub_4095F4 \u2014 pure struct plumbing, no network or command logic.",
+"conf": "medium"
+},
+"0x402820": {
+"name": "srvStreamBufDestructor",
+"purpose": "MSVC STL streambuf-style destructor/vtable-reset. Installs vtable pointer 0x4172b0 into *this, and if the field at [this+0x14] is non-zero frees the buffer pointer at [this+0x10] via sub_40B741 (operator delete / free wrapper), then chains to base-cleanup sub_4025E0. Classic std::basic_streambuf / string-stream teardown; the +0x10/+0x14 pair is the owned buffer pointer and its owned-flag. Not part of the relay core.",
+"conf": "medium"
+},
+"0x402860": {
+"name": "srvNumGetDoParse",
+"purpose": "std::num_get / numeric-facet parse loop (locale facet do_get style). Iterates an input iterator pair ([ebp+8] holds an iterator object whose vtable dispatches begin/current via sub_402170 length, sub_4013f0/sub_401450 deref+advance, sub_4019c0/f0/e0 equality/increment). Calls sub_402b20 to obtain a field width/precision, sub_404430 to classify a character group (masks 0x1c0, compares 0x40 = a ctype grouping/digit class), sub_402c60 dispatches a virtual at vtable+0x1c (facet do_get). On parse failure it ORs bit 4 (0x4 = std::ios_base::failbit) into the status word [ebp-0x14] and stores an error code; on success calls sub_402190 / sub_4013c0 to finalize the iterator and set/clear failbit (push 1/push 4). Returns constructed iterator at 0x402ace. Pure STL locale/iostream input parsing, unrelated to the 2-char command protocol.",
+"conf": "low"
+},
+"0x402b20": {
+"name": "srvGetFacetIndexWrapper",
+"purpose": "One-line forwarder: pushes its single arg and tail-calls sub_40B820, returning its result (a locale facet id / index lookup). Trivial MSVC locale glue used by the num_get parse above to fetch a width or facet-id value.",
+"conf": "medium"
+},
+"0x402b40": {
+"name": "srvGetLocaleFacetOrThrow",
+"purpose": "std::use_facet<>-style facet resolver with SEH (installs handler frame at 0x415aa4). Builds a temporary via sub_404720, fetches a facet id (sub_4023c0 on the global locale object at 0x421678), calls sub_4090EB to look the facet up in the locale's facet vector. If found returns it. If absent and the 'throw-if-missing' arg ([ebp+0x10] byte) is set and sub_40912A confirms it is genuinely missing, it constructs a std::bad_cast / logic_error carrying the string \"missing locale facet\" (sub_4022e0 builds the message, sub_40B707 throws) \u2014 the classic 'missing locale facet' std::use_facet exception path. Otherwise it lazily creates a default facet (sub_40B6F9=operator new 8, sub_402C80 constructs, sub_404C10 registers) and caches it in the global slot [0x41c6c0]. CRT/STL locale machinery; no protocol relevance.",
+"conf": "medium"
+},
+"0x402c60": {
+"name": "srvCallVirt1c",
+"purpose": "Virtual-call thunk: loads this (ecx), fetches *this (vtable), pushes two args ([ebp+8],[ebp+0xc]) and calls the function pointer at vtable+0x1c, ret 8. Generic C++ virtual dispatcher for slot 0x1c (used by the num_get facet do_get above). No standalone semantics.",
+"conf": "medium"
+},
+"0x402c80": {
+"name": "srvDefaultFacetCtor",
+"purpose": "Constructor for the default locale facet lazily created by srvGetLocaleFacetOrThrow. SEH-guarded (0x415ac2): calls base ctor sub_402530, sets vtable 0x417290, builds a std::string/name from the literal at 0x41a21c via sub_40939C and stores it through sub_404CF0 (the facet's name field), then destroys the temporary string (sub_409455). Returns this (ret 4). MSVC STL facet initialization \u2014 no network logic.",
+"conf": "medium"
+},
+"0x402f50": {
+"name": "srvContainerClearTrue",
+"purpose": "Wrapper that calls the erase/free routine sub_402FD0 with arg=1 (the 'release buffer' flag). One-argument convenience entry that forces the owning-clear path of the buffer object at ecx. STL container/string cleanup helper.",
+"conf": "medium"
+},
+"0x402f70": {
+"name": "srvGetBufferOrDefault",
+"purpose": "Accessor: returns [this+4] (the buffer/data pointer) if non-null, else returns the shared empty/default object from sub_402FC0 (address 0x41714c). This is the STL small-string / container 'return stored pointer or the singleton empty representation' pattern. Pure accessor.",
+"conf": "medium"
+},
+"0x402fa0": {
+"name": "srvGetField8",
+"purpose": "Trivial getter: returns the dword at [this+8] (e.g. a size/length or capacity field of a string/container control block). No side effects.",
+"conf": "high"
+},
+"0x402fc0": {
+"name": "srvGetEmptyRepSingleton",
+"purpose": "Returns the constant address 0x41714c, the shared empty-container / empty-string representation singleton used as the default by srvGetBufferOrDefault. Compiler-emitted constant returner.",
+"conf": "high"
+},
+"0x402fd0": {
+"name": "srvReleaseOrDecRefBuffer",
+"purpose": "Reference-counted buffer release for an STL string/container control block. If the bool arg is set and [this+4] (the rep pointer) is non-null: fetch the rep via sub_4036F0, read its first byte (refcount). If refcount==0 it is uniquely owned -> free it via sub_406E00 (operator delete on rep-1 with size [this+0xc]+2). Otherwise decrement the shared refcount byte (rep[0]--). Then null out [this+4], [this+8], [this+0xc] (pointer, size, capacity). This is copy-on-write std::basic_string _Tidy/_Free with an in-band single-byte refcount. No protocol relevance.",
+"conf": "medium"
+},
+"0x403450": {
+"name": "srvStringDestructor",
+"purpose": "Destructor for the CoW string/container at ecx: sets vtable 0x417290 and calls sub_402590 (the tidy/free-and-base-cleanup routine). Standard MSVC STL object teardown.",
+"conf": "medium"
+},
+"0x403470": {
+"name": "srvCopyByteThenRelease",
+"purpose": "Copies one byte from *[ebp+8] into *this (this[0] = src[0], e.g. an allocator/traits state or first char), then calls sub_402FD0 with flag 0 (non-owning clear/reset path) and returns this (ret 4). STL string assign/reset helper.",
+"conf": "low"
+},
+"0x4034a0": {
+"name": "srvForwardTo41B0",
+"purpose": "One-argument forwarder: pushes [ebp+8] and calls sub_4041B0 on this (ecx), ret 4. A trivial member wrapper delegating to a string/stream routine (likely reserve/assign). No independent logic.",
+"conf": "low"
+},
+"0x4034c0": {
+"name": "srvStringAppendGrow",
+"purpose": "std::basic_string append/push with capacity check. Computes remaining capacity as maxSize(0x417150 = 0xffffffff sentinel) minus current size [this+8]; if the requested count [ebp+8] would overflow it calls sub_40A533 (the 'string too long' length_error throw). If count>0 it grows to size+count via sub_4035B0 (reserve/_Grow), then sub_403540 copies the incoming bytes ([ebp+0xc] source) to buffer([this+4])+size([this+8]), and sub_403560 finalizes the new length. Returns this (ret 8). Core STL string concatenation primitive \u2014 used broadly, not a network function.",
+"conf": "medium"
+},
+"0x401890": {
+"name": "istreamSentryCtorAndExtractDword",
+"purpose": "MSVC std::basic_istream<char>::sentry-guarded input epilogue for an extraction operator. Sets up an SEH frame, constructs an istream::sentry on the stream (this=[ebp-0x1c]) via sub_401470, tests its bool conversion via sub_401600; if the sentry is false it OR's 4 (failbit/eofbit region) into the local iostate accumulator [ebp-0x14] and skips. Otherwise it fetches the stream's rdbuf via sub_4013F0, calls sub_4019F0 (streambuf sbumpc-style read of one element) passing the low byte of arg [ebp+8], compares the result against the EOF sentinel (sub_4019E0 returns -1) via the equality helper sub_4019C0, and on EOF sets failbit (or 4). On the SEH/no-throw path it commits the accumulated iostate to the stream via sub_4013C0 (istream::setstate/_Ios_clear with args 4,1). This is the compiler-generated body of a single-character istream>> extraction wrapper.",
+"conf": "medium"
+},
+"0x4019c0": {
+"name": "intEquals",
+"purpose": "Trivial helper: dereferences two int* args ([ebp+8] and [ebp+0xc]), compares *a==*b and returns the boolean in al (sete). Used throughout the extraction code to test a just-read character against the traits EOF value (int_type equality). Pure MSVC STL char_traits<char>::eq_int_type inline.",
+"conf": "high"
+},
+"0x4019e0": {
+"name": "traitsEof",
+"purpose": "Returns -1 (0xffffffff) in eax. This is std::char_traits<char>::eof() \u2014 the int_type EOF sentinel compared against by intEquals (sub_4019C0) after every streambuf read. Constant folder / inlined traits primitive.",
+"conf": "high"
+},
+"0x4019f0": {
+"name": "streambufSbumpc",
+"purpose": "std::basic_streambuf<char>::sbumpc: the fast-path get-and-advance on a streambuf (this=[ebp-8]). Calls sub_401A80 (gptr) and compares it to sub_401AA0 (egptr) \u2014 if the get pointer has not reached the end of the get area it reads the current byte, then calls sub_401AC0 (advance gptr / decrement remaining count) and returns the byte via sub_401A70 (char->int_type widen). If the buffer is exhausted it falls back to the virtual underflow/uflow through the streambuf vtable (call [edx+4]) with arg. Returns int_type. Feeds the single-char extraction in sub_401890.",
+"conf": "high"
+},
+"0x401a70": {
+"name": "traitsToIntType",
+"purpose": "std::char_traits<char>::to_int_type: loads the char at *[ebp+8], zero-extends it into eax (movzx via xor ecx/mov cl) and returns it as int_type. Widens a raw byte to the traits int representation so it can be compared against EOF.",
+"conf": "high"
+},
+"0x401a80": {
+"name": "streambufGptr",
+"purpose": "std::basic_streambuf<char>::gptr accessor: this at [ebp-4]; returns *(this+0x20) (the _Gfirst/get-pointer cell, dereferenced once). Reads the current get pointer of the streambuf's get area.",
+"conf": "high"
+},
+"0x401aa0": {
+"name": "streambufEgptr",
+"purpose": "std::basic_streambuf<char>::egptr accessor: this at [ebp-4]; computes *(this+0x20) + *(this+0x30) \u2014 the get-area base pointer plus the get-count \u2014 yielding the end-of-get-area pointer. Used by sbumpc (sub_4019F0) to test buffer exhaustion.",
+"conf": "high"
+},
+"0x401ac0": {
+"name": "streambufGbump",
+"purpose": "std::basic_streambuf<char>::gbump/_Gninc: this at [ebp-4]. Decrements the get count *(this+0x30) by 1 and increments the get pointer *(this+0x20) by 1, consuming one character from the get area. Called by sbumpc after reading the current byte.",
+"conf": "high"
+},
+"0x401b00": {
+"name": "istreamGetLineIntoString",
+"purpose": "MSVC std::getline / std::basic_istream<char>::getline into a std::string worker (compiler-generated). SEH-framed. Constructs an istream::sentry (noskipws form via sub_401D50 with second arg 0/true) into [ebp-0x1c], tests it (sub_401600). On success: gets rdbuf (sub_4017C0 -> sub_4021C0 fetches a locale/use_facet ctype the code later ignores), computes the field width limit: reads istream width via sub_402170; if width>0 uses it, else 0x7fffffff, storing the max-chars counter in [ebp-0x28]. Then loops reading characters: peeks next int_type via sub_401D80 (sgetc), on EOF (compared via sub_4019C0/sub_4019E0) sets eofbit-ish flag (or 1) and stops; otherwise checks the delimiter \u2014 the low byte of arg2 [ebp+0xc] is the line terminator (default '\\n') compared against the extracted char (sub_401E40 to_char_type); on match it bumps past the delimiter (sub_401DE0 sgetc-advance) and ends the line; on ordinary char it appends via sub_401E40 into the destination buffer [ebp-0x18] and advances. Terminates the string on decrement to 0 width. Commits iostate through sub_4013C0. This is the function main@0x40102a/0x401049 calls to read the two console passwords line-by-line into the .data slots.",
+"conf": "medium"
+},
+"0x401d50": {
+"name": "traitsAssignChar",
+"purpose": "std::char_traits<char>::assign wrapper: this at [ebp-4]. Calls sub_401E50 (the getline core / sentry-prepare body) with the byte arg [ebp+0xc], stores the returned char byte into *this, and returns this. Thin adapter used to seed/assign a char cell before the extraction loop; ret 8 (stdcall, 2 args).",
+"conf": "low"
+},
+"0x401d80": {
+"name": "streambufSgetc",
+"purpose": "std::basic_streambuf<char>::sgetc: this at [ebp-4]. Compares gptr (sub_4020C0) against egptr (sub_4020E0); if a character is available it returns it widened (to_int_type via sub_401A70) WITHOUT advancing the get pointer (peek). If the get area is empty it calls the virtual underflow through the vtable slot [edx+0x10]. Returns int_type. Used by getline to peek the next/delimiter character.",
+"conf": "high"
+},
+"0x401de0": {
+"name": "streambufSnextc",
+"purpose": "std::basic_streambuf<char>::snextc: this at [ebp-0xc]. Calls sub_402060 (sbumpc \u2014 advance and get current) then compares its result against EOF (sub_4019E0) via sub_4019C0; if the just-consumed char was EOF it returns EOF, otherwise it returns the following character via sgetc (sub_401D80). Advance-then-peek primitive; getline uses it to step over the consumed delimiter/character.",
+"conf": "high"
+},
+"0x401e40": {
+"name": "traitsToCharType",
+"purpose": "std::char_traits<char>::to_char_type: loads the byte at *[ebp+8] into al and returns it. Narrows an int_type back to char for delimiter comparison and for appending to the destination string in getline.",
+"conf": "high"
+},
+"0x401e50": {
+"name": "istreamGetlineCore",
+"purpose": "Core istream input body (SEH-framed) that sub_401D50 dispatches to. this=[ebp-0x24]; via the +0/+4 vtable-style indirection it fetches the underlying istream object, checks it is good/usable through sub_401780 (sentry bool) and sub_401740 (rdbuf non-null) with sub_401680 as a helper. When the stream is bad (arg byte [ebp+8] low bit path) it consults sub_404430 (a validity/whitespace predicate) and, if clear, runs the same extraction loop as sub_401b00: acquire rdbuf (sub_4017C0/sub_4021C0 locale ctype), sgetc/peek (sub_401D80), EOF-test (sub_4019C0/sub_4019E0), delimiter/char handling via sub_401E40, advance via sub_401DE0, iostate commit via sub_4013C0. Effectively the shared read-one-field routine behind the two-password console prompt. ret sequence loads 0x402001.",
+"conf": "low"
+},
+"0x402060": {
+"name": "streambufSbumpc2",
+"purpose": "Second std::basic_streambuf<char>::sbumpc instance (distinct inlining site from sub_4019F0). this=[ebp-4]. Tests gptr (sub_4020C0) vs egptr (sub_4020E0); if a char is available returns it widened (sub_401A70) and advances via sub_402100 (gbump); else falls back to the virtual uflow through vtable slot [edx+0x14]. Used by snextc (sub_401DE0) to consume the current character.",
+"conf": "high"
+},
+"0x4020c0": {
+"name": "streambufGptr2",
+"purpose": "std::basic_streambuf<char>::gptr accessor (sibling of sub_401A80): this=[ebp-4]; returns *(this+0x1c) \u2014 this inlining reads the get pointer from offset 0x1c rather than 0x20, the _Gfirst cell in this streambuf layout. Provides the current get pointer to the sgetc/sbumpc pair at sub_401D80/sub_402060.",
+"conf": "high"
+},
+"0x407c97": {
+"name": "srvGlobalCtorThunk421199",
+"purpose": "MSVC static-initializer thunk. Loads ecx=0x421199 (address of a global object in .data) and thiscall-dispatches to sub_4081B5 to construct/initialize it. No WSOCK/relay logic; part of the CRT __xc_a..__xc_z global-constructor table that runs before main. The 0x421199 global is one of the iostream/locale singletons the server uses for its colored cout console banners.",
+"conf": "medium"
+},
+"0x407ca6": {
+"name": "srvRegisterAtexit407cb8",
+"purpose": "atexit/destructor registrar. Pushes function pointer 0x407cb8 and calls sub_40B7DD (the MSVC atexit/_onexit table appender), so 0x407cb8 (a matching global destructor) runs at process teardown. add esp,4 = __cdecl cleanup. No networking; CRT global-teardown wiring for a .data singleton.",
+"conf": "medium"
+},
+"0x407cd6": {
+"name": "srvGlobalCtorThunk421198",
+"purpose": "MSVC static-initializer thunk, sibling of 0x407c97. Loads ecx=0x421198 and thiscall-dispatches to sub_4098F6 to construct the global object at 0x421198 (adjacent iostream/locale singleton). CRT global-ctor table entry, no relay logic.",
+"conf": "medium"
+},
+"0x407ce5": {
+"name": "srvRegisterAtexit407cf7",
+"purpose": "atexit registrar: pushes destructor pointer 0x407cf7 to sub_40B7DD (MSVC _onexit appender) so it fires at teardown. Pairs with the 0x421198 ctor thunk above. __cdecl (add esp,4). CRT-only.",
+"conf": "medium"
+},
+"0x407d29": {
+"name": "srvRegisterAtexit405090a",
+"purpose": "atexit registrar: registers destructor 0x405090 via sub_40B7DD. 0x405090 is registered three times (here, 0x407d3b, 0x407d4d) \u2014 a shared teardown routine for three sibling global objects. __cdecl. CRT global-teardown wiring, no networking.",
+"conf": "medium"
+},
+"0x407d3b": {
+"name": "srvRegisterAtexit405090b",
+"purpose": "atexit registrar identical to 0x407d29: registers the shared destructor 0x405090 via sub_40B7DD for a second global object. CRT teardown thunk.",
+"conf": "medium"
+},
+"0x407d4d": {
+"name": "srvRegisterAtexit405090c",
+"purpose": "atexit registrar, third instance registering shared destructor 0x405090 via sub_40B7DD for a third global. (Byte-size 19 vs 18 is just a longer push/encoding.) CRT teardown thunk, no relay code.",
+"conf": "medium"
+},
+"0x407d60": {
+"name": "srvInitPairFields",
+"purpose": "Two-field object initializer (thiscall, ecx=this saved at [ebp-4]). Stores arg1 into this[0] and arg2 into this[4], returns this in eax, ret 8 (stdcall-cleaned two args). Constructs an 8-byte record \u2014 a std::pair<T,U> / iterator-pair or a {ptr,ptr} range used by the binary-search helpers below. No WSOCK.",
+"conf": "medium"
+},
+"0x407db0": {
+"name": "srvDtorSubobjectAt54",
+"purpose": "Destructor that tears down the subobject embedded at this+0x54: computes ecx=this+0x54 and calls sub_40A98F then sub_407DE0 (the base destructor at 0x407de0 that installs vtable 0x417168). Member-object dtor chain of an STL/stream composite; no networking.",
+"conf": "medium"
+},
+"0x407de0": {
+"name": "srvDtorInstallVtable417168",
+"purpose": "Base destructor: writes vftable pointer 0x417168 into *this (re-seating the vtable to the base class during destruction, the standard MSVC dtor idiom), then thiscall sub_408F7F to release the object's held resource (buffer/stream state). 0x417168 is this class's RTTI/vftable in .rdata. STL/iostream teardown, not relay logic.",
+"conf": "medium"
+},
+"0x407e30": {
+"name": "srvLowerBoundEntry",
+"purpose": "std::lower_bound-style wrapper (__cdecl, 3 args: begin, end/value, target). Calls sub_407E60 (comparator/predicate factory returning 0) and passes it plus the three args to the binary-search core sub_407E70. Drives an ordered lookup over an 8-byte-element array \u2014 consistent with searching the passlist/enemy tables by key rather than any socket op.",
+"conf": "low"
+},
+"0x407e60": {
+"name": "srvComparatorStub",
+"purpose": "Trivial predicate stub: xor eax,eax; ret \u2014 returns 0/empty. Supplies the default comparator object (a stateless functor with no members) to the lower_bound core at 0x407e70. STL functor construction, not networking.",
+"conf": "medium"
+},
+"0x407e70": {
+"name": "srvBinarySearchCore",
+"purpose": "std::lower_bound implementation. Computes the range count via sub_407F20 (iterator-distance), then loops: half=count/2 (cdq/sar 1), probe iterator advanced by half, dereference-compare via sub_407F00 (*probe < *value). On true, advance iterator by 8 bytes (add ecx,8 \u2014 element stride 8) and shrink count to count-half-1; else count=half. Returns the resolved lower-bound iterator in eax. Classic halving binary search over an 8-byte-stride sorted container; no WSOCK calls.",
+"conf": "medium"
+},
+"0x407f00": {
+"name": "srvIterLessCompare",
+"purpose": "Iterator less-than comparator (thiscall this=iterator, arg=other iterator). Loads edx=*this (the dword the iterator points at) and setl al on edx < *arg, returning bool in al, ret 4. The predicate consumed by the binary-search core at 0x407e70 \u2014 compares the first dword of each 8-byte element. Pure comparison, no networking.",
+"conf": "medium"
+},
+"0x407f20": {
+"name": "srvIterDistance",
+"purpose": "Iterator-distance helper for the binary search. Builds a temporary iterator via sub_407F80 over arg1, dereferences it (mov dl,[eax]) and forwards begin/end/that byte to sub_407FA0 to compute the element count between two iterators. STL __distance plumbing feeding sub_407E70; no WSOCK.",
+"conf": "low"
+},
+"0x407f50": {
+"name": "srvIterAdvance",
+"purpose": "Iterator-advance helper. Takes *arg1 (an iterator/index), materializes it through sub_407F80, reads the pointed byte (mov al,[eax]) and calls sub_407FC0 to advance the iterator to that position. The std::advance counterpart to srvIterDistance, used by the binary-search core when stepping the probe. No networking.",
+"conf": "low"
+},
+"0x401106": {
+"name": "stdIostreamInitHelperA",
+"purpose": "Tiny thiscall thunk: loads ecx=0x41c6bb (a .data global, the byte just inside an iostream/locale init object) and tail-calls sub_4081B5 on it. This is one of the compiler-generated iostream/CRT static-init helper stubs (part of the `std::ios_base::Init` / _Init_locks bring-up cluster near 0x41c6bb). Not network code; no WSOCK, no per-client struct, no command framing.",
+"conf": "medium"
+},
+"0x401115": {
+"name": "atexitRegisterThunkA",
+"purpose": "MSVC CRT atexit/onexit registration wrapper: pushes a code address (0x401127, a local static-destructor thunk) and calls sub_40B7DD (the _atexit/_onexit registrar), then cleans the one arg (add esp,4). Schedules a destructor at process teardown; part of the iostream static-object teardown chain. Not network code.",
+"conf": "medium"
+},
+"0x401145": {
+"name": "stdIostreamInitHelperB",
+"purpose": "Thiscall thunk: ecx=0x41c6ba (adjacent .data init-object byte) and tail-call sub_4098F6. Sibling of stdIostreamInitHelperA \u2014 a second compiler-emitted iostream/locale static-init helper operating on the same 0x41c6b* init block. Not network code.",
+"conf": "medium"
+},
+"0x401154": {
+"name": "atexitRegisterThunkB",
+"purpose": "CRT atexit/onexit registration wrapper: push 0x401166 (a static-destructor thunk address), call sub_40B7DD (_atexit registrar), add esp,4. Registers another iostream static-object destructor for teardown. Not network code.",
+"conf": "medium"
+},
+"0x401198": {
+"name": "atexitRegisterOstream1",
+"purpose": "CRT atexit registration wrapper that schedules destructor thunk 0x405090 via sub_40B7DD. 0x405090 is a shared teardown routine registered by three sibling stubs (this, 0x4011aa, 0x4011bc), i.e. the cout/cerr/clog global ostream objects each register the same _Osfx/destroy thunk at static-init time. Not network code.",
+"conf": "medium"
+},
+"0x4011aa": {
+"name": "atexitRegisterOstream2",
+"purpose": "Identical CRT atexit wrapper to atexitRegisterOstream1: registers destructor thunk 0x405090 through sub_40B7DD. Second of the three global-ostream static-object teardown registrations (cout/cerr/clog cluster). Not network code.",
+"conf": "medium"
+},
+"0x4011bc": {
+"name": "atexitRegisterOstream3",
+"purpose": "Third CRT atexit wrapper registering destructor thunk 0x405090 via sub_40B7DD (size 20 vs 18 is just alignment). Completes the trio of global-ostream static-object teardown registrations. Not network code.",
+"conf": "medium"
+},
+"0x4011d0": {
+"name": "callMemberFnPtrOnThis",
+"purpose": "Generic member-function-pointer trampoline: stores ecx (this) at [ebp-4], pushes it, and calls the function pointer passed as the first stack arg (call dword ptr [ebp+8]), then `ret 4`. A __thiscall-adapter thunk used by the iostream vtable/exception plumbing to invoke a callback on `this`. Not network code.",
+"conf": "medium"
+},
+"0x4011f0": {
+"name": "ostreamInsertFormatted",
+"purpose": "MSVC `std::basic_ostream<char>::operator<<` body with full SEH setup (push -1/0x415992 exception frame, fs:[0] handler chain). Constructs a sentry via sub_401470, checks it with sub_401600 (sentry::operator bool); on success reads the stream's `ios_base` state through sub_4017C0/sub_404430, masks flags with `and 0xe00` (the adjustfield: 0x400=internal, 0x800=right) to pick fill/pad direction, fetches width (sub_4013f0 -> [this+0x28]) and fill char (sub_401450 -> [this+0x30]), calls the formatting/pad worker sub_4015E0 then the output engine sub_401590, and on failure ORs 4 (badbit/failbit) into the local iostate via sub_4013C0. Pure C++ iostream formatting; no WSOCK, no 0x5084 client struct, no 2-char command dispatch.",
+"conf": "medium"
+},
+"0x4013c0": {
+"name": "iosBaseSetStateOr",
+"purpose": "`std::ios_base::setstate`-style helper: if the state-arg [ebp+8]!=0, OR the incoming bit with the current rdstate (sub_401760 returns [this] iostate) then commit via sub_401410 (clear/setstate with the reraise flag byte [ebp+0xc]). Manipulates the stream's good/bad/fail/eof bits during ostreamInsertFormatted. CRT/STL, not network.",
+"conf": "medium"
+},
+"0x4013f0": {
+"name": "iosBaseGetWidth",
+"purpose": "One-line accessor: returns [this+0x28], the `ios_base` field width. Called by ostreamInsertFormatted to decide padding. STL accessor, not network.",
+"conf": "high"
+},
+"0x401410": {
+"name": "iosBaseClearSetState",
+"purpose": "`std::ios_base::clear/setstate` core: if the stream has no tied buffer ([this+0x28]==0 here is the no-rdbuf test) it forces bit 4 (badbit) into the new state, else uses the caller's bits; then calls sub_408D1E passing the reraise-flag byte and the computed state \u2014 the routine that stores iostate and rethrows the pending exception if the corresponding mask bit is enabled. CRT/STL, not network.",
+"conf": "medium"
+},
+"0x401450": {
+"name": "iosBaseGetFill",
+"purpose": "One-line accessor: returns byte [this+0x30], the `ios_base` fill character. Used by ostreamInsertFormatted for pad fill. STL accessor, not network.",
+"conf": "high"
+},
+"0x401470": {
+"name": "ostreamSentryConstruct",
+"purpose": "`std::basic_ostream::sentry` constructor: takes the stream (arg [ebp+8]), calls sub_401610 (the pre-output prep: flush tie(), check good()) storing its bool result into byte[this] (the sentry's ok_ flag), and saves the stream pointer at [this+4]. Returns `this`. Wraps every formatted insert. STL, not network.",
+"conf": "medium"
+},
+"0x4014a0": {
+"name": "ostreamSentryDestruct",
+"purpose": "`std::basic_ostream::sentry` destructor: calls sub_4090BC (test uncaught_exception / whether to flush) \u2014 if it returns false, invokes sub_401710 on the stream buffer [this+4] to run `_Osfx` (post-output flush when unitbuf/uncaught). Exception-safe cleanup counterpart of ostreamSentryConstruct. STL, not network.",
+"conf": "medium"
+},
+"0x4014d0": {
+"name": "streambufDestroyViaVtable",
+"purpose": "Virtual-destructor dispatcher: if the object slot [this]!=0, calls sub_401520 to resolve the target, then invokes its vtable slot 0 (call dword ptr [edx]) with arg 1 (the deleting-destructor flag) to destroy/free the associated streambuf. Part of the iostream teardown path. STL, not network.",
+"conf": "medium"
+},
+"0x4041e0": {
+"name": "strReplaceFill",
+"purpose": "MSVC std::basic_string<char>::replace/assign core (ret 0xc, thiscall). Args (pos, len, count). Clamps pos against size() (sub_402FA0), calling _Xlen (sub_40A75F, throws length_error) if pos>size; computes remaining = size-pos and clamps len to it. If replacing the whole string (pos==0 && len==size==count-region) it fast-paths via sub_404360 (assign-from-buffer) using the sentinel 0xffffffff at 0x417150 (npos). Otherwise, when growing, it shifts the tail with sub_404340 (traits::copy), calls sub_402FD0 to bump the stored length (write NUL), reads the element at data+size via sub_4036F0 and increments the terminating byte. The alternate branch grows capacity via sub_4035B0 then copies the region in with sub_404340. Pure STL string mutation; no socket/relay involvement.",
+"conf": "medium"
+},
+"0x404340": {
+"name": "strTraitsCopy",
+"purpose": "Thin cdecl trampoline: forwards (dst, src, n) straight to sub_40BDD0 (char_traits<char>::copy == memcpy). Used by strReplaceFill/strAssignRegion to copy character runs into the string buffer. No networking.",
+"conf": "high"
+},
+"0x404360": {
+"name": "strAssignRegion",
+"purpose": "MSVC std::basic_string::assign(ptr,count)/replace-region helper (thiscall, ret 8). Args (offset, count). If stored size ([this+8]) < offset it calls _Xlen (sub_40A75F). Ensures capacity via sub_4045D0 (_Split/_Freeze copy-on-need), clamps count to size-offset, then when count>0 shifts the trailing bytes down with sub_404410 (traits::move) to close the gap, recomputes new length = size-count, and commits it via sub_4035B0/sub_403560 (_Eos/set-size + write NUL). This is the erase/shrink branch of basic_string. No socket code.",
+"conf": "medium"
+},
+"0x404410": {
+"name": "strTraitsMove",
+"purpose": "Thin cdecl trampoline: forwards (dst, src, n) to sub_40BA90 (char_traits<char>::move == memmove). Used by strAssignRegion to slide overlapping character runs. No networking.",
+"conf": "high"
+},
+"0x404430": {
+"name": "strCapacity",
+"purpose": "Trivial thiscall accessor: returns [this+0xc], the std::basic_string capacity/reserved field (the _Myres member). One-line getter, no side effects.",
+"conf": "high"
+},
+"0x404450": {
+"name": "strGrowRound",
+"purpose": "std::basic_string capacity-rounding policy (thiscall). Calls sub_4047C0 (max_size/block-size query); if the requested size <=2 it returns 1, otherwise returns requested-2. Feeds strReserveGrow's geometric-growth calculation. Pure allocator-policy arithmetic.",
+"conf": "medium"
+},
+"0x404490": {
+"name": "strReserveGrow",
+"purpose": "std::basic_string _Grow/reserve capacity path (thiscall) with SEH frame (pushes handler 0x415b40, fs:[0] chain). Rounds the requested capacity up with 'or al,0x1f' (round to a multiple of 32 minus 1, the MSVC 0x1f string-granularity mask), compares against strGrowRound (sub_404450) max, and allocates/relocates the buffer via sub_4047A0 (_Allocate wrapper) at requested+2 bytes (room for length prefix + NUL). Returns the new buffer pointer. STL allocation only.",
+"conf": "medium"
+},
+"0x4045d0": {
+"name": "strFreezeCopyOnWrite",
+"purpose": "std::basic_string _Freeze/_Split (copy-on-write detach, thiscall). If the buffer [this+4] is non-null and its reference/marker byte (via sub_4036F0 element access) is neither 0 nor 0xff (i.e. shared or frozen), it saves the old buffer, calls sub_402FD0 to reset length, then sub_404640 to duplicate the contents into a private buffer. Ensures the string owns a unique buffer before mutation. STL COW machinery, no sockets.",
+"conf": "medium"
+},
+"0x404640": {
+"name": "strAllocAssign",
+"purpose": "std::basic_string allocate-and-assign helper (thiscall, ret 4). Takes a source length, computes required capacity via sub_402B20 (rounding/max helper), then calls strGrowAssign (sub_404670) to grow the buffer and copy the source in. Inner step of the COW duplication in strFreezeCopyOnWrite.",
+"conf": "medium"
+},
+"0x404670": {
+"name": "strGrowAssign",
+"purpose": "std::basic_string grow-then-copy (thiscall, ret 8). Args (srcPtr, count). Calls sub_4035B0 (_Grow/ensure capacity for count); on success copies count bytes from src into the buffer [this+4] via sub_404340 (traits::copy) and commits the new length with sub_403560 (_Eos, write NUL terminator). Returns this. STL string builder, no relay logic.",
+"conf": "medium"
+},
+"0x4046c0": {
+"name": "strFindChar",
+"purpose": "std::basic_string::find(char) / char-scan predicate (thiscall, ret 4). If buffer [this+4] is non-null, builds an iterator pair: sub_4019F0 seeks to the arg char within the buffer, sub_4019E0 gets the end iterator, and sub_4019C0 compares them (traits::eq). On match it sets [this]=1 (found flag) and returns this. Character-traits search, not command dispatch.",
+"conf": "low"
+},
+"0x404720": {
+"name": "strThisAccessor",
+"purpose": "Trivial thiscall stub: stores ecx and returns this ([ebp-4]=ecx; eax=this). An inlined identity/getter \u2014 likely a std::string c_str()-style accessor or an empty constructor body. No behavior beyond returning the object pointer.",
+"conf": "low"
+},
+"0x404730": {
+"name": "vcallSlot4",
+"purpose": "Virtual-call thunk (thiscall): loads vtable [this], calls [vtable+4] with this. Dispatches the second virtual method of an interface object (stream/iterator/facet). No inline logic of its own.",
+"conf": "medium"
+},
+"0x404750": {
+"name": "vcallSlot8",
+"purpose": "Virtual-call thunk (thiscall): loads vtable [this], calls [vtable+8] with this. Dispatches the third virtual method of the same interface family as vcallSlot4. Pure dispatch thunk.",
+"conf": "medium"
+},
+"0x404770": {
+"name": "vcallSlotC",
+"purpose": "Virtual-call thunk (thiscall, ret 4): passes arg [ebp+8] to virtual method [vtable+0xc], then ORs a local flag with 1 and returns the original arg. The fourth virtual slot of the interface family (vcallSlot4/8) \u2014 a predicate/put-style call that reports success via the |=1 flag.",
+"conf": "low"
+},
+"0x4047a0": {
+"name": "strAllocate",
+"purpose": "std::basic_string allocator wrapper (thiscall, ret 8): forwards (count, 0) to sub_404930 (the operator new / _Allocate implementation) and returns the raw buffer pointer. Called by strReserveGrow to obtain string storage. STL allocation only.",
+"conf": "medium"
+},
+"0x401520": {
+"name": "iosDecRefGuarded",
+"purpose": "MSVC C++ iostream helper, not network code. Takes a struct ptr in ecx (saved at [ebp-0xc]); constructs a local lock object via sub_404720 (_Lockit acquire) into [ebp-4], then reads the counter/state at [this+4]. If [this+4] is in (0, 0x7fffffff) it decrements it by 1, and computes the returned pointer as (this & mask) where mask = (dec-result==0 ? 0 : -1) via the neg/sbb/not idiom \u2014 i.e. returns this only while the count stays > 0, else NULL. Releases the lock via sub_401580 (_Lockit dtor). This is the guarded reference/hold-count decrement of a shared stream/locale-facet object (basic_ios/locale::facet _Decref style), returning the object or NULL when it hits zero.",
+"conf": "medium"
+},
+"0x401580": {
+"name": "lockitRelease",
+"purpose": "Trivial one-liner: stores ecx into [ebp-4] and returns. This is the _Lockit release/destructor stub (or a thiscall setter that just parks the pointer); it is the counterpart called at the tail of iosDecRefGuarded (0x401520) and iosIncRefGuarded (0x401830) to drop the CRT lock. No WSOCK, no client-struct access.",
+"conf": "medium"
+},
+"0x401590": {
+"name": "streambufVirtualCall6",
+"purpose": "MSVC stream/facet virtual-dispatch thunk. ecx=this; forwards 5 stack args plus a hidden return-struct pointer ([ebp-8]) to the virtual method at [vtbl+0x14] (call dword ptr [edx+0x14]). It then copies the two dwords the callee returned (via eax->[eax],[eax+4]) into the caller's out-struct at [ebp+8] and returns it (ret 0x18 clears 6 args). This is a by-value 8-byte-struct-returning virtual call, e.g. a basic_streambuf/locale-facet do_* method (iterator/pos_type result). Not network code.",
+"conf": "low"
+},
+"0x4015e0": {
+"name": "sentryConstructInit",
+"purpose": "Small C++ object constructor (thiscall, ecx=this). Writes byte[this]=0 (a bool ok/ready flag) and stores the stack arg [ebp+8] into [this+4] (a back-pointer to the owning stream). Returns this. This is the initializer of an ostream/istream sentry-like guard object: a bool at +0 and an associated-stream pointer at +4. ret 4.",
+"conf": "medium"
+},
+"0x401600": {
+"name": "sentryGetOk",
+"purpose": "Thiscall getter: returns byte[this] in al \u2014 the bool ok/ready flag of the sentry/guard object built by sub_4015e0. Equivalent to sentry::operator bool. No side effects, no network.",
+"conf": "medium"
+},
+"0x401610": {
+"name": "ostreamSentryPrepare",
+"purpose": "MSVC basic_ostream::sentry preparation. this holds a stream back-pointer at [this+4]; it forms (this + [ [this]+4 ]) = the embedded basic_ios subobject and: (1) calls sub_401780 (good() test) \u2014 if not good, bail; (2) calls sub_401740 twice (getter of rdbuf/tie ptr at +0x2c); if the tie pointer is non-null it invokes sub_401680 on it to flush the tied stream; (3) re-checks sub_401780 at the end. This is the classic sentry ctor: verify stream is good and flush any tied ostream before formatted output. Pure CRT, no WSOCK.",
+"conf": "low"
+},
+"0x401680": {
+"name": "ostreamFlushSetState",
+"purpose": "MSVC ostream::flush / sync path. Computes the basic_ios subobject (this + [[this]+4]); if sub_4017a0 (bad/fail-bits test on state&6) is false, it fetches the rdbuf via sub_4013f0 and calls sub_4016f0 (virtual pubsync at [vtbl+0x2c]); if pubsync returns -1 it OR's local flags with 4 (badbit) and calls sub_4013c0(this_ios, flags, 0) = setstate(badbit). Returns this. This is basic_ostream<>::flush()/sync with badbit-on-failure semantics. Not network code.",
+"conf": "low"
+},
+"0x4016f0": {
+"name": "streambufPubsync",
+"purpose": "Thiscall virtual-dispatch stub: ecx=this (a streambuf), calls the virtual at [vtbl+0x2c] (call dword ptr [edx+0x2c]) with no extra args, returns its result. This is basic_streambuf::pubsync -> virtual sync(). Used by ostreamFlushSetState (0x401680). CRT only.",
+"conf": "medium"
+},
+"0x401710": {
+"name": "ostreamMaybeFlushUnitbuf",
+"purpose": "Post-insertion flush check. Forms the basic_ios subobject (this + [[this]+4]) and calls sub_404430 (fetch ios_base flags/fmtflags); masks with 2 and, if set, calls sub_401680 (flush). This is the unitbuf-check tail of basic_ostream inserters: 'if (flags() & unitbuf) flush()'. Pure CRT, no WSOCK, no client struct.",
+"conf": "low"
+},
+"0x401740": {
+"name": "iosGetRdbufPtr",
+"purpose": "Thiscall getter: returns dword [this+0x2c]. In this basic_ios layout +0x2c holds the rdbuf/tie stream pointer; used by ostreamSentryPrepare (0x401610) and ostreamFlushSetState. Trivial accessor, no network.",
+"conf": "medium"
+},
+"0x401760": {
+"name": "iosGetState",
+"purpose": "Thiscall getter: returns dword [this+4] \u2014 the ios_base iostate word (goodbit/eofbit/failbit/badbit). Building block for the good()/fail()/bad() predicates sub_401780 and sub_4017a0. No side effects.",
+"conf": "medium"
+},
+"0x401780": {
+"name": "iosStateIsZero",
+"purpose": "Predicate: loads the iostate via sub_401760 ([this+4]) and returns (state == 0) as a bool (neg/sbb/inc idiom yields 1 when eax==0, else 0). This is basic_ios::good() \u2014 true only when no error bits are set. Used by the ostream sentry (0x401610). CRT only.",
+"conf": "medium"
+},
+"0x4017a0": {
+"name": "iosStateHasBadFail",
+"purpose": "Predicate: loads iostate via sub_401760, masks with 6 (failbit|badbit), and returns (masked != 0) as bool. This is basic_ios::fail() (true if failbit or badbit set). Guards the flush in ostreamFlushSetState (0x401680). CRT only.",
+"conf": "medium"
+},
+"0x4017c0": {
+"name": "sentryConstructAtOffset20",
+"purpose": "C++ guard/sentry constructor wrapper. ecx=this; passes (this+0x20) as the target subobject to sub_401800 (which copies a vtbl/base pointer and bumps the hold count), then OR's a local flag with 1 and returns the arg [ebp+8]. This builds a sentry embedded at offset 0x20 of the outer object and marks it constructed. ret 4. MSVC iostream internals, no network.",
+"conf": "low"
+},
+"0x401800": {
+"name": "sentryCopyBaseAndHold",
+"purpose": "Helper for the sentry ctor (called by 0x4017c0). Copies the first dword ([src] -> [this]) \u2014 a base/stream pointer \u2014 then loads that copied pointer into ecx and calls sub_401830 (guarded increment of its hold-count). Returns this. Establishes the sentry's back-reference and takes a reference on the associated stream/facet. ret 4. CRT only.",
+"conf": "low"
+},
+"0x401830": {
+"name": "iosIncRefGuarded",
+"purpose": "Guarded reference/hold-count increment \u2014 the mirror of iosDecRefGuarded (0x401520). Acquires the CRT lock via sub_404720 (_Lockit) into [ebp-4]; if [this+4] < 0x7fffffff it increments [this+4] by 1; releases via sub_401580. This is the _Incref of a shared stream/locale-facet object taken when a sentry (0x401800) references it. No WSOCK, no client struct.",
+"conf": "medium"
+},
+"0x404f80": {
+"name": "srvDupStringTransformed",
+"purpose": "Character-transforming string duplicator. Takes a C-string arg, computes its length via sub_40B820 (strlen), adds 1 for the NUL, allocates that many bytes via sub_40B6F9 (operator new / malloc wrapper), then walks the source byte-by-byte pushing each char through sub_404920 (a per-char transform, e.g. tolower/normalize; called with a second arg 0) and stores the result into the new buffer. Returns the new buffer pointer. Loop copies exactly len bytes; the final NUL comes from the allocation being len+1 and the transform terminating. MSVC-style string-copy helper, not a network function.",
+"conf": "medium"
+},
+"0x405000": {
+"name": "srvInitOnceFlagC8a",
+"purpose": "One-time init guard on the low bit of global byte [0x421c8a]. Reads the byte, masks bit0; if already set returns; otherwise ORs bit0 in and stores it back. Classic MSVC per-object/once-flag 'has this static been initialized yet' test-and-set (no atomicity, safe here because everything runs on the single select thread). No socket or client-struct interaction.",
+"conf": "high"
+},
+"0x405030": {
+"name": "srvInitOnceFlagC89",
+"purpose": "One-time init guard on the low bit of global byte [0x421c89], identical shape to srvInitOnceFlagC8a: mask bit0, return if set, else set-and-store. MSVC static-init/once-flag test-and-set for a different global. No network role.",
+"conf": "high"
+},
+"0x405060": {
+"name": "srvInitOnceFlagC88",
+"purpose": "One-time init guard on the low bit of global byte [0x421c88], same test-and-set-bit0 pattern as the sibling C89/C8a helpers. MSVC lazy-static-init guard for a third global slot. No socket or per-client-struct access.",
+"conf": "high"
+},
+"0x405090": {
+"name": "srvNopStub",
+"purpose": "Empty function: standard prologue/epilogue (push ebp; mov ebp,esp; pop ebp; ret) with no body. Placeholder/no-op thunk, likely an empty destructor or an unimplemented callback slot. Does nothing.",
+"conf": "high"
+},
+"0x4050af": {
+"name": "srvRegistryBeginAccessor",
+"purpose": "thiscall member on the client-registry object at ecx=0x421160 (the small client-vector used by the accept/select loop). Reserves a local, passes its address to sub_406BD0 as the this-vector, and returns. This is a container accessor (begin/iterator construction into the stack temp) against the same 0x421160 registry that recvClient/flushClient iterate by 0x5084 stride. STL vector<clientObj*> helper, no direct WSOCK call.",
+"conf": "low"
+},
+"0x4050c5": {
+"name": "srvRegisterAtexitThunk40B7DD",
+"purpose": "MSVC CRT atexit-registration stub: pushes the address of an inner thunk (0x4050d7) and calls sub_40B7DD (atexit/_onexit registrar), then returns. Registers a static-object teardown callback at startup; the padded size (0x7c) is the trailing thunk body. No network or client-struct role.",
+"conf": "medium"
+},
+"0x405141": {
+"name": "srvRunServer",
+"purpose": "runServer(host, port, serverPass, leaderPass) \u2014 the Team Server driver. Records start tick into [0x421184] via sub_40C12F (GetTickCount), spawns the watchdog thread 0x4050e6 via CreateThread, saves the leader-pass arg into [0x42117c]. If NOT list-mode ([0x421178]!=1): prompts 'Send Enemy List Y/N ?'; on 'Y' (0x59) opens enemies.txt via sub_40C6A4 (fopen r+b), reads its length (sub_40C4A0 ftell/sub_40C5F8 fseek/sub_40C44C rewind) and slurps the list into buffer 0x41ee28 via sub_40C364 (fread), stores list length+8 into [0x421170] (the enemy-list-enabled/length flag gating the 1M command), splits the length into low/high bytes at 0x41ee23/0x41ee24 and pre-frames the 1M reply header bytes 0x41ee21='1',0x41ee22='N', and accumulates a checksum byte into [0x421174] over the list. Then, unless mode arg=='list' (sub_40C2E0 strcmp), reads passlist.txt line-by-line (sub_40C27C fgets) into the 0x32-stride password table at 0x41c70c, NUL-trimming newlines (sub_40C1C0 strchr), and records the entry count into [0x421188]; in relay mode it instead copies the single leader pass into table entry 0 (sub_40B140 strcpy) and the leader pass into 0x41c6d8. Prints 'Team Server is running...', htons(port), calls srvCreateListener (0x40545a); on -1 prints 'establish listener' failure and returns 3. Otherwise loops: 'Waiting for connections...' then srvAcceptSelectLoop (0x406097); on return, if shutdown flag [0x421180]!=1 prints 'Acceptor restarting...' and retries, else exits returning 0.",
+"conf": "high"
+},
+"0x40545a": {
+"name": "srvCreateListener",
+"purpose": "createListener(hostStr, portNetOrder) \u2014 blocking TCP listener setup. inet_addr(host) (WSOCK32 ord, -1 => fail), socket(AF_INET=2, SOCK_STREAM=1, 0) (-1 => fail), fills a sockaddr_in on the stack {sin_family=2, sin_zero=0, sin_port=port arg}, bind(fd, &sa, 0x10); on bind==-1 formats 'bind() failed' with the WSAGetLastError text (sub_407A50) to cerr and returns -1. On success listen(fd, 5) (backlog 5) and returns the listening fd. Bind address is whatever inet_addr resolved from the host string (127.0.0.1 by default), so a stock hub is loopback-only.",
+"conf": "high"
+},
+"0x4054ef": {
+"name": "srvBuildFdSets",
+"purpose": "buildFdSets(readCount*, writeCount*, exceptCount*, listenFd) \u2014 populates the three fd_set count/array structures for select(). Zeroes the three count words. If listenFd!=-1 and read-set count<0x40 (FD_SETSIZE 64) it appends listenFd to the read set (and to the except set) \u2014 array entries stored at base+count*4+4, count incremented. Then iterates the client registry (0x421160) from sub_401760 begin to sub_406C80 end by 0x5084 stride: for each client, if its outbound-queue length field [+0x4e54] < 0x2728 it FD_SETs the client socket ([client+0]) into the read set (room to receive), if [+0x4e58] (queue length) > 0 it FD_SETs into the write set (data to flush), and always FD_SETs into the except set \u2014 all bounded by the 0x40 cap. This is the hand-rolled FD_SET fan-out feeding the select() in the accept loop. Note it reads [+0x4e54] for read-gating and [+0x4e58] for write-gating.",
+"conf": "high"
+},
+"0x40563c": {
+"name": "srvRecvClient",
+"purpose": "recvClient(clientObj*) \u2014 handshake + framing + relay + spam guard on a read-ready client. First, roughly every 0x2328 ms (9s) it prints the global 'TBytes:' byte counter [0x42118c] and resets it (window [0x421190]). Then recv(fd=[obj+0], obj+4, 0x3bc=956, 0) into the inbound scratch. recv==0 => 'Socket <fd> was closed by the client. Shutting down.', return false (evict). recv==-1 => getsockopt(SO_ERROR,0x1007); tolerate 0x2733 (WSAEWOULDBLOCK, return true) else evict. Adds byte count to [0x42118c]. HANDSHAKE while [obj+0x4e5c]==0: resets spam counter [obj+0x4e7c]=0 and window [obj+0x4e80]=now, then strcmp's (sub_40C2E0) the raw payload at obj+4 against every passlist entry 0x41c70c[i] (i<[0x421188]): match => append 'Connected to Team Server' to outbound queue (sub_40BDD0), set authed [+0x4e5c]=1, member [+0x4e60]=0, seed queue-base [+0x4e58], strcpy matched cred into [+0x4f84], return true. Else strcmp against the leader pass 0x41c6d8: match => log 'LEADER', 'Connected to Team Server', authed [+0x4e5c]=1, LEADER [+0x4e60]=1, seed [+0x4e58], return true. Neither => 'Password failed.', return false (evict). SPAM GUARD (post-auth): accumulate recv byte count into [+0x4e7c]; if >0x7d0 (2000) inside the window => print name [+0x4e64] 'disconnected for spam', return false; every >0xbb8 (3000ms) since [+0x4e80] reset counter and window. FRAMING dispatch on scratch bytes [+4]=char0/[+5]=char1: '1'/'4' clamps relay length to 0x30; '1'/'M' enemy-list request ('Enemy list request recieved') gated on [0x421170]>=1, checksum-guards against [0x421174], then 'Sending new list length' and appends the pre-framed enemy list 0x41ee20 (len [0x421170]) into own outbound queue [+0x272c]/[+0x4e58] if room (0x2728-cap); '1'/'O' chat ('Chat recieved'), computes body len = [+6]|([+7]<<8)+4, short read => 'Bad Chat length' return true, else sets frame length and prepares registry iteration (sub_401760) \u2014 this chunk truncates at the leader-op (char1==0x1d) compare that begins the leader-gated combo/potion/single-shot ladder documented downstream.",
+"conf": "high"
+},
+"0x405fb5": {
+"name": "srvFlushClient",
+"purpose": "flushClient(clientObj*) \u2014 non-blocking outbound drain. send(fd=[obj+0], obj+0x272c, len=[obj+0x4e58], 0). send==-1 => getsockopt(SO_ERROR,0x1007); tolerate 0x2733 (WSAEWOULDBLOCK) returning true, else fall through. If bytes sent == queue length [+0x4e58]: full flush, zero the length. Otherwise 'error only part sent to ' to cerr, subtract sent from [+0x4e58], and memmove (sub_40BA90) the unsent tail from obj+sent+0x272c to obj+0x272c so the remainder is kept for the next writable event. Returns true. Standard partial-send handling for the per-client outbound queue.",
+"conf": "high"
+},
+"0x406097": {
+"name": "srvAcceptSelectLoop",
+"purpose": "acceptSelectLoop(listenFd) \u2014 the single-threaded select() multiplexer, one flat function, no per-client threads. Allocates a 0x5404-byte stack frame for a transient client object. Each iteration: srvBuildFdSets (0x4054ef) fills read/write/except fd_sets over listenFd + all clients; select(0, read, except-as-write? , NULL) with infinite timeout (sub_408030). If __WSAFDIsSet(listenFd, read): accept() (sub_408024); on !=-1 logs 'Accepted connection from <inet_ntoa(ip)>, socket <fd>' (ntohs port), constructs a per-client object on the 0x5404 stack buffer via sub_406850, pushes it into registry 0x421160 via sub_406CE0, and if registry count+1 > 0x40 (64) prints the '>63 clients' Winsock-FD_SETSIZE warning (and in list-mode arms passlist DeleteFile/self-destruct path via 0x41c6d8), then ioctlsocket(FIONBIO=0x8004667e) to set the new socket non-blocking; accept==-1 => 'accept() failed'. If __WSAFDIsSet(listenFd, except): getsockopt(SO_ERROR) 'Exception on listening socket: ', abort loop. Then iterates the client registry (begin sub_401760 / end sub_406C80): except-ready client => 'General socket error', removed from the except fd array (compacted); read-ready client => srvRecvClient (0x40563c), falsey return marks it for eviction with 'Read error' and compacts it out of the read fd array; write-ready client => srvFlushClient (0x405fb5), falsey => 'Write error' and compacted out of the write array. On any falsey verdict for a client it getsockopt(SO_ERROR)s, if error!=0 logs the reason string with WSA text (sub_407A50), closes the socket (sub_407BC2 closesocket), erases the client from the registry (sub_406D10) and refetches the iterator. Also in list-mode, when clients drop below 2 and 0x4a38 ms elapsed it DeleteFileA's the passlist (0x41c6d8) and sets shutdown flag [0x421180]=1 to exit runServer's retry loop.",
+"conf": "high"
+},
+"0x40677e": {
+"name": "srvStaticInitCtor41ee1d",
+"purpose": "MSVC static-initializer thunk: sets ecx=0x41ee1d (a global object/buffer address near the enemy-list frame at 0x41ee20) and tail-calls its constructor sub_4081B5. One entry in the CRT static-init table; runs at startup to construct a global. No network role.",
+"conf": "medium"
+},
+"0x40678d": {
+"name": "srvRegisterAtexitThunk40B7DD_2",
+"purpose": "MSVC atexit-registration stub identical in shape to 0x4050c5: pushes inner thunk 0x40679f and calls sub_40B7DD (atexit/_onexit registrar) to schedule a static-object teardown callback, then returns. CRT teardown plumbing, no socket/client-struct interaction.",
+"conf": "medium"
+},
+"0x4067bd": {
+"name": "srvStaticDtor41ee1c",
+"purpose": "MSVC static-teardown thunk: sets ecx=0x41ee1c (global object near 0x41ee1d/0x41ee20) and tail-calls sub_4098F6 (its destructor / cleanup). Paired with the 0x40677e constructor as the atexit-driven teardown of a global. No network role.",
+"conf": "medium"
+}
+}
