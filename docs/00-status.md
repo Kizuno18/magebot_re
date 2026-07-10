@@ -75,6 +75,13 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   ([functions/catalog-v860.md](functions/catalog-v860.md)): the client-address
   resolver bank (base `[0x45ff0c]` stride `0xA8`), chat-command dispatcher,
   healer/targeting/cavebot/looter engines, packet builders at the v860 offsets.
+- **Runtime pass — client transport proven, in-game blocked** — patched the Cip
+  8.60 client (OT RSA + `login0X.tibia.com` hosts redirect) and drove it against
+  live BR 8.60 servers: connect + RSA handshake succeed, account-manager `1/1`
+  login and scripted MyAAC web-registration both reach MOTD + character list. The
+  in-game step is blocked by a **custom-client check at game-world login**
+  (universal on baiak-ilusion / alphaot / kaldrox); getting *this* client in-game
+  needs a local TFS 0.4 8.60 server ([17-runtime-testing.md](17-runtime-testing.md)).
 
 ## Coverage
 
