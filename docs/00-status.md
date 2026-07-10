@@ -90,16 +90,28 @@ Every distinct binary in the distribution is documented function-by-function:
 
 Plus 14 architecture/flow docs (00–14) tracing every subsystem end-to-end.
 
-## Remaining (deferred)
+## IDB name persistence — done
 
-- **IDB name persistence** for `packet.dll` / `server.exe` / v860 — the catalogs
-  exist and their rename batches are staged (`.work/*_ida_rename.json`), but the
-  RE-lab IDA MCP disconnected mid-session; apply them (`allow_overwrite:false`,
-  `sub_*` only) when a VM session reattaches. The v10x main-bot `.i64` already
-  carries its 300 names.
-- **Deep refinements** — the dynamic `Cast*`/`Use*` opcode bytes, the full
-  `client.exe` field map beyond the named self/creature/container bases, and the
-  per-client `0x5084` struct layout in `server.exe`.
+All four `.i64` on the RE VM now carry their names:
+
+| IDB | Names persisted |
+|---|---|
+| `magebotv55_v10x.exe.i64` | 300 (`MB_*` Lua/backbone + 209 bot catalog) |
+| `packet.dll.i64` | 6 (`pkt_*` shim + globals) |
+| `server.exe.i64` | `srv_*` protocol + IDA's demangled STL names preserved |
+| `magebotv55_v860.exe.i64` | 198 `v860*` bot functions |
+
+Note: `allow_overwrite:false` protects only *user*-assigned names, **not** IDA's
+auto FLIRT/demangled library names — so server/v860 renames were filtered to skip
+addresses IDA had already demangled (a `name_regex ^[?]` sweep) and the CRT region.
+
+## Remaining (deep refinements only)
+
+- The dynamic `Cast*`/`Use*` opcode bytes (built from RPM reads, not immediates).
+- The full `client.exe` field map beyond the named self/creature/container bases.
+- The per-client `0x5084` struct layout in `server.exe`.
+- Per-build client offsets for Gunz/v1098 (same code as T10o, different constants —
+  [15-version-comparison.md](15-version-comparison.md)).
 - **packet.dll runtime wiring** — the on-disk `fnPacket` is a `return 1` stub; the
   exe injects the DLL via `VirtualAllocEx`+`WriteProcessMemory`+
   `CreateRemoteThread(LoadLibraryA)` at 0x438222; confirm the exact `ws2_32!send`
