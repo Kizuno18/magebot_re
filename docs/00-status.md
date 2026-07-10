@@ -105,12 +105,17 @@ Note: `allow_overwrite:false` protects only *user*-assigned names, **not** IDA's
 auto FLIRT/demangled library names — so server/v860 renames were filtered to skip
 addresses IDA had already demangled (a `name_regex ^[?]` sweep) and the CRT region.
 
-## Remaining (deep refinements only — need live-client analysis)
+## Remaining (need live-client / per-build analysis)
 
-- The dynamic `Cast*`/`Use*` opcode bytes (built from RPM reads, not immediates).
-- The per-client `0x5084` struct layout in `server.exe`.
-- Per-build client offsets for Gunz/v1098 (same code as T10o, different constants —
-  [15-version-comparison.md](15-version-comparison.md)).
+- The dynamic `Cast*`/`Use*` opcode *sub-bytes* (the main use opcodes
+  `0x82`/`0x83`/`0x84` are documented; the exact use-with sub-byte is built from
+  RPM reads and needs a live-client trace).
+- Per-build client offsets for Gunz/v1098 (same code as T10o, different constants;
+  needs a per-build IDA pass — [15-version-comparison.md](15-version-comparison.md)).
+
+The `server.exe` per-client `0x5084` struct + command dispatch is now confirmed
+([05-teamserver.md](05-teamserver.md)). The client-side struct map is consolidated
+in [16-memory-map.md](16-memory-map.md).
 
 The client-side struct map is consolidated in [16-memory-map.md](16-memory-map.md)
 (structural: base→offset→slot for all ~50 resolvers; semantic labels where a

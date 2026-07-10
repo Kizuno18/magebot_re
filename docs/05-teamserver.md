@@ -238,3 +238,43 @@ potion/mwall/heal features — lives in `magebotv55.exe`. A party either points
 that client at a self-hosted `server.exe` or at the hosted `tibiadb.com`
 teamserver (10-player private hubs). See the injection/feature docs for where the
 combo commands originate inside the bot.
+
+## Per-client struct + command dispatch (confirmed, `srvRecvClient` 0x40563c)
+
+Each connected client is a **`0x5084`-byte (20612) record** (the vector stride).
+`recv` reads up to 956 bytes into `+4`; the first two bytes are the command frame.
+
+| Offset | Field |
+|---|---|
+| `+0` | client socket handle |
+| `+4` | recv buffer — `[+4]`=cmd byte, `[+5]`=sub-cmd, `[+6]`/`[+7]`=length lo/hi |
+| `+10028` (`0x272C`) | outgoing relay buffer (broadcast to the other clients) |
+| `+20056` (`0x4E58`) | relay write offset / length (cap `0x2728`) |
+| `+20060` (`0x4E5C`) | **authenticated** flag (1 after password match) |
+| `+20064` (`0x4E60`) | **combo-leader** flag (1 = leader) |
+| `+20068` (`0x4E64`) | client name/id string (logs) |
+| `+20088` (`0x4E78`) | dword stored by cmd `0x3D` |
+| `+20092`/`+20096` | spam byte-counter + window clock (>2000 B / <3 s ⇒ "disconnected for spam") |
+| `+20356` (`0x4F84`) | leader-gated command's originator name |
+
+Handshake: an unauthenticated client's first packet is `strcmp`'d against the
+password list (`byte_41C70C`, 50-byte stride) → sets auth flag + copies
+"Connected to Team Server"; matching the leader password (`Str2`, "LEADER") also
+sets the leader flag. Wrong password ⇒ "Password failed." + drop.
+
+Command dispatch on `[+5]`(sub) / `[+4]`(cmd):
+
+| `[+4][+5]` | Command | Notes |
+|---|---|---|
+| `'1' 'M'` (49,77) | **enemy-list request** | replies with `dword_421170`-byte list `unk_41EE20` when it changed (`byte_421174`) |
+| `'1' 'O'` (49,79) | **chat** | body length `[+6] + ([+7]<<8) + 4`; "Bad Chat length" guard |
+| `_ 0x1D` / `_ 0x33` | leader-gated op | rejected ("bad leader attempt") unless `[+20064]==1` |
+| `_ 0x19` / `_ 0x1A` | **combo command** | leader-gated relay |
+| `_ 0x3D` | store dword → `[+20088]` | |
+| `_ 0x1B` | **potion command** | |
+| `'/' 0x19` (47,25) | **single-shot** | `recv`s 8 more bytes, reads dword at `[+14]` |
+| default | **relay** | appends the `v64`-byte payload into every *other* client's `+10028` buffer (the fan-out that makes one bot's action drive the box) |
+
+So the server is a dumb authenticated relay: it validates the password + leader
+flag, rate-limits spam, and fans each client's command out to the others'
+`flushClient` buffers — the command *semantics* live in `magebotv55.exe`.
