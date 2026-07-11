@@ -210,6 +210,18 @@ ASLR load base (or packet.dll linked `/FIXED` at `0x10000000`); the bot's
 **read** mirror (RPM of client memory) is independent of packet.dll and is
 unaffected.
 
+### The read mirror is live in-game — validates [08](08-address-resolution-and-mirror.md)
+
+Tracing `magebotv55.exe`'s `ReadProcessMemory` (frida) against the **in-game**
+client, in a 20 s window: **2,625 RPM calls, 2,620 to real client addresses**
+(only 5 near-null), e.g. reads at `0x005b8980` returning live client bytes. This
+is the direct inverse of the pre-game behaviour, where the resolver bank base was
+null so every mirror access landed at `0x0`/`0x1`. The bot's memory mirror is
+therefore fully populated the moment the client is in a game world — exactly what
+the custom-client wall previously prevented. (Confirming the mirror in isolation
+also works by renaming `packet.dll` so `LoadLibraryA` fails: the inject/crash path
+is skipped and the RPM read loop runs against the live client.)
+
 ## Summary
 
 Full runtime chain proven end-to-end. A **local TFS 0.4 8.60 server** (Fir3element
@@ -222,7 +234,9 @@ sequence `OpenProcess → GetProcAddress(LoadLibraryA) → VirtualAllocEx →
 WriteProcessMemory("…packet.dll") → CreateRemoteThread`
 ([09](09-packet-build-inject-pipeline.md)); the injected thread executing at the
 documented `pkt_pipeServerThread` `0x10004C0B` ([04](04-packet-dll.md)); and the
-live RPM/WPM mirror write-path ([08](08-address-resolution-and-mirror.md)). The
-`0x10004C0B` client fault reproduces identically in-game, pinning it to an **ASLR
-base mismatch** in the injector (hard-coded `0x10000000` load base) rather than a
-missing game socket — the one remaining item for a stable in-game bot session.
+RPM/WPM mirror ([08](08-address-resolution-and-mirror.md)) — **live and fully
+populated in-game** (2,620 of 2,625 reads to real client addresses, vs all
+null-base pre-game). The `0x10004C0B` client fault reproduces identically in-game,
+pinning it to an **ASLR base mismatch** in the injector (hard-coded `0x10000000`
+load base) rather than a missing game socket — the one remaining item for a stable
+in-game bot session.
