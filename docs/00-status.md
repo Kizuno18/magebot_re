@@ -95,6 +95,17 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   `WerFault`, `\\.\pipe\SamplePipe<pid>` live, client window subclassed
   (`*Magebot*`). The chain is now **100% end-to-end in-game — stable bot session**
   ([17-runtime-testing.md](17-runtime-testing.md)).
+- **Runtime packet verification — send path proven byte-for-byte** — with a real
+  Knight in the local TFS world, every documented outgoing opcode was captured
+  entering `packet.dll`'s XTEA/Adler/send fn (**v860 `0x10004436`**, not the
+  v10x `0x4726`): attack **`0xA1`**, walk `0x65`–`0x68`, turn `0x6F`, look `0x8C`,
+  talk `0x96`. The wire framing `[len][adler32][xtea]` was confirmed, and the
+  crypto was verified **end-to-end**: decrypting the captured wire ciphertext with
+  the captured 16-byte XTEA session key (pointer at **`0x1000C138`**) with a stock
+  XTEA (delta `0x9E3779B9`, 32 rounds) recovers the exact opcode, and an
+  independent Adler-32 of the ciphertext matches — for all frames. RSA login and
+  the demo licensing phone-home also fire (host is **jnews.ueuo.com**, not
+  tibiadb.com) ([18-runtime-packet-verification.md](18-runtime-packet-verification.md)).
 
 ## Coverage
 

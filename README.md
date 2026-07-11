@@ -59,6 +59,7 @@ scripts), `*.sav`/`*.savd` (v860 binary cavebot recordings), `*.bin` tile maps
 | [`docs/15-version-comparison.md`](docs/15-version-comparison.md) | Gunz / T10o / v1098 / v860 — same product, per-client offsets + recompile churn; only v860 is a distinct lineage |
 | [`docs/16-memory-map.md`](docs/16-memory-map.md) | Consolidated global map: client base pointers, the resolver→slot table, RPM caches, control globals |
 | [`docs/17-runtime-testing.md`](docs/17-runtime-testing.md) | Live runtime pass: RSA+hosts patch, local TFS 0.4 server that gets the Cip 8.60 client **in-game**, full one-shot LoadLibrary injection, and the `0x10004C0B`/`0x991F48` crash root-caused + fixed (wrong `packet.dll` version → deploy v860) — clean in-game injection |
+| [`docs/18-runtime-packet-verification.md`](docs/18-runtime-packet-verification.md) | On-the-wire proof: char in-game, every documented opcode (`0xA1` attack, walk, `0x96` talk) captured entering `packet.dll`, and XTEA+Adler-32+`send` verified **cryptographically** (decrypt captured wire with captured key = exact opcode). v860 offset corrections inside |
 | [`docs/functions/`](docs/functions/) | Per-function catalog: [catalog-bot.md](docs/functions/catalog-bot.md) (222 bot funcs), Lua catalogs, [engine-core.md](docs/functions/engine-core.md), [support-region.md](docs/functions/support-region.md) (CRT/STL) |
 
 ## Method

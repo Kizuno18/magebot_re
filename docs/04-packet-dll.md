@@ -94,7 +94,11 @@ into the 8.60 Cip client (`Tibia.exe`, image `0x400000`–`~0x650000`) makes `Dl
 write to unmapped `0x991F30`+ and crash the client (see the runtime root-cause in
 [17](17-runtime-testing.md)); the **v860** `packet.dll` (`samples/v860/`, 65536 B)
 resolves the 8.60 client and injects cleanly. **The DLL is build-specific — match
-it to the client.** Both the send path and the keyboard hook are disassembled
+it to the client.** In v860 the send fn is **`0x10004436`** (not `0x4726`) and the
+XTEA key pointer is **`0x1000C138`** (not `0xC128`); both were confirmed at runtime
+and the whole XTEA(stock, delta `0x9E3779B9`)+Adler-32+`send` path verified
+cryptographically against captured wire traffic
+([18](18-runtime-packet-verification.md)). Both the send path and the keyboard hook are disassembled
 (worker `pkt_pipeServerThread` `0x10004c0b`, sender `pkt_xteaEncryptAndSend`
 `0x10004726`, WndProc hook `pkt_hookedWndProc` `0x100052ba`):
 
