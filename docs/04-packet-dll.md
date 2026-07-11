@@ -87,7 +87,14 @@ runtime wiring the stub stands in for:
 | `0x10005570` | `GetProcAddress(ws2_32, "setsockopt")` → store at `[0x101c4b0c]` |
 
 So the DLL caches the client's Winsock `send`/`setsockopt` addresses and starts a
-worker thread. **Both the send path and the keyboard hook are now disassembled**
+worker thread. **Version note:** the table above is the **v10x (9.2)** `packet.dll`
+(`"Dll loaded 9.2"`, module `"client.exe"`, client globals in the 9.2 range —
+`dword_1000C12C = 0x991F30`, `dword_1000C13C = 0xB1B4A8`). Injecting *this* DLL
+into the 8.60 Cip client (`Tibia.exe`, image `0x400000`–`~0x650000`) makes `DllMain`
+write to unmapped `0x991F30`+ and crash the client (see the runtime root-cause in
+[17](17-runtime-testing.md)); the **v860** `packet.dll` (`samples/v860/`, 65536 B)
+resolves the 8.60 client and injects cleanly. **The DLL is build-specific — match
+it to the client.** Both the send path and the keyboard hook are disassembled
 (worker `pkt_pipeServerThread` `0x10004c0b`, sender `pkt_xteaEncryptAndSend`
 `0x10004726`, WndProc hook `pkt_hookedWndProc` `0x100052ba`):
 

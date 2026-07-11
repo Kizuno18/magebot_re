@@ -121,17 +121,25 @@ The memory could not be read.
 ```
 
 `0x10004C0B` = `packet.dll` imagebase `0x10000000` + `0x4C0B` = **`pkt_pipeServerThread`**
-(the named-pipe server thread, [04](04-packet-dll.md)). The fault EIP equals the
-referenced address, i.e. control was transferred **to** packet.dll's pipe-server
-entry. This fault is reproduced identically whether the client is at the login
-screen **or logged into a game world** (see the in-game pass below) — so it is not
-a missing-game-socket problem. The one-shot capture (§3) shows the real cause: the
-bot `LoadLibraryA`s packet.dll (which loads at an **ASLR-randomized base** in the
-modern client), then `CreateRemoteThread`s at the **absolute** `0x10004C0B`,
-hard-coding a `0x10000000` load base. When ASLR relocates packet.dll, `0x10004C0B`
-lands in unmapped memory → the remote thread faults with EIP == referenced address
-== `0x10004C0B`. Either way, this is direct runtime proof that the injected thread
-targets exactly the statically-derived `pkt_pipeServerThread` offset.
+(the named-pipe server thread, [04](04-packet-dll.md)). **Root cause (corrected):
+this was NOT ASLR — it was the WRONG `packet.dll` version.** The
+`C:\Tibia860\packet.dll` originally deployed was the **v10x (9.2) build**, whose
+`DllMain@0x10005458` logs `"Dll loaded 9.2"`, resolves the client via
+`sub_1000171F("client.exe")` (the 9.2 module name; our client is `Tibia_ot.exe`,
+so it returns 0 and skips the `sub_100015A6(base-0x400000)` rebase), then writes
+to hard-coded 9.2 client globals — `dword_1000C12C = 0x991F30`, `dword_1000C13C =
+0xB1B4A8`, `dword_1000C170 = 0x4295B7`. Addresses like `0x991F30`/`0xB1B4A8` live
+in the larger 9.2 client image and are **unmapped** in the 8.60 client (image
+`0x400000`–`~0x650000`), so `sub_1000193E(0x991F30+728, …)` faults (the raw
+`LoadLibraryW` test faulted at `0x991F48` = `0x991F30`+0x18; magebot's inject
+faults inside the pipe thread it spawns). The fix is simply to deploy the **v860
+`packet.dll`** (`samples/v860/packet.dll`, 65536 B; the wrong one was the 69632 B
+v10x). With the correct DLL, injection is CLEAN — no fault, the client stays
+alive, `pkt_pipeServerThread` creates `\\.\pipe\SamplePipe<pid>`, and the DLL
+subclasses the client window (`SetWindowLongA`, retitling it `*Magebot*`). This is
+direct runtime proof that the injected thread targets exactly the
+statically-derived `pkt_pipeServerThread` offset — and that the DLL must match the
+client build.
 
 ### 3. Injector write-path is live — validates [08](08-address-resolution-and-mirror.md)
 
@@ -198,17 +206,19 @@ on the VM and pointing the patched client at it. Steps that worked:
    world** — the exact state the v860 bot's memory mirror (`[0x45ff0c]`/`0xA8`)
    needs.
 
-### Injecting the bot in-game
+### Injecting the bot in-game — CLEAN with the correct packet.dll
 
-Launching `magebotv55.exe` against the in-game client injects packet.dll exactly
-as at the login screen and the client faults at the same `0x10004C0B`. This is the
-key evidence that the crash is the **ASLR base-mismatch** described in §2, not a
-game-state issue — the game world is live, yet the hard-coded `0x10000000`+`0x4C0B`
-remote-thread entry still lands in unmapped memory. A stable in-game bot session
-therefore needs the injector's absolute thread address rebased to packet.dll's
-ASLR load base (or packet.dll linked `/FIXED` at `0x10000000`); the bot's
-**read** mirror (RPM of client memory) is independent of packet.dll and is
-unaffected.
+With the wrong (v10x/9.2) `packet.dll` the client faulted at `0x10004C0B` /
+`0x991F48` whether at the login screen or in a game world — which first looked
+like an ASLR base mismatch but is actually a **version mismatch** (§2): the 9.2
+DLL's hard-coded client globals are unmapped in the 8.60 client. After deploying
+the **v860 `packet.dll`** (`samples/v860/packet.dll`, 65536 B), the injection is
+**clean and stable in-game**: logged the Cip client into the local TFS world, then
+launched `magebotv55.exe` → the client stays alive (no `WerFault`),
+`pkt_pipeServerThread` creates `\\.\pipe\SamplePipe4168` (matching the client pid),
+and the DLL subclasses the client window (`SetWindowLongA`, retitled `*Magebot*`).
+This is the full send-path runtime working in-game. The bot's **read** mirror
+(RPM of client memory) is independent of packet.dll and works regardless.
 
 ### The read mirror is live in-game — validates [08](08-address-resolution-and-mirror.md)
 
@@ -236,7 +246,11 @@ WriteProcessMemory("…packet.dll") → CreateRemoteThread`
 documented `pkt_pipeServerThread` `0x10004C0B` ([04](04-packet-dll.md)); and the
 RPM/WPM mirror ([08](08-address-resolution-and-mirror.md)) — **live and fully
 populated in-game** (2,620 of 2,625 reads to real client addresses, vs all
-null-base pre-game). The `0x10004C0B` client fault reproduces identically in-game,
-pinning it to an **ASLR base mismatch** in the injector (hard-coded `0x10000000`
-load base) rather than a missing game socket — the one remaining item for a stable
-in-game bot session.
+null-base pre-game). The `0x10004C0B` / `0x991F48` injection crash — long assumed
+to be an ASLR base mismatch — was finally **root-caused and fixed**: it was the
+**wrong `packet.dll` version** (the v10x/9.2 build, whose hard-coded 9.2 client
+globals at `0x991F30`/`0xB1B4A8` are unmapped in the 8.60 client). Swapping in the
+**v860 `packet.dll`** makes injection clean. The chain is now 100% end-to-end:
+Cip client logged into the local TFS world, magebot injected the v860 packet.dll
+with **zero crash**, `\\.\pipe\SamplePipe<pid>` live, client window subclassed —
+a stable in-game bot session.
