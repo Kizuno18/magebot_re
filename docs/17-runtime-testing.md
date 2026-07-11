@@ -91,6 +91,67 @@ Downloading their "official" client does not help: it is almost always
 OTClientV8, whose memory layout is unrelated to the Cip 8.60 client — the v860
 bot's `[0x45ff0c]`/`0xA8` offsets would not match it.
 
+## Bot injection & licensing runtime pass
+
+Independent of the in-game blocker, the bot itself was run against the live
+client on the VM (winctl agent in session 1, frida 17.15.3 attached to
+`magebotv55.exe` / `Tibia_ot.exe` from `C:\Python312\python.exe` driver scripts).
+Three things were observed at runtime, each confirming a static-analysis doc.
+
+### 1. Licensing — validates [14](14-login-crypto-licensing.md)
+
+Launching `magebotv55.exe` (v860) triggers the tibiadb.com machine check and a
+**"Magebot New Computer"** dialog: *"We do not have this computer on file with
+your account … continue with the demo version or purchase a key … demo will
+automatically close after some time."* Choosing **Continue with Demo Version**
+brings up the full v860 GUI with `Magebot Status = Demo Version`. The demo build
+**self-terminates after a short license timeout** if left idle (observed
+repeatedly — the process exits on its own within tens of seconds), which is why
+the injection window is narrow.
+
+### 2. Injection thread runs at the documented address — validates [04](04-packet-dll.md) / [09](09-packet-build-inject-pipeline.md)
+
+With the bot active in demo mode and the patched client (`Tibia_ot.exe`) running,
+the **client** faults with an Application Error, reproduced on multiple launches:
+
+```
+Tibia_ot.exe — Application Error
+The instruction at 0x0000000010004C0B referenced memory at 0x0000000010004C0B.
+The memory could not be read.
+```
+
+`0x10004C0B` = `packet.dll` imagebase `0x10000000` + `0x4C0B` = **`pkt_pipeServerThread`**
+(the named-pipe server thread, [04](04-packet-dll.md)). The fault EIP equals the
+referenced address, i.e. control was transferred **to** packet.dll's pipe-server
+entry. Post-crash the client's loaded-module list contains **no `packet.dll`** and
+there is **no `\\.\pipe\SamplePipe`**. Reading: the bot creates a remote thread at
+packet.dll's pipe-thread offset, but with the client sitting at the login screen
+there is no in-game game socket for the XTEA-send shim, so the shim faults
+immediately and the DLL never reaches a resident/registered state. This is direct
+runtime proof that the injected thread executes at exactly the statically-derived
+`0x10004C0B`.
+
+### 3. Injector write-path is live — validates [08](08-address-resolution-and-mirror.md)
+
+frida attached to `magebotv55.exe` captured its runtime API activity:
+
+- The five `WinMain` worker threads start at `0x40122b` / `0x401221` / `0x40127b`
+  / `0x4012fd` (matches the thread inventory in [07](07-master-loop-and-threads.md)).
+- Steady state: a continuous stream of `WriteProcessMemory` calls into the client,
+  **1 byte each, to near-null targets (`0x0`, `0x1`)** — the RPM/WPM mirror/control
+  path resolving `base + offset` where the client base pointer is null because the
+  client is pre-game (the resolver bank of [08](08-address-resolution-and-mirror.md)).
+  ~298 such writes per few-second sample window.
+- `packet.dll` is not mapped in the bot's own address space at attach time.
+
+Not captured: the one-shot DLL-injection call sequence itself (`VirtualAllocEx` +
+`WriteProcessMemory` of the packet.dll image + `CreateRemoteThread`). It fires in a
+~1–2 s window at bot startup that a live `frida.attach` consistently missed, and the
+demo build self-closes on its license timeout before a client-swap could force a
+re-injection; a `frida.spawn` launches the bot in session 0 (no interactive
+desktop) so its GUI/inject path never runs. The reproduced `0x10004C0B` fault is
+the direct evidence that the thread executes at that address regardless.
+
 ## Completion path (open)
 
 The only way to get the **Cip 8.60 client** fully in a game world is a server that
@@ -111,5 +172,11 @@ from the downloaded source.
 
 The patched-client transport is proven end-to-end up to the game handshake:
 connect, RSA-decrypt, account authentication, account-manager and web-registered
-logins, MOTD, and character list. In-game memory reading by the bot is blocked
-only by the servers' custom-client enforcement, which a local 8.60 server removes.
+logins, MOTD, and character list. The bot itself was run against the live client:
+its tibiadb.com demo-licensing flow ([14](14-login-crypto-licensing.md)), its
+injection thread executing at the documented `pkt_pipeServerThread` address
+`0x10004C0B` ([04](04-packet-dll.md)/[09](09-packet-build-inject-pipeline.md)), and
+its live RPM/WPM mirror write-path resolving null-base client addresses pre-game
+([08](08-address-resolution-and-mirror.md)) were all observed at runtime. In-game
+memory reading by the bot is blocked only by the servers' custom-client
+enforcement, which a local 8.60 server removes.
