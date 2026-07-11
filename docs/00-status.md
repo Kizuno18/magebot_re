@@ -75,19 +75,21 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   ([functions/catalog-v860.md](functions/catalog-v860.md)): the client-address
   resolver bank (base `[0x45ff0c]` stride `0xA8`), chat-command dispatcher,
   healer/targeting/cavebot/looter engines, packet builders at the v860 offsets.
-- **Runtime pass — client transport + bot injection proven, in-game blocked** —
-  patched the Cip 8.60 client (OT RSA + `login0X.tibia.com` hosts redirect) and
-  drove it against live BR 8.60 servers: connect + RSA handshake succeed,
-  account-manager `1/1` login and scripted MyAAC web-registration both reach MOTD
-  + character list. The bot was then run against the live client and validated
-  three docs at runtime: the **tibiadb.com demo-licensing** dialog (doc 14), the
-  **injection thread executing at `0x10004C0B` = `pkt_pipeServerThread`** (docs
-  04/09, reproduced — client faults with EIP == that address), and the **live
-  RPM/WPM mirror write-path** resolving null-base client addresses pre-game (doc
-  08, frida on `magebotv55.exe`). Full in-game reading is blocked by a
-  **custom-client check at game-world login** (universal on baiak-ilusion /
-  alphaot / kaldrox); getting *this* client in-game needs a local TFS 0.4 8.60
-  server ([17-runtime-testing.md](17-runtime-testing.md)).
+- **Runtime pass — client in-game on local server + full injection captured** —
+  patched the Cip 8.60 client (OT RSA + `login0X.tibia.com` hosts redirect); the
+  BR public servers block it at game-world login (custom-client wall), so stood up
+  a **local TFS 0.4 8.60 server** on the VM (Fir3element precompiled binary +
+  SQLite, account `1/1`) which **removes the wall — the client enters the game
+  world** (self + map rendered). The bot was run against both pre-game and in-game
+  clients, validating four docs at runtime: **tibiadb.com demo-licensing** (doc
+  14); the **full one-shot LoadLibrary injection** `OpenProcess(0x1F0FFF) →
+  GetProcAddress(LoadLibraryA) → VirtualAllocEx(46,RWX) → WPM("…packet.dll") →
+  CreateRemoteThread` (doc 09, frida spawn from a session-1 task); the **injection
+  thread at `0x10004C0B` = `pkt_pipeServerThread`** (doc 04); and the **live
+  RPM/WPM mirror write-path** (doc 08). The `0x10004C0B` client fault reproduces
+  in-game too → it is an **ASLR base mismatch** in the injector (hard-coded
+  `0x10000000` base), the one item left for a stable in-game bot session
+  ([17-runtime-testing.md](17-runtime-testing.md)).
 
 ## Coverage
 

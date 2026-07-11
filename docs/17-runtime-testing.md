@@ -123,13 +123,15 @@ The memory could not be read.
 `0x10004C0B` = `packet.dll` imagebase `0x10000000` + `0x4C0B` = **`pkt_pipeServerThread`**
 (the named-pipe server thread, [04](04-packet-dll.md)). The fault EIP equals the
 referenced address, i.e. control was transferred **to** packet.dll's pipe-server
-entry. Post-crash the client's loaded-module list contains **no `packet.dll`** and
-there is **no `\\.\pipe\SamplePipe`**. Reading: the bot creates a remote thread at
-packet.dll's pipe-thread offset, but with the client sitting at the login screen
-there is no in-game game socket for the XTEA-send shim, so the shim faults
-immediately and the DLL never reaches a resident/registered state. This is direct
-runtime proof that the injected thread executes at exactly the statically-derived
-`0x10004C0B`.
+entry. This fault is reproduced identically whether the client is at the login
+screen **or logged into a game world** (see the in-game pass below) — so it is not
+a missing-game-socket problem. The one-shot capture (§3) shows the real cause: the
+bot `LoadLibraryA`s packet.dll (which loads at an **ASLR-randomized base** in the
+modern client), then `CreateRemoteThread`s at the **absolute** `0x10004C0B`,
+hard-coding a `0x10000000` load base. When ASLR relocates packet.dll, `0x10004C0B`
+lands in unmapped memory → the remote thread faults with EIP == referenced address
+== `0x10004C0B`. Either way, this is direct runtime proof that the injected thread
+targets exactly the statically-derived `pkt_pipeServerThread` offset.
 
 ### 3. Injector write-path is live — validates [08](08-address-resolution-and-mirror.md)
 
@@ -144,39 +146,83 @@ frida attached to `magebotv55.exe` captured its runtime API activity:
   ~298 such writes per few-second sample window.
 - `packet.dll` is not mapped in the bot's own address space at attach time.
 
-Not captured: the one-shot DLL-injection call sequence itself (`VirtualAllocEx` +
-`WriteProcessMemory` of the packet.dll image + `CreateRemoteThread`). It fires in a
-~1–2 s window at bot startup that a live `frida.attach` consistently missed, and the
-demo build self-closes on its license timeout before a client-swap could force a
-re-injection; a `frida.spawn` launches the bot in session 0 (no interactive
-desktop) so its GUI/inject path never runs. The reproduced `0x10004C0B` fault is
-the direct evidence that the thread executes at that address regardless.
+### 4. The one-shot DLL-injection sequence — captured, validates [09](09-packet-build-inject-pipeline.md)
 
-## Completion path (open)
+Catching the injection required `frida.spawn`-ing the bot from a **session-1**
+scheduled task (a session-0 spawn has no desktop, so the GUI/inject never runs) so
+the hooks are live from the bot's first instruction. With the client already
+running, the full ordered sequence is:
 
-The only way to get the **Cip 8.60 client** fully in a game world is a server that
-accepts it at game-login — i.e. a **local TFS 0.4 / OTHire 8.60** with default
-config (no custom-client check, standard OT RSA that the patched client already
-matches, port 7171, built-in account manager). Then: `hosts login01.tibia.com →
-127.0.0.1`, launch `Tibia_ot.exe`, log in, enter game, inject `magebotv55.exe`.
+```
+OpenProcess(desired=0x1F0FFF, pid=<client>)        ; PROCESS_ALL_ACCESS
+LoadLibraryA("psapi.dll"); GetProcAddress("LoadLibraryA")
+VirtualAllocEx(client, size=46, prot=0x40)         ; PAGE_EXECUTE_READWRITE @0x6fe0000
+WriteProcessMemory(client, 0x6fe0000, "C:\Tibia860\packet.dll\0", 46)   ; head 43 3a 5c 54 69 62 69 61 = "C:\Tibia"
+CreateRemoteThread(client, lpStartAddress=LoadLibraryA, lpParameter=0x6fe0000)
+```
 
-Progress: the Fir3element/3777 TFS 0.4 8.60 datapack is downloaded and extracted
-on the VM (`C:\ots\dp\3777-main`), but it is **source-only** (`config.lua.dist`,
-`src/`, CMake, a Dockerfile — no compiled `theforgottenserver.exe`). The VM has no
-Docker, and reliable pre-compiled 0.4 Windows binaries are behind OTLand forum
-logins or unresolved Git-LFS blobs. Finishing therefore needs either a supplied
-pre-compiled TFS 0.4 8.60 Windows binary (+ `sqlite3.dll`) or an MSVC/vcpkg build
-from the downloaded source.
+This is the classic `CreateRemoteThread(LoadLibraryA, <dll-path>)` loader — the
+runtime confirmation of the injector statically documented at `0x438222`
+([09](09-packet-build-inject-pipeline.md)). The bot's own steady-state control loop
+issued **21,816** 1-byte `WriteProcessMemory` calls during the sample (the
+null-base mirror writes of §3, pre-game).
+
+## In-game pass — local TFS 0.4 server (the custom-client wall removed)
+
+The custom-client wall was defeated by standing up a **local TFS 0.4 8.60 server**
+on the VM and pointing the patched client at it. Steps that worked:
+
+1. **Server binary.** The Fir3element/3777 datapack README links precompiled
+   Windows binaries the earlier `x32.rar` grab had missed:
+   `github.com/Fir3element/binaries/raw/master/x64-windows.zip` (5.5 MB). Fetched
+   to the VM and extracted into `C:\ots\dp\3777-main`: `theforgottenserver.exe`
+   (2.8 MB) + all runtime DLLs (`lua51`, `sqlite3`, `gmp-10`, `libxml2`,
+   `libcrypto-3-x64`, `boost_*`, `zlib1`, `libmariadb`, `iconv-2`, `liblzma`).
+2. **DB.** `config.lua.dist` → `config.lua`, changed `sqlType = "mysql"` →
+   `"sqlite"` (no DB server needed; `__USE_SQLITE__` is compiled in). Built
+   `theforgottenserver.s3db` from `schemas/sqlite.sql` via Python's built-in
+   `sqlite3` — the schema has a bug (`INSERT INTO "players" VALUES (…, 0, 0 '')`
+   is missing a comma before the trailing `''`); patch that literal, then
+   `executescript`. Result: 31 tables, 37 triggers, the `Account Manager` player
+   (id 1), account **`1` / `1`**.
+3. **Run.** `theforgottenserver.exe` needs a **real console** (headless/SYSTEM
+   runs produce an empty log and exit); run it via a **session-1 scheduled task**.
+   Boot log ends `Bound ports: 7171 7172 … Forgotten server Online!` (map
+   1000×1000, Open PvP, `Global IP address: 127.0.0.1`).
+4. **Connect.** `hosts login0{1..5}.tibia.com → 127.0.0.1` + `ipconfig /flushdns`,
+   launch `Tibia_ot.exe`, **Enter Game** → account `1` / password `1` → MOTD
+   *"Welcome to the Forgotten Server!"* → character list `Account Manager
+   (Forgotten)` → **enter world**. The Cip 8.60 client renders the map, the self
+   character, and the game UI; server broadcasts *"Account Manager has logged in"*
+   / *"New record: 1 players are logged in."* **The client is fully in a game
+   world** — the exact state the v860 bot's memory mirror (`[0x45ff0c]`/`0xA8`)
+   needs.
+
+### Injecting the bot in-game
+
+Launching `magebotv55.exe` against the in-game client injects packet.dll exactly
+as at the login screen and the client faults at the same `0x10004C0B`. This is the
+key evidence that the crash is the **ASLR base-mismatch** described in §2, not a
+game-state issue — the game world is live, yet the hard-coded `0x10000000`+`0x4C0B`
+remote-thread entry still lands in unmapped memory. A stable in-game bot session
+therefore needs the injector's absolute thread address rebased to packet.dll's
+ASLR load base (or packet.dll linked `/FIXED` at `0x10000000`); the bot's
+**read** mirror (RPM of client memory) is independent of packet.dll and is
+unaffected.
 
 ## Summary
 
-The patched-client transport is proven end-to-end up to the game handshake:
-connect, RSA-decrypt, account authentication, account-manager and web-registered
-logins, MOTD, and character list. The bot itself was run against the live client:
-its tibiadb.com demo-licensing flow ([14](14-login-crypto-licensing.md)), its
-injection thread executing at the documented `pkt_pipeServerThread` address
-`0x10004C0B` ([04](04-packet-dll.md)/[09](09-packet-build-inject-pipeline.md)), and
-its live RPM/WPM mirror write-path resolving null-base client addresses pre-game
-([08](08-address-resolution-and-mirror.md)) were all observed at runtime. In-game
-memory reading by the bot is blocked only by the servers' custom-client
-enforcement, which a local 8.60 server removes.
+Full runtime chain proven end-to-end. A **local TFS 0.4 8.60 server** (Fir3element
+precompiled binary + SQLite, account `1`/`1`) removes the custom-client wall: the
+patched Cip 8.60 client logs in and **enters the game world** (self + map rendered).
+The bot was run against both the pre-game and the in-game client, validating four
+static docs at runtime: the tibiadb.com demo-licensing flow
+([14](14-login-crypto-licensing.md)); the full one-shot LoadLibrary injection
+sequence `OpenProcess → GetProcAddress(LoadLibraryA) → VirtualAllocEx →
+WriteProcessMemory("…packet.dll") → CreateRemoteThread`
+([09](09-packet-build-inject-pipeline.md)); the injected thread executing at the
+documented `pkt_pipeServerThread` `0x10004C0B` ([04](04-packet-dll.md)); and the
+live RPM/WPM mirror write-path ([08](08-address-resolution-and-mirror.md)). The
+`0x10004C0B` client fault reproduces identically in-game, pinning it to an **ASLR
+base mismatch** in the injector (hard-coded `0x10000000` load base) rather than a
+missing game socket — the one remaining item for a stable in-game bot session.
