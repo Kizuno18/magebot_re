@@ -108,13 +108,20 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   the **Tibia client's own** phone-home, not magebot — magebot's licensing is
   `tibiadb.com`, confirmed in both v860 builds)
   ([18-runtime-packet-verification.md](18-runtime-packet-verification.md)).
-- **v860 SAFEMODE characterized** — `magebotv55_SAFEMODE.exe` is a genuinely older
-  build (`TimeDateStamp` **2012-11-08** vs the main's **2022-02-15**), 1177 vs 1192
-  functions, same engine and identical `tibiadb.com` licensing / RSA-XTEA send.
-  The 2022 main adds two features it lacks: a full-screen freeze-diagnostic
-  screenshot (`v860CaptureWindowToBmp` → `froze.bmp`, the whole `gdi32 9-vs-3`
-  delta) and an IP Changer with a saved `iplist.txt`. Not a read-only/no-inject
-  mode — an older fallback build ([15-version-comparison.md](15-version-comparison.md) §4).
+- **v860 SAFEMODE characterized + the "safe mode" mechanism found** — the
+  `magebotv55_SAFEMODE.exe` binary is a genuinely older build (`TimeDateStamp`
+  **2012-11-08** vs the main's **2022-02-15**), 1177 vs 1192 functions, same engine
+  and identical `tibiadb.com` licensing / RSA-XTEA send; the 2022 main just adds a
+  freeze-diagnostic screenshot (`froze.bmp`, the `gdi32 9-vs-3` delta) and an IP
+  Changer (`iplist.txt`). The **name** comes from a runtime toggle both builds
+  carry: global **`dword_460048`** — when set, `v860PipeSendXteaEncrypted`
+  (`0x402a08`) early-returns (`if (dword_460048==1) return`) so **no packet is
+  injected**, every packet builder branches to a `GetWindowRect`→`mouse_event`
+  keyboard/mouse path, and the `*ModeGated` memory writes are skipped. **SAFE MODE =
+  no full-packet, no memory writes → external RPM-read + human-like input only
+  (anti-detection).** Verified at runtime: flag=0 → talk frame hits the wire (3/3);
+  flag=1 → same call sends nothing (0/3)
+  ([15-version-comparison.md](15-version-comparison.md) §4–5).
 
 ## Coverage
 

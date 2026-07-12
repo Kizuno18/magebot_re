@@ -78,9 +78,33 @@ v860 has its own 2012/2022 safemode. `server.exe` is byte-identical in all four.
      help string *"…put your IP for the IP Changer… scroll wheel to see previous
      IPs"* and `iplist.txt` are main-only).
 
-   So v860 SAFEMODE is the **older 2012 fallback build**, not a read-only or
-   no-inject mode — run it when the newer build misbehaves; it is otherwise the
-   same bot minus the two 2022 additions.
+   So the `_SAFEMODE.exe` binary is the **older 2012 build**, otherwise the same
+   bot minus those two 2022 additions. The *name*, though, comes from a runtime
+   toggle both builds carry — see §5.
+
+5. **"SAFE MODE" is a no-full-packet toggle (the reason for the name).** Both v860
+   builds contain a global flag **`dword_460048`** (`SAFE MODE` when set; the window
+   title shows "SAFE MODE" and a `safemode1st.txt` first-run marker is written).
+   When the flag is **1**, the bot **stops injecting packets and stops writing client
+   memory**, driving the game with **keyboard/mouse** instead — the anti-detection
+   "safe" path:
+   - the pipe-send `v860PipeSendXteaEncrypted` (`0x402a08`) opens with
+     `if (dword_460048 == 1) return 1;` — it never writes the frame to
+     `\\.\pipe\SamplePipe`, so `packet.dll` never XTEA-encrypts or `send()`s it;
+   - every packet builder (`v860StepDirFrame` `0x406575`, `v860BuildMouseWalkSequenceA/B`,
+     the turn/use/walk builders — ~25 sites all test `cmp dword_460048, 1`) branches
+     to a **`GetWindowRect` → screen-pixel → `mouse_event`/arrow-key** path instead of
+     building the frame;
+   - the client-memory writers `v860WriteClient*ModeGated` are gated by the same flag.
+
+   Verified at runtime (frida, bot injected into an in-game client): with the flag
+   forced **0**, directly calling `v860PipeSendXteaEncrypted` with a talk frame put
+   a 22-byte encrypted packet on `ws2_32!send` every time (3/3); with the flag
+   forced **1**, the same call returned immediately and **no packet reached the
+   wire** (0/3), confirming the gate. So "SAFE MODE" = **external RPM-read +
+   human-like input only, zero packet/memory injection** — much harder for the
+   server/anti-cheat to detect. (Full-packet mode is the fast, feature-complete but
+   detectable default of the main build; `dword_460048` defaults to `0` there.)
 
 ## Practical takeaway
 
