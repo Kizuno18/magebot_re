@@ -57,10 +57,30 @@ v860 has its own 2012/2022 safemode. `server.exe` is byte-identical in all four.
    overlap; a raw byte diff overstates it.
 
 3. **v860 is the genuine outlier.** No `lua51` import (chat-command driven, not
-   Lua — [06-v860-lineage.md](06-v860-lineage.md)), Tibia 8.60 client, `gdi32 9`
-   vs `3` (the old hand-drawn HUD/Mwall overlay), different base bands
-   (`[0x45ff0c]` stride `0xA8` vs the v10x `[0x468f38]` stride `0xE0`). This is a
-   separate catalog ([functions/catalog-v860.md](functions/catalog-v860.md)).
+   Lua — [06-v860-lineage.md](06-v860-lineage.md)), Tibia 8.60 client, different
+   base bands (`[0x45ff0c]` stride `0xA8` vs the v10x `[0x468f38]` stride `0xE0`).
+   This is a separate catalog ([functions/catalog-v860.md](functions/catalog-v860.md)).
+
+4. **v860 `magebotv55.exe` (main, 2022) vs `magebotv55_SAFEMODE.exe` (2012).**
+   Unlike the v10x SAFEMODE (byte-identical to its main), the v860 SAFEMODE is a
+   genuinely older build — `TimeDateStamp` **2012-11-08** vs the main's
+   **2022-02-15** (~9.3 years). Same product/engine: identical `tibiadb.com`
+   licensing, team server, RSA/XTEA send path, and all the
+   healer/targeting/cavebot/looter/chat-command engines; both inject via `wsock32`.
+   The 2022 main is **1192 functions vs 1177** (+15) and adds **two features the
+   2012 build lacks**:
+   - a full-screen **freeze/crash-diagnostic screenshot** — `v860CaptureWindowRegion`
+     (`0x42fcdd`) → `v860CaptureWindowToBmp` (`0x42fd90`) grabs the desktop DC via
+     `BitBlt`/`GetDIBits` (sized with `GetSystemMetrics`) and writes **`froze.bmp`**;
+     this is the whole of the `gdi32 9 vs 3` delta (6 capture imports over the 3
+     shared HUD-text imports `TextOutA`/`GetStockObject`/`SetBkMode`);
+   - an **IP Changer with a saved `iplist.txt`** + mouse-scroll IP history (the
+     help string *"…put your IP for the IP Changer… scroll wheel to see previous
+     IPs"* and `iplist.txt` are main-only).
+
+   So v860 SAFEMODE is the **older 2012 fallback build**, not a read-only or
+   no-inject mode — run it when the newer build misbehaves; it is otherwise the
+   same bot minus the two 2022 additions.
 
 ## Practical takeaway
 
