@@ -11,10 +11,11 @@ documented in [engine-core.md](functions/engine-core.md):
    records.
 2. **A machine-id / licensing layer** — a NIC-MAC-derived fingerprint plus HTTP
    requests to `tibiadb.com` (`key.php` / `resendkey.php` / `addcomputer.php` /
-   `authorize.php`, `v=55`, `m=%d`) that gate whether the bot runs. (The `tibiadb.com`
-   host is from the v10x static analysis; the **v860** build observed at runtime
-   phones home with `GET /s.php?c=1+1` to **`jnews.ueuo.com`** instead —
-   see [18](18-runtime-packet-verification.md).)
+   `authorize.php`, `v=55`, `m=%d`) that gate whether the bot runs. Confirmed in
+   **both v860 builds** (main + SAFEMODE) — the `tibiadb.com` licensing strings are
+   identical. (A separate `GET /s.php?c=1+1` to `jnews.ueuo.com` seen on the wire at
+   runtime is the **Tibia client's** own telemetry, not magebot's — those strings
+   live in `Tibia.exe`, see [18](18-runtime-packet-verification.md).)
 3. **Client patches** the bot writes into `client.exe` memory (an anti-idle /
    ping-pong spoof and a patch-table applier) plus an **XTEA** frame sender that
    is distinct from the plaintext pipe injector `0x40320a`.

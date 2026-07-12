@@ -103,9 +103,11 @@ Resume point for the MageBot v5.5 RE. What is done, in progress, and TODO.
   crypto was verified **end-to-end**: decrypting the captured wire ciphertext with
   the captured 16-byte XTEA session key (pointer at **`0x1000C138`**) with a stock
   XTEA (delta `0x9E3779B9`, 32 rounds) recovers the exact opcode, and an
-  independent Adler-32 of the ciphertext matches — for all frames. RSA login and
-  the demo licensing phone-home also fire (host is **jnews.ueuo.com**, not
-  tibiadb.com) ([18-runtime-packet-verification.md](18-runtime-packet-verification.md)).
+  independent Adler-32 of the ciphertext matches — for all frames. RSA login fires
+  as documented. (The `jnews.ueuo.com`/`s.php` HTTP telemetry seen on the wire is
+  the **Tibia client's own** phone-home, not magebot — magebot's licensing is
+  `tibiadb.com`, confirmed in both v860 builds)
+  ([18-runtime-packet-verification.md](18-runtime-packet-verification.md)).
 
 ## Coverage
 

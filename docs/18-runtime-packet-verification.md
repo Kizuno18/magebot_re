@@ -48,7 +48,7 @@ runtime once the game handshake completes), not the key inline.
 |---|---|---|---|
 | Client enters game world | 17 | `connect 127.0.0.1:7171` (login) then `:7172` (game); char `Kizu Bot` rendered in-world | ✅ |
 | RSA login packet | 14 | first game send `95 00 A7 41 … ` = `[len 0x0095]` + 128-byte RSA block; auth succeeds (OT-modulus patch works) | ✅ |
-| tibiadb.com licensing phone-home | 14 | HTTP `GET /s.php?c=1+1 Host: jnews.ueuo.com` to `107.150.63.76:80` fires from inside the client after inject | ✅ (host is **jnews.ueuo.com**, not tibiadb.com) |
+| Client-side HTTP telemetry on the wire | — | `GET /s.php?c=1+1 Host: jnews.ueuo.com` to `107.150.63.76:80` seen on the client's socket | ⚠️ this is the **Tibia client's own** phone-home — the `jnews.ueuo.com`/`s.php` strings live in `Tibia.exe`/`Tibia_ot.exe`, **not** in any magebot/packet.dll binary. Magebot's licensing (tibiadb.com, doc 14) runs in the `magebotv55.exe` process, which the client-side `send` hook does not see |
 | Injection clean (v860) | 04 | `Tibia_ot` alive, no `WerFault`, `\\.\pipe\SamplePipe<pid>` live, client window subclassed → `*Magebot*` | ✅ |
 | Wire framing `[len][adler32][xtea]` | 04 | every game packet is `[len:2][adler:4][8·n xtea bytes]` | ✅ |
 | Attack opcode `0xA1` | 10 | `sub_10004436` received `05 00 A1 34 12 00 00` (opcode `0xA1`, cid `0x1234`) | ✅ |
@@ -87,6 +87,9 @@ byte-for-byte: magebot builds a frame → writes it to `\\.\pipe\SamplePipe%i` �
 `pkt_pipeServerThread` → `sub_10004436` pads (LCG) + **XTEA-encrypts** (stock,
 key at `0x1000C138`) + **Adler-32** + **`ws2_32!send`** on the client's game
 socket. Decrypting the captured wire traffic with the captured session key
-reproduces the injected `0xA1`/walk/`0x96` opcodes exactly. The RSA login and the
-demo licensing phone-home both fire; the only doc corrections are the **v860
-packet.dll offsets** (§ above) and the licensing host (**jnews.ueuo.com**).
+reproduces the injected `0xA1`/walk/`0x96` opcodes exactly. The RSA login packet
+fires as documented. The one doc correction is the **v860 packet.dll offsets**
+(§ above). **Note:** the `jnews.ueuo.com`/`s.php` HTTP telemetry seen on the wire
+is the **Tibia client's own** phone-home (those strings are in `Tibia.exe`, not in
+magebot) — it is *not* magebot's licensing, which uses `tibiadb.com` from the
+`magebotv55.exe` process (doc 14) and is not visible to a client-side `send` hook.
