@@ -92,10 +92,22 @@ v860 has its own 2012/2022 safemode. `server.exe` is byte-identical in all four.
      `if (dword_460048 == 1) return 1;` — it never writes the frame to
      `\\.\pipe\SamplePipe`, so `packet.dll` never XTEA-encrypts or `send()`s it;
    - every packet builder (`v860StepDirFrame` `0x406575`, `v860BuildMouseWalkSequenceA/B`,
-     the turn/use/walk builders — ~25 sites all test `cmp dword_460048, 1`) branches
-     to a **`GetWindowRect` → screen-pixel → `mouse_event`/arrow-key** path instead of
-     building the frame;
+     the turn/use/walk builders — ~25 sites all test `cmp dword_460048, 1`) takes a
+     **synthetic-input** branch instead of building the frame: it computes the target
+     tile's screen pixel (`GetWindowRect` on the client HWND `[0x863213C]` + the
+     `v860MapSelfXToScreenColumn`/`Row` game-coord→pixel mapping) and drives the client
+     via **`SendMessageA` posted straight to the client window** — `v860MouseClickAt`
+     (`0x406dcd`) posts `WM_LBUTTONDOWN`/`WM_LBUTTONUP` at that pixel, `v860SendKeyDownUp`
+     (`0x4068c0`) posts `WM_KEYDOWN`/`WM_KEYUP` (hotkeys/arrows). These go to the client's
+     message queue only — the real cursor never moves;
    - the client-memory writers `v860WriteClient*ModeGated` are gated by the same flag.
+
+   The upshot: in SAFE MODE the bot still **reads** everything from client memory
+   (RPM mirror) and runs the same targeting/cavebot/healer logic — it just
+   **executes** actions as simulated clicks/keystrokes, and the **client itself**
+   then builds and sends the real (legitimate) game packet. So nothing on the wire
+   is bot-generated; the server sees only the client's own packets, which is why the
+   mode is "safe" (undetectable) at the cost of speed/precision vs full-packet.
 
    Verified at runtime (frida, bot injected into an in-game client): with the flag
    forced **0**, directly calling `v860PipeSendXteaEncrypted` with a talk frame put
